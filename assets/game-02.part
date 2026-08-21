@@ -1,0 +1,596 @@
+>${careerModeOn?'Year':'Season'} ${m.year}</td><td class="odds-name">${m.text}</td></tr>
+
+ `).join('');
+
+ document.getElementById('careerMilestonesContent').innerHTML = `<table class="odds-table">${rows}</table>`;
+
+ document.getElementById('careerMilestonesSummary').textContent = `▸ View career milestones (${careerMilestones.length})`;
+
+}
+
+function updateResetButtonLabel(){
+
+ const btn = document.getElementById('btnReset');
+
+ if(!btn) return;
+
+ if(!careerModeOn){
+
+   btn.textContent = 'New Season';
+
+   return;
+
+ }
+
+ btn.textContent = (playoffs && playoffs.champion)
+
+   ? `Advance to Year ${careerYear+1}`
+
+   : `Simulate to Year ${careerYear+1}`;
+
+}
+
+function setPlayoffButtonsDisabled(disabled){
+
+ document.querySelectorAll('[data-role="nextMatch"]').forEach(b=> b.disabled = disabled);
+
+ document.querySelectorAll('[data-role="simAllPlayoffs"]').forEach(b=> b.disabled = disabled);
+
+}
+
+ 
+
+let firstInit = true;
+
+let seasonNumber = 1;
+
+let hallOfFame = []; // {season, name, emoji, seed, seasonTotal}
+
+ 
+
+function resetSeasonUI(){
+
+ currentWeek = 0;
+
+ standingsSnapshotPrev = null;
+
+ weeklyRecaps = [];
+
+ playoffs = null;
+
+ seasonLocked = false;
+
+ followedPlayerId = null;
+
+ autoSimAfterModal = null;
+
+ document.getElementById('recapPanel').style.display='none';
+
+ document.getElementById('playoffIntroPanel').style.display='none';
+
+ document.getElementById('playoffPanel').style.display='none';
+
+ document.getElementById('championPanel').style.display='none';
+
+ document.getElementById('oddsPanelWrap').style.display='none';
+
+ document.getElementById('playoffRecapPanel').style.display='none';
+
+ document.getElementById('playerCardModal').classList.add('hidden');
+
+ document.getElementById('matchAnimModal').classList.add('hidden');
+
+ if(typeof clearModalTimers === 'function') clearModalTimers();
+
+ matchModal = { active:false, key:null, res:null, gameIndex:0, chainMode:false, timers:[], skipRequested:false };
+
+ document.getElementById('btnWatchFinals').disabled = true;
+
+ document.getElementById('btnSimToChamp').disabled = false;
+
+ document.getElementById('pastRecaps').innerHTML='';
+
+ document.getElementById('pastWeeksWrap').style.display='none';
+
+ document.getElementById('latestRecap').innerHTML='';
+
+ document.getElementById('btnSimWeek').disabled=false;
+
+ document.getElementById('btnSimAll').disabled=false;
+
+ setPlayoffButtonsDisabled(false);
+
+ document.getElementById('controlHint').textContent = careerModeOn
+
+   ? 'Career Mode: each "year" is a full season. Players gradually climb the league ladder toward pro caliber, then taper off after year 40.'
+
+   : 'Each week, every bowler rolls three nights of three games apiece. Standings are cumulative pinfall — no head-to-head, pure aggregate. Results are freshly simulated every run, so no two seasons play out the same.';
+
+ renderStandings(true);
+
+ updateStatus();
+
+ renderHallOfFame();
+
+ renderCareerMilestones();
+
+ renderHistoryChannel();
+
+ renderCareerHub();
+
+ renderRacePanel();
+
+ updateResetButtonLabel();
+
+}
+
+ 
+
+function initSeason(){
+
+ if(!firstInit) seasonNumber++;
+
+ firstInit = false;
+
+ PLAYERS = {};
+
+ RAW_PLAYERS.forEach(p=> PLAYERS[p.id] = freshPlayerState(p));
+
+ assignTierGroups();
+
+ careerYear = 1;
+
+ careerHistoryLog = [];
+
+ resetSeasonUI();
+
+}
+
+ 
+
+function ensureCareerYearComplete(){
+
+ if(!careerModeOn) return false;
+
+ // Finish any remaining regular-season weeks first.
+
+ while(currentWeek < TOTAL_WEEKS){ simulateWeek(); }
+
+ // Defensive repair: a 10-week season should always have a bracket.
+
+ if(currentWeek >= TOTAL_WEEKS && !playoffs){ lockRegularSeason(); }
+
+ let guard=0;
+
+ while(playoffs && !playoffs.champion && guard<100){
+
+   const advanced = playNextMatch();
+
+   if(!advanced) break;
+
+   guard++;
+
+ }
+
+ if(!playoffs || !playoffs.champion){
+
+   console.error(`Career Year ${careerYear} could not be completed; advancement was cancelled instead of writing a blank season.`);
+
+   return false;
+
+ }
+
+ // Idempotent safety calls keep every completion route in sync.
+
+ recordHallOfFame();
+
+ renderBracket();
+
+ showChampion();
+
+ return true;
+
+}
+
+function advanceCareerYear(autoComplete=true){
+
+ if(!careerModeOn) return false;
+
+ if(autoComplete && !ensureCareerYearComplete()) return false;
+
+ if(currentWeek < TOTAL_WEEKS || !playoffs || !playoffs.champion){
+
+   console.warn(`Career Year ${careerYear} is incomplete; advancement was blocked.`);
+
+   return false;
+
+ }
+
+ const endingYear = careerYear;
+
+ const ordered = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ ordered.forEach((pl,i)=>{
+
+   const finish = i+1;
+
+   pl.finishHistory[endingYear-1] = finish;
+
+   pl.lastFinish = finish;
+
+   pl.lastSeasonTotal = pl.seasonTotal;
+
+   pl.lastSeasonWeeklyAvg = pl.weeklyTotals.length ? Math.round(mean(pl.weeklyTotals)) : 0;
+
+   pl.lastSeasonLastWeekTotal = pl.lastWeekTotal || (pl.weeklyTotals.length ? pl.weeklyTotals[pl.weeklyTotals.length-1] : 0);
+
+ });
+
+ recordHallOfFame();
+
+ if(!recordYearSummary(endingYear)) return false;
+
+ finalizeCareerSeasonMetrics(endingYear);
+
+ careerYear++;
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   pl.seasonGames = [];
+
+   pl.weeklyTotals = [];
+
+   pl.seasonTotal = 0;
+
+   pl.lastWeekTotal = 0;
+
+   pl.rank=0;
+
+   pl.prevRank=0;
+
+   pl.formState='NORMAL'; pl.formModifier=0; pl.formWeeksLeft=0;
+
+   advancePlayerCareer(pl);
+
+ });
+
+ resetSeasonUI();
+
+ return true;
+
+}
+
+/* Instantly resolves an entire career year (regular season + full playoffs),
+
+  records every award/result, and advances to the next year. */
+
+function simulateFullCareerYear(){
+
+ return advanceCareerYear(true);
+
+}
+
+function simulateCareerYears(n){
+ if(!careerModeOn) return;
+ const priorBulk = bulkSimMode, priorSilent = silentMode;
+ bulkSimMode = true; silentMode = true;
+ try{
+   if(playoffs && playoffs.champion){
+     if(!advanceCareerYear(false)) return;
+   }
+   for(let i=0;i<n;i++){
+     if(!simulateFullCareerYear()) break;
+   }
+ } finally {
+   bulkSimMode = priorBulk; silentMode = priorSilent;
+   renderAllCareerPanels();
+   autosaveGame();
+ }
+}
+
+/* Rolling blended average: 65% last-10 (career+season combined, chronological), 35% career avg */
+
+function blendedAverage(pl){
+
+ const combined = pl.careerHistory.concat(pl.seasonGames);
+
+ const last10 = combined.slice(-10);
+
+ const l10avg = mean(last10);
+
+ return 0.65*l10avg + 0.35*pl.careerAvg;
+
+}
+
+ 
+
+function simulateGame(pl){
+
+ const target = blendedAverage(pl) + (pl.formModifier||0);
+
+ let mean_ = target, sd = pl.careerSd;
+
+ const roll = Math.random();
+
+ if(roll < 0.08){ mean_ += sd*0.9; sd *= 1.15; }        // hot night
+
+ else if(roll < 0.16){ mean_ -= sd*0.9; sd *= 1.15; }   // cold night
+
+ let score = Math.round(mean_ + sd * gaussian());
+
+ score = clamp(score, 30, 300);
+
+ pl.seasonGames.push(score);
+
+ if(score > pl.allTimeHigh){
+
+   const prev = pl.allTimeHigh;
+
+   pl.allTimeHigh = score;
+
+   logMilestone(`🎳 NEW CAREER HIGH — ${pl.emoji} ${pl.name} rolls ${score}, breaking the previous record of ${prev}!`);
+
+ }
+
+ return score;
+
+}
+
+ 
+
+function simulateNight(pl){
+
+ const g = [simulateGame(pl), simulateGame(pl), simulateGame(pl)];
+
+ return { games:g, total:g[0]+g[1]+g[2] };
+
+}
+
+ 
+
+/* =========================================================================
+
+  REGULAR SEASON — WEEK SIMULATION
+
+  ========================================================================= */
+
+function simulateWeek(){
+
+ if(seasonLocked) return;
+
+ currentWeek++;
+
+ const formEvents = prepareWeeklyForms();
+
+ const weekData = {}; // playerId -> {nights:[...], weekTotal}
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   const nights = [simulateNight(pl), simulateNight(pl), simulateNight(pl)];
+
+   const weekTotal = nights.reduce((a,n)=>a+n.total,0);
+
+   pl.weeklyTotals.push(weekTotal);
+
+   pl.lastWeekTotal = weekTotal;
+
+   pl.seasonTotal += weekTotal;
+
+   weekData[pl.id] = { nights, weekTotal };
+
+ });
+
+ 
+
+ // snapshot standings before ranking update (for movement)
+
+ const prevOrder = Object.values(PLAYERS).slice().sort((a,b)=> (b.seasonTotal-b.lastWeekTotal) - (a.seasonTotal-a.lastWeekTotal));
+
+ prevOrder.forEach((pl,i)=> pl.prevRank = i+1);
+
+ 
+
+ const newOrder = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ newOrder.forEach((pl,i)=> pl.rank = i+1);
+
+ 
+
+ buildRecap(weekData, newOrder, formEvents);
+
+ decayWeeklyForms();
+
+ if(!bulkSimMode){
+   renderStandings(false);
+   updateStatus();
+   renderRacePanel();
+   renderCareerHub();
+ }
+
+ 
+
+ if(currentWeek >= TOTAL_WEEKS){
+
+   lockRegularSeason();
+
+ }
+
+ if(!bulkSimMode) autosaveGame();
+
+}
+
+ 
+
+function buildRecap(weekData, orderedStandings, formEvents){
+
+ let weekLeaderId=null, weekLeaderTotal=-1;
+
+ let highGamePlayer=null, highGameVal=-1;
+
+ Object.entries(weekData).forEach(([id,d])=>{
+
+   if(d.weekTotal>weekLeaderTotal){ weekLeaderTotal=d.weekTotal; weekLeaderId=id; }
+
+   d.nights.forEach(n=> n.games.forEach(g=>{
+
+     if(g>highGameVal){ highGameVal=g; highGamePlayer=id; }
+
+   }));
+
+ });
+
+ let bigRiser=null, riserDelta=-999;
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   const delta = pl.prevRank - pl.rank;
+
+   if(delta>riserDelta){ riserDelta=delta; bigRiser=pl.id; }
+
+ });
+
+ const leader = orderedStandings[0];
+
+ weeklyRecaps.push({
+
+   week: currentWeek,
+
+   weekLeader: PLAYERS[weekLeaderId].name+' '+PLAYERS[weekLeaderId].emoji,
+
+   weekLeaderTotal,
+
+   highGame: PLAYERS[highGamePlayer].name+' '+PLAYERS[highGamePlayer].emoji,
+
+   highGameVal,
+
+   bigRiser: riserDelta>0 ? (PLAYERS[bigRiser].name+' '+PLAYERS[bigRiser].emoji) : null,
+
+   riserDelta,
+
+   seasonLeader: leader.name+' '+leader.emoji,
+
+   seasonLeaderTotal: leader.seasonTotal,
+
+   stories: generateWeeklyStorylines(weekData, orderedStandings, formEvents||[]),
+
+ });
+
+ if(PLAYERS[weekLeaderId]) PLAYERS[weekLeaderId].playerOfWeekAwards = (PLAYERS[weekLeaderId].playerOfWeekAwards||0)+1;
+
+ renderRecap();
+
+}
+
+ 
+
+function renderRecap(){
+
+ if(bulkSimMode) return;
+
+ document.getElementById('recapPanel').style.display='block';
+
+ const latest = weeklyRecaps[weeklyRecaps.length-1];
+
+ document.getElementById('latestRecap').innerHTML = recapCardHtml(latest);
+
+ const past = weeklyRecaps.slice(0,-1).reverse();
+
+ const wrap = document.getElementById('pastWeeksWrap');
+
+ if(past.length>0){
+
+   wrap.style.display='block';
+
+   document.getElementById('pastRecaps').innerHTML = past.map(recapCardHtml).join('');
+
+ }
+
+}
+
+ 
+
+function recapCardHtml(r){
+
+ return `<div class="recap-card">
+
+   <div class="wk">Week ${r.week} of ${TOTAL_WEEKS}</div>
+
+   <div class="recap-grid">
+
+     <div class="recap-item"><div class="label">Week Leader</div><div class="value"><span class="accent">${r.weekLeader}</span> — ${r.weekLeaderTotal} pins</div></div>
+
+     <div class="recap-item"><div class="label">High Game</div><div class="value">${r.highGame} — <span class="accent">${r.highGameVal}</span></div></div>
+
+     <div class="recap-item"><div class="label">Biggest Riser</div><div class="value">${r.bigRiser ? r.bigRiser+' <span class="accent">(+'+r.riserDelta+' spots)</span>' : '— no change —'}</div></div>
+
+     <div class="recap-item"><div class="label">Season Leader</div><div class="value"><span class="accent">${r.seasonLeader}</span> — ${r.seasonLeaderTotal} pins</div></div>
+
+   </div>
+
+   ${r.stories && r.stories.length ? `<div class="story-stack">${r.stories.map(x=>`<div class="story-line">${x}</div>`).join('')}</div>` : ''}
+
+ </div>`;
+
+}
+
+ 
+
+/* =========================================================================
+
+  STANDINGS RENDER
+
+  ========================================================================= */
+
+function renderStandings(initial){
+
+ const tbody = document.getElementById('standingsBody');
+
+ const players = Object.values(PLAYERS);
+
+ const showingPriorSeason = careerModeOn && currentWeek===0 && players.some(pl=>pl.lastFinish!==null);
+
+ const ordered = players.slice().sort((a,b)=>{
+
+   if(showingPriorSeason){
+
+     return (a.lastFinish ?? 99) - (b.lastFinish ?? 99);
+
+   }
+
+   return (b.seasonTotal-a.seasonTotal) || (b.careerAvg-a.careerAvg);
+
+ });
+
+ ordered.forEach((pl,i)=> pl.rank = showingPriorSeason ? (pl.lastFinish || i+1) : i+1);
+
+ tbody.innerHTML = ordered.map(pl=>{
+
+   const currentWeeklyAvg = pl.weeklyTotals.length ? Math.round(mean(pl.weeklyTotals)) : 0;
+
+   const weeklyAvg = showingPriorSeason ? pl.lastSeasonWeeklyAvg : currentWeeklyAvg;
+
+   const weekValue = showingPriorSeason
+
+     ? (pl.lastSeasonLastWeekTotal || '—')
+
+     : (pl.lastWeekTotal || (pl.weeklyTotals.length ? pl.weeklyTotals[pl.weeklyTotals.length-1] : '—'));
+
+   const totalValue = showingPriorSeason ? pl.lastSeasonTotal : pl.seasonTotal;
+
+   let deltaHtml = '<span class="delta flat">—</span>';
+
+   if(!showingPriorSeason && !initial && pl.weeklyTotals.length>0){
+
+     const moved = pl.prevRank - pl.rank;
+
+     if(moved>0) deltaHtml = `<span class="delta up">▲ ${moved}</span>`;
+
+     else if(moved<0) deltaHtml = `<span class="delta down">▼ ${Math.abs(moved)}</span>`;
+
+     else deltaHtml = `<span class="delta flat">— hold</span>`;
+
+   }
+
+   const tRank = Math.max(0, tierRank(pl.tier));
+
+   return `<tr class="${!initial && !showi
