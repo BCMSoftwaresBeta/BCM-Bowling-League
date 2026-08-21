@@ -1,0 +1,387 @@
+ngPriorSeason ? 'updated':''}">
+
+     <td class="rank ${pl.rank<=3?'top3':''}">${pl.rank}</td>
+
+     <td class="pname" style="cursor:pointer;" onclick="window.__showPlayerCard('${pl.id}')"><span class="emoji">${pl.emoji}</span>${pl.name}${accoladeMiniHtml(pl)}<span class="tier-pill t${tRank}">${pl.tier}</span></td>
+
+     <td class="num">${weekValue}</td>
+
+     <td class="num">${weeklyAvg || '—'}</td>
+
+     <td class="num season-total">${totalValue}</td>
+
+     <td class="movement">${deltaHtml}</td>
+
+   </tr>`;
+
+ }).join('');
+
+ const weekHead = document.getElementById('standingsWeekHead');
+
+ const avgHead = document.getElementById('standingsAvgHead');
+
+ const totalHead = document.getElementById('standingsTotalHead');
+
+ if(weekHead) weekHead.textContent = showingPriorSeason ? 'Prev. Final Week' : 'This Week';
+
+ if(avgHead) avgHead.textContent = showingPriorSeason ? 'Prev. Weekly Avg' : 'Weekly Avg';
+
+ if(totalHead) totalHead.textContent = showingPriorSeason ? 'Prev. Season Total' : 'Season Total';
+
+ document.getElementById('leaderboardSub').textContent = showingPriorSeason
+
+   ? `Year ${careerYear} preseason · showing Year ${careerYear-1} final standings`
+
+   : (currentWeek===0 ? 'Season not yet started' : `Through Week ${currentWeek} of ${TOTAL_WEEKS}`);
+
+}
+
+function updateStatus(){
+
+ document.getElementById('weekIndicator').textContent = seasonLocked
+
+   ? (playoffs && playoffs.champion ? 'Season Complete' : 'Regular Season Complete')
+
+   : `Week ${currentWeek} of ${TOTAL_WEEKS}`;
+
+ document.getElementById('seasonStatus').firstChild.textContent = seasonLocked ? 'Playoffs ' : 'Regular Season ';
+
+ const yearBadge = document.getElementById('careerYearBadge');
+
+ if(yearBadge) yearBadge.textContent = careerModeOn ? ` · Career Year ${careerYear}` : '';
+
+ if(!bulkSimMode){ renderCareerHub(); renderRacePanel(); }
+
+}
+
+ 
+
+/* =========================================================================
+
+  LOCK REGULAR SEASON -> SEED BRACKET
+
+  ========================================================================= */
+
+function lockRegularSeason(){
+
+ seasonLocked = true;
+
+ document.getElementById('btnSimWeek').disabled = true;
+
+ document.getElementById('btnSimAll').disabled = true;
+
+ document.getElementById('controlHint').textContent = 'Regular season closed. Scroll down to view seeding and start the playoffs.';
+
+ const seeded = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ seeded.forEach((pl,i)=> pl.seed = i+1);
+
+ playoffs = { seeds: seeded, matches: [], idx:0, champion:null, buildOnly:true, recordsWL:{} };
+
+ buildBracketStructure();
+
+ if(!bulkSimMode){
+   buildOddsTable();
+   populateFollowPlayerSelect(seeded);
+   document.getElementById('playoffIntroPanel').style.display='block';
+   updateStatus();
+ }
+
+}
+
+ 
+
+let followedPlayerId = null;
+
+let autoSimAfterModal = null; // null, or { stopBeforeFinals: bool } — set when the auto-sim loop pauses for a followed player's match
+
+ 
+
+function populateFollowPlayerSelect(seeded){
+
+ followedPlayerId = null;
+
+ const sel = document.getElementById('followPlayerSelect');
+
+ if(!sel) return;
+
+ sel.innerHTML = '<option value="">— Watch All Games —</option>' +
+
+   seeded.map(pl=>`<option value="${pl.id}">${pl.emoji} ${pl.name} (#${pl.seed})</option>`).join('');
+
+ sel.value = '';
+
+}
+
+ 
+
+/* =========================================================================
+
+  PLAYOFF ENGINE
+
+  Fixed-shape double-elimination for 9 seeds:
+
+    PI: 8 vs 9
+
+    QF1: 1 vs W(PI)   QF2: 4 vs 5   QF3: 3 vs 6   QF4: 2 vs 7
+
+    SF1: W(QF1) vs W(QF2)   SF2: W(QF3) vs W(QF4)
+
+    WF:  W(SF1) vs W(SF2)  -> Winners Bracket Champion
+
+    LR1: pool = [L(PI), L(QF1..4)] (5) -> bye to best seed, 2 matches
+
+    LR2: pool = LR1 survivors (3) + [L(SF1),L(SF2)] (2) = 5 -> bye, 2 matches
+
+    LR3: pool = LR2 survivors (3) + [L(WF)] (1) = 4 -> 2 matches
+
+    LR4: pool = LR3 survivors (2) -> 1 match -> Losers Bracket Champion
+
+    GF: best-of-3 matches, Winners Champ vs Losers Champ
+
+  ========================================================================= */
+
+function buildBracketStructure(){
+
+ const s = playoffs.seeds; // sorted seed 1..9
+
+ const bySeed = n => s[n-1];
+
+ 
+
+ playoffs.M = {}; // named matches, participants resolved lazily
+
+ playoffs.order = [];
+
+ 
+
+ function addMatch(key, lane, roundLabel, getA, getB){
+
+   playoffs.M[key] = { key, lane, roundLabel, getA, getB, played:false, result:null };
+
+   playoffs.order.push(key);
+
+ }
+
+ 
+
+ addMatch('PI','winners','Play-In', ()=>bySeed(8), ()=>bySeed(9));
+
+ addMatch('QF1','winners','Quarterfinal', ()=>bySeed(1), ()=>winnerOf('PI'));
+
+ addMatch('QF2','winners','Quarterfinal', ()=>bySeed(4), ()=>bySeed(5));
+
+ addMatch('QF3','winners','Quarterfinal', ()=>bySeed(3), ()=>bySeed(6));
+
+ addMatch('QF4','winners','Quarterfinal', ()=>bySeed(2), ()=>bySeed(7));
+
+ addMatch('SF1','winners','Semifinal', ()=>winnerOf('QF1'), ()=>winnerOf('QF2'));
+
+ addMatch('SF2','winners','Semifinal', ()=>winnerOf('QF3'), ()=>winnerOf('QF4'));
+
+ addMatch('WF','winners','Winners Final', ()=>winnerOf('SF1'), ()=>winnerOf('SF2'));
+
+ 
+
+ // Losers Round 1: pool of 5 -> [loser(PI), loser(QF1..4)] sorted by seed asc, bye to best seed
+
+ addMatch('LR1a','losers','Round 1', ()=>lr1Pool()[1], ()=>lr1Pool()[2]);
+
+ addMatch('LR1b','losers','Round 1', ()=>lr1Pool()[3], ()=>lr1Pool()[4]);
+
+ // LR1 bye recipient = lr1Pool()[0]
+
+ 
+
+ addMatch('LR2a','losers','Round 2', ()=>lr2Pool()[1], ()=>lr2Pool()[2]);
+
+ addMatch('LR2b','losers','Round 2', ()=>lr2Pool()[3], ()=>lr2Pool()[4]);
+
+ // LR2 bye recipient = lr2Pool()[0]
+
+ 
+
+ addMatch('LR3a','losers','Round 3', ()=>lr3Pool()[0], ()=>lr3Pool()[1]);
+
+ addMatch('LR3b','losers','Round 3', ()=>lr3Pool()[2], ()=>lr3Pool()[3]);
+
+ 
+
+ addMatch('LR4','losers','Losers Final', ()=>winnerOf('LR3a'), ()=>winnerOf('LR3b'));
+
+ 
+
+ addMatch('GF1','grandfinal','Match 1', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ addMatch('GF2','grandfinal','Match 2', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ addMatch('GF3','grandfinal','Match 3 (if needed)', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ 
+
+ playoffs.gfWins = {}; // playerId -> match wins in grand final
+
+}
+
+ 
+
+function winnerOf(key){
+
+ const m = playoffs.M[key];
+
+ return m && m.played ? m.result.winner : null;
+
+}
+
+function loserOf(key){
+
+ const m = playoffs.M[key];
+
+ return m && m.played ? m.result.loser : null;
+
+}
+
+function bySeedSort(arr){ return arr.slice().sort((a,b)=>a.seed-b.seed); }
+
+ 
+
+function lr1Pool(){
+
+ return bySeedSort([loserOf('PI'), loserOf('QF1'), loserOf('QF2'), loserOf('QF3'), loserOf('QF4')].filter(Boolean));
+
+}
+
+function lr2Pool(){
+
+ const survivors = [lr1Pool()[0]||null, winnerOf('LR1a'), winnerOf('LR1b')].filter(Boolean);
+
+ return bySeedSort(survivors.concat([loserOf('SF1'), loserOf('SF2')].filter(Boolean)));
+
+}
+
+function lr3Pool(){
+
+ const survivors = [lr2Pool()[0]||null, winnerOf('LR2a'), winnerOf('LR2b')].filter(Boolean);
+
+ return bySeedSort(survivors.concat([loserOf('WF')].filter(Boolean)));
+
+}
+
+ 
+
+function playMatchTrack(pA, pB){
+
+ const res = playMatch(pA, pB);
+
+ // Track wins in bracket by player seed
+
+ if(!playoffs.recordsWL){ playoffs.recordsWL={}; }
+
+ playoffs.recordsWL[res.winner.id] = (playoffs.recordsWL[res.winner.id]||0)+1;
+
+ playoffs.recordsWL[res.loser.id] = (playoffs.recordsWL[res.loser.id]||0);
+
+ return res;
+
+}
+
+ 
+
+/* =========================================================================
+
+  PLAYER SEASON CARD
+
+  ========================================================================= */
+
+function showPlayerCard(playerId){
+ const pl = PLAYERS[playerId];
+ if(!pl) return;
+ const hasCurrentSeason = pl.seasonGames && pl.seasonGames.length>0;
+ const hasPriorSeason = careerModeOn && pl.lastFinish!==null;
+ const regularGames = hasCurrentSeason ? pl.seasonGames.slice(0,Math.min(pl.seasonGames.length,TOTAL_WEEKS*9)) : [];
+ const seasonAvg = regularGames.length ? mean(regularGames) : (pl.careerSeasons?.length ? pl.careerSeasons[pl.careerSeasons.length-1].seasonAvg : pl.careerAvg);
+ const bestGame = hasCurrentSeason ? Math.max(...pl.seasonGames) : (pl.careerSeasons?.length ? pl.careerSeasons[pl.careerSeasons.length-1].highGame : '—');
+ const worstGame = hasCurrentSeason ? Math.min(...pl.seasonGames) : '—';
+ const delta = hasCurrentSeason ? seasonAvg - pl.careerAvg : 0;
+ const deltaClass = delta>0.5 ? 'up' : delta<-0.5 ? 'down' : 'flat';
+ const deltaSymbol = delta>0.5 ? '↑' : delta<-0.5 ? '↓' : '→';
+ const displayTotal = hasCurrentSeason ? pl.seasonTotal : pl.lastSeasonTotal;
+ const displayWeeks = hasCurrentSeason ? pl.weeklyTotals.length : TOTAL_WEEKS;
+ const tRank = Math.max(0, tierRank(pl.tier));
+ const finishes = pl.finishHistory||[];
+ const top3 = finishes.filter(x=>x<=3).length;
+ const avgFinish = finishes.length ? mean(finishes).toFixed(1) : '—';
+ const prestige = Math.round(computePrestigeScore(pl));
+ const rings = pl.championships||0, mvps=totalMVPs(pl);
+ const atg = pl.allTimeGreat;
+ const dynasty = dynastyStatus(pl);
+ const form = pl.formState==='HOT' ? '🔥 Hot streak' : pl.formState==='COLD' ? '❄️ Cold spell' : 'Steady';
+ const html = `
+   <div class="stat-row">
+     <div><div class="stat-label">Tier</div><div class="stat-value"><span class="tier-pill t${tRank}" style="margin-left:0;">${pl.tier}</span>${pl.seniorTour?' <span class="tier-pill t2">Senior Tour</span>':''}${dynasty?' <span class="badge-mini dynasty">DYNASTY</span>':''}</div></div>
+     <div><div class="stat-label">Current Form</div><div class="stat-value">${form}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">${hasCurrentSeason?'Season Average':'Latest Season Avg'}</div><div class="stat-value"><span class="accent">${Math.round(seasonAvg||0)}</span></div></div>
+     <div><div class="stat-label">vs. Career</div><div class="stat-value"><span class="delta ${deltaClass}">${deltaSymbol} ${Math.abs(delta).toFixed(1)}</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Best Game (Current)</div><div class="stat-value"><span class="accent">${bestGame}</span></div></div>
+     <div><div class="stat-label">All-Time High</div><div class="stat-value"><span class="accent">${pl.allTimeHigh}</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Career Average</div><div class="stat-value">${Math.round(pl.careerAvg)}</div></div>
+     <div><div class="stat-label">Best Season Avg</div><div class="stat-value">${pl.bestSeasonAvg ? pl.bestSeasonAvg.toFixed(1) : '—'}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">${hasCurrentSeason?'Season Total':'Prior Season Total'}</div><div class="stat-value"><span class="accent">${displayTotal||0}</span></div></div>
+     <div><div class="stat-label">${hasCurrentSeason?'Weeks Active':'Prior Finish'}</div><div class="stat-value">${hasCurrentSeason ? displayWeeks : (pl.lastFinish?'#'+pl.lastFinish:'—')}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Championships</div><div class="stat-value"><span class="accent">${rings}</span></div></div>
+     <div><div class="stat-label">MVP Awards</div><div class="stat-value"><span class="accent">${mvps}</span> <span style="font-size:12px;color:var(--polo);">(${pl.regularSeasonMvps||0} RS · ${pl.playoffMvps||0} PO)</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Top-3 Finishes</div><div class="stat-value">${top3}</div></div>
+     <div><div class="stat-label">Average Finish</div><div class="stat-value">${avgFinish}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Best Playoff Run</div><div class="stat-value">${pl.bestPlayoffWins||0} match wins</div></div>
+     <div><div class="stat-label">Player of the Week</div><div class="stat-value">${pl.playerOfWeekAwards||0}</div></div>
+   </div>
+   <div class="atg-track">
+     <div class="atg-track-title">All-Time Great Tracker ${atg?'· ACHIEVED':''}</div>
+     ${progressRowHtml('Rings',rings,ALL_TIME_GREAT_MIN_RINGS)}
+     ${progressRowHtml('MVPs',mvps,ALL_TIME_GREAT_MIN_MVPS)}
+     ${progressRowHtml('Prestige',prestige,ALL_TIME_GREAT_MIN_PRESTIGE)}
+     <div class="hint" style="margin-top:8px;">All-Time Great requires 8+ rings, 5+ total MVP awards and 225+ prestige. Elite Level Pro is the tier immediately below it.</div>
+   </div>
+ `;
+ document.getElementById('playerCardName').textContent = `${pl.emoji} ${pl.name}`;
+ document.getElementById('playerCardContent').innerHTML = html;
+ document.getElementById('playerCardModal').classList.remove('hidden');
+}
+
+/* =========================================================================
+
+  PLAYOFF ODDS & FAVORITES
+
+  ========================================================================= */
+
+function calcBlendedAvg(pl){
+
+ if(!pl.seasonGames || pl.seasonGames.length===0) return pl.careerAvg;
+
+ return 0.65*mean(pl.seasonGames) + 0.35*pl.careerAvg;
+
+}
+
+function softmaxProb(blend1, blend2){
+
+ const w1 = Math.exp(blend1/25), w2 = Math.exp(blend2/25);
+
+ return w1/(w1+w2);
+
+}
+
+functi
