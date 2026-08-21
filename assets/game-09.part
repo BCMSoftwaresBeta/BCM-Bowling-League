@@ -1,0 +1,132 @@
+bsp; ${res.gamesB.join(' · ')} (${res.totalB})</div>${tie}<p>Championship series: ${arcadeSeriesLabel()}</p><div class="arcade-choice">${playoffs.champion?'<button class="primary" id="btnShowTrophy">Trophy Ceremony</button>':'<button class="primary" id="btnNextFinalMatch">Continue Championship</button>'}<button class="ghost" onclick="window.__arcadeQuickSim()">Sim Rest</button></div></div>`;
+ const trophy=document.getElementById('btnShowTrophy');if(trophy)trophy.addEventListener('click',renderTrophyCeremony);const next=document.getElementById('btnNextFinalMatch');if(next)next.addEventListener('click',startArcadeNextMatch);
+}
+function simRestOfArcadeGame(){
+ arcadeClearTimers();const gsA=arcade.gA,gsB=arcade.gB;if(!gsA.complete){const score=simulateArcadeGameInstant(arcade.pA);gsA.frames=score.frames;gsA.complete=true;}if(!gsB.complete){const score=simulateArcadeGameInstant(arcade.pB);gsB.frames=score.frames;gsB.complete=true;}finishArcadeGame();
+}
+function simulateArcadeGameInstant(pl){const gs=newBowlingGame(pl);while(!gs.complete){const pins=chooseRollPins(pl,gs.pinsStanding,null);applyBowlingRoll(gs,pins);}return gs;}
+function simArcadeMatch(){
+ arcadeClearTimers();while(arcade.gamesA.length<3){const a=simulateArcadeGameInstant(arcade.pA),b=simulateArcadeGameInstant(arcade.pB),sa=finalBowlingScore(a),sb=finalBowlingScore(b);recordArcadeGameScore(arcade.pA,sa);recordArcadeGameScore(arcade.pB,sb);arcade.gamesA.push(sa);arcade.gamesB.push(sb);}finishArcadeMatch();
+}
+function quickSimArcadeFinals(){
+ arcadeClearTimers();if(!arcade.active){arcade.active=true;const f=finalCompetitors();arcade.pA=f.A;arcade.pB=f.B;}
+ if(arcade.key&&arcade.gamesA.length<3)simArcadeMatch();
+ let guard=0;while(playoffs&&!playoffs.champion&&guard<6){const key=getNextPlayableMatchKey();if(!key)break;if(['GF1','GF2','GF3'].includes(key)){const res=resolveMatch(key);commitMatch(key,res);}else playNextMatch();guard++;}renderBracket();if(playoffs.champion)renderTrophyCeremony();
+}
+function renderTrophyCeremony(){
+ if(!playoffs.champion)return;arcade.active=false;arcadeClearTimers();const c=playoffs.champion;const gf=['GF1','GF2','GF3'].map(k=>playoffs.M[k]).filter(m=>m&&m.result);const games=[];gf.forEach(m=>{const r=m.result;const arr=r.pA.id===c.id?r.gamesA:r.gamesB;games.push(...arr);});const best=games.length?Math.max(...games):'—';const avg=games.length?(games.reduce((a,b)=>a+b,0)/games.length).toFixed(1):'—';const conf=Array.from({length:55},(_,i)=>`<span class="confetti" style="left:${Math.random()*100}%;animation-duration:${2.7+Math.random()*3}s;animation-delay:${Math.random()*1.4}s;transform:rotate(${Math.random()*180}deg)"></span>`).join('');
+ document.getElementById('arcadeTopTitle').textContent='Champion Crowned';document.getElementById('arcadeStage').innerHTML=`<div class="trophy-stage">${conf}<div class="champ-sub">BCM Bowling League Champion</div><div class="trophy-icon">🏆</div><h2>${c.emoji} ${c.name}</h2><div class="champ-sub">Seed #${c.seed} · Career Ring #${c.championships||1}</div><div class="trophy-stats"><div class="trophy-stat"><b>${playoffs.gfWins[c.id]||2}</b><span>Finals Match Wins</span></div><div class="trophy-stat"><b>${avg}</b><span>Finals Game Avg</span></div><div class="trophy-stat"><b>${best}</b><span>Best Finals Game</span></div></div><div class="arcade-choice"><button class="primary" id="btnCloseTrophy">Return to League</button><button class="ghost" onclick="window.__openSeasonArchive(${careerModeOn?careerYear:seasonNumber})">Open Season Archive</button></div></div>`;playArcadeSound('cheer');document.getElementById('btnCloseTrophy').addEventListener('click',closeArcadeModal);
+}
+function closeArcadeModal(){
+ if(arcade.active&&!playoffs.champion){if(!confirm('Exit the championship broadcast? The remaining finals will be simulated so the season stays valid.'))return;quickSimArcadeFinals();if(!playoffs.champion)return;}
+ arcade.active=false;arcadeClearTimers();document.getElementById('arcadeModal').classList.add('hidden');document.body.style.overflow='';renderBracket();if(playoffs.champion)showChampion();
+}
+function playArcadeSound(type){
+ if(!arcade.sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;window.__bcmAudio=window.__bcmAudio||new AC();const ctx=window.__bcmAudio;if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);const now=ctx.currentTime;if(type==='roll'){o.type='sine';o.frequency.setValueAtTime(130,now);o.frequency.exponentialRampToValueAtTime(65,now+.25);g.gain.setValueAtTime(.045,now);g.gain.exponentialRampToValueAtTime(.001,now+.28);o.start(now);o.stop(now+.3);}else if(type==='cheer'){o.type='triangle';o.frequency.setValueAtTime(260,now);o.frequency.exponentialRampToValueAtTime(520,now+.45);g.gain.setValueAtTime(.055,now);g.gain.exponentialRampToValueAtTime(.001,now+.8);o.start(now);o.stop(now+.82);}else{o.type='square';o.frequency.setValueAtTime(type==='strike'?95:120,now);g.gain.setValueAtTime(.025,now);g.gain.exponentialRampToValueAtTime(.001,now+.18);o.start(now);o.stop(now+.2);}}catch(e){}
+}
+
+/* =========================================================================
+
+  EVENTS
+
+  ========================================================================= */
+
+document.getElementById('btnSimWeek').addEventListener('click', ()=>{ simulateWeek(); });
+
+document.getElementById('btnSimAll').addEventListener('click', ()=>{
+
+ while(currentWeek < TOTAL_WEEKS){ simulateWeek(); }
+
+});
+
+document.getElementById('btnReset').addEventListener('click', ()=>{ careerModeOn ? advanceCareerYear(true) : initSeason(); });
+
+document.getElementById('careerModeToggle').addEventListener('change', (e)=>{
+
+ careerModeOn = e.target.checked;
+
+ updateResetButtonLabel();
+
+ updateStatus();
+
+ document.getElementById('btnSim5Years').style.display = careerModeOn ? '' : 'none';
+
+ document.getElementById('btnSim10Years').style.display = careerModeOn ? '' : 'none';
+
+ renderCareerHub(); autosaveGame();
+
+});
+
+document.getElementById('btnSim5Years').addEventListener('click', ()=>{ simulateCareerYears(5); });
+
+document.getElementById('btnSim10Years').addEventListener('click', ()=>{ simulateCareerYears(10); });
+
+document.getElementById('followPlayerSelect').addEventListener('change', (e)=>{
+
+ followedPlayerId = e.target.value || null;
+
+});
+
+document.getElementById('btnStartPlayoffs').addEventListener('click', ()=>{
+
+ document.getElementById('playoffIntroPanel').style.display='none';
+
+ renderBracket();
+
+});
+
+document.querySelectorAll('[data-role="nextMatch"]').forEach(btn=>{
+
+ btn.addEventListener('click', ()=>{
+
+   const key = getNextPlayableMatchKey();
+
+   if(!key){ setPlayoffButtonsDisabled(true); return; }
+
+   if(['GF1','GF2','GF3'].includes(key)){ launchChampionshipArcade(); return; }
+
+   openMatchForKey(key, false);
+
+ });
+
+});
+
+document.querySelectorAll('[data-role="simAllPlayoffs"]').forEach(btn=>{
+
+ btn.addEventListener('click', ()=>{ simulateAllPlayoffs(); });
+
+});
+
+document.getElementById('btnWatchFinals').addEventListener('click', launchChampionshipArcade);
+
+document.getElementById('btnSimToChamp').addEventListener('click', ()=>{ simToChampionship(); });
+
+document.getElementById('matchModalCloseBtn').addEventListener('click', closeMatchModal);
+
+ 
+
+
+document.getElementById('btnExportSave').addEventListener('click',()=>openSaveCode('export'));
+document.getElementById('btnImportSave').addEventListener('click',()=>openSaveCode('import'));
+document.getElementById('btnClearSave').addEventListener('click',()=>{if(confirm('Clear the locally saved BCM Bowling League career?')){try{localStorage.removeItem(SAVE_KEY);}catch(e){}initSeason();autosaveGame();}});
+document.getElementById('btnCopySaveCode').addEventListener('click',async()=>{const txt=document.getElementById('saveCodeText');txt.select();try{await navigator.clipboard.writeText(txt.value);document.getElementById('saveCodeHint').textContent='Copied. Send this code to another device or friend.';}catch(e){document.execCommand('copy');}});
+document.getElementById('btnApplySaveCode').addEventListener('click',()=>{try{loadSnapshot(decodeSave(document.getElementById('saveCodeText').value));document.getElementById('saveCodeModal').classList.add('hidden');}catch(e){alert('That save code could not be read. Make sure the entire code was pasted.');}});
+document.getElementById('btnArcadeExit').addEventListener('click',closeArcadeModal);
+document.getElementById('btnArcadeSound').addEventListener('click',()=>{arcade.sound=!arcade.sound;document.getElementById('btnArcadeSound').textContent=arcade.sound?'Sound On':'Sound Off';});
+
+window.__openSeasonArchive = openSeasonArchive;
+window.__arcadeStart = arcadeStart;
+window.__arcadeQuickSim = quickSimArcadeFinals;
+window.__arcadeSimMatch = simArcadeMatch;
+
+window.__showPlayerCard = showPlayerCard;
+
+ 
+
+/* init */
+
+if(!tryLoadAutosave()){ initSeason(); autosaveGame(); }
+
+ 
+
+})();
