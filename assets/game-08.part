@@ -1,0 +1,91 @@
+tary-box"><div class="commentary-title">Live Commentary</div><div id="arcadeCommentary"></div></div><div><div class="control-title">Bowling Controls</div><div id="arcadeControls"></div></div><div class="controls"><button class="ghost" id="btnArcadeAutoRest">Auto Bowl Rest</button><button class="ghost" id="btnArcadeSimGame">Sim Rest of Game</button></div></div></div>`;
+ document.getElementById('btnArcadeAutoRest').addEventListener('click',()=>{arcade.controlId=null;advanceArcadeTurn();});
+ document.getElementById('btnArcadeSimGame').addEventListener('click',simRestOfArcadeGame);
+ renderArcadeLive(); advanceArcadeTurn();
+}
+function currentGameState(){return arcade.turn==='A'?arcade.gA:arcade.gB;}
+function otherGameState(){return arcade.turn==='A'?arcade.gB:arcade.gA;}
+function frameIsComplete(gs,idx){
+ const f=gs.frames[idx];if(idx<9)return f[0]===10||f.length>=2;
+ if(f.length<2)return false;if(f[0]===10||f[0]+f[1]===10)return f.length>=3;return true;
+}
+function applyBowlingRoll(gs,pins){
+ const i=gs.frameIndex,f=gs.frames[i];f.push(pins);
+ if(i<9){if(f[0]===10||f.length===2){gs.frameIndex++;gs.pinsStanding=10;}else gs.pinsStanding=10-f[0];if(gs.frameIndex>=10)gs.complete=true;return;}
+ if(f.length===1){gs.pinsStanding=f[0]===10?10:10-f[0];}
+ else if(f.length===2){if(f[0]===10){gs.pinsStanding=f[1]===10?10:10-f[1];}else if(f[0]+f[1]===10){gs.pinsStanding=10;}else gs.complete=true;}
+ else gs.complete=true;
+}
+function flattenRolls(frames){const out=[];frames.forEach(f=>f.forEach(x=>out.push(x)));return out;}
+function cumulativeScores(gs){
+ const rolls=flattenRolls(gs.frames), scores=Array(10).fill(null);let idx=0,total=0;
+ for(let f=0;f<10;f++){
+   if(f===9){const fr=gs.frames[9];const need=(fr[0]===10||(fr.length>=2&&fr[0]+fr[1]===10))?3:2;if(fr.length>=need){total+=fr.reduce((a,b)=>a+b,0);scores[f]=total;}break;}
+   const fr=gs.frames[f];if(!fr.length)break;
+   if(fr[0]===10){if(rolls[idx+1]===undefined||rolls[idx+2]===undefined)break;total+=10+rolls[idx+1]+rolls[idx+2];idx+=1;scores[f]=total;}
+   else{if(fr.length<2)break;const sum=fr[0]+fr[1];if(sum===10){if(rolls[idx+2]===undefined)break;total+=10+rolls[idx+2];}else total+=sum;idx+=2;scores[f]=total;}
+ }
+ return scores;
+}
+function finalBowlingScore(gs){const c=cumulativeScores(gs);return c[9]??0;}
+function pinMark(n){return n===0?'–':String(n);}
+function frameMarks(gs,i){
+ const f=gs.frames[i];if(!f.length)return'';
+ if(i<9){if(f[0]===10)return'X';if(f.length===1)return pinMark(f[0]);return `${pinMark(f[0])} ${f[0]+f[1]===10?'/':pinMark(f[1])}`;}
+ const out=[];for(let r=0;r<f.length;r++){if(f[r]===10)out.push('X');else if(r===1&&f[0]!==10&&f[0]+f[1]===10)out.push('/');else if(r===2&&f[1]!==10&&f[1]+f[2]===10&&(f[0]===10))out.push('/');else out.push(pinMark(f[r]));}return out.join(' ');
+}
+function scoreRowHtml(gs){
+ const cs=cumulativeScores(gs);return `<div class="score-row"><div class="score-cell score-name">${gs.pl.emoji} ${gs.pl.name}</div>${Array.from({length:10},(_,i)=>`<div class="score-cell"><span class="frame-num">${i+1}</span><div class="frame-marks">${frameMarks(gs,i)}</div><div class="frame-cume">${cs[i]??''}</div></div>`).join('')}<div class="score-cell score-total">${gs.complete?finalBowlingScore(gs):(cs.filter(x=>x!==null).pop()??0)}</div></div>`;
+}
+function renderArcadeLive(){
+ if(!arcade.gA||!arcade.gB)return;const gs=currentGameState();
+ document.getElementById('arcadeScoreboard').innerHTML=scoreRowHtml(arcade.gA)+scoreRowHtml(arcade.gB);
+ const bow=document.getElementById('arcadeBowler');if(bow)bow.textContent=`${gs.pl.emoji} ${gs.pl.name}`;
+ const meta=document.getElementById('arcadeTurnMeta');if(meta)meta.textContent=`Frame ${Math.min(10,gs.frameIndex+1)} · ${gs.pinsStanding} pins standing`;
+ const marker=document.getElementById('pocketMarker');if(marker)marker.style.left=`calc(50% + ${arcade.targetAim*0.55}px)`;
+ renderArcadePins(gs.pinsStanding);
+ const comm=document.getElementById('arcadeCommentary');if(comm)comm.innerHTML=arcade.commentary.slice(-4).map((x,i,a)=>`<div class="commentary-line ${i===a.length-1?'latest':''}">${x}</div>`).join('');
+ renderArcadeControls();
+}
+function pinPositions(){return [[50,12],[43,31],[57,31],[36,50],[50,50],[64,50],[29,70],[43,70],[57,70],[71,70]];}
+function renderArcadePins(standing,knockCount=0){const deck=document.getElementById('arcadePinDeck');if(!deck)return;const pos=pinPositions();deck.innerHTML=pos.map((p,i)=>`<div class="arcade-pin ${i>=standing?'down':''}" style="left:${p[0]}%;top:${p[1]}%;"></div>`).join('');}
+function renderArcadeControls(){
+ const box=document.getElementById('arcadeControls');if(!box)return;const gs=currentGameState();
+ if(arcade.rolling){box.innerHTML='<div class="cpu-thinking">Ball on the lane…</div>';return;}
+ if(!arcade.controlId||gs.pl.id!==arcade.controlId){box.innerHTML=`<div class="cpu-thinking">${gs.pl.name} is lining up the shot…</div>`;return;}
+ box.innerHTML=`<div class="arcade-controls"><div class="arcade-control-row"><label><span>Aim</span><span id="aimVal">0</span></label><input id="arcadeAim" type="range" min="-100" max="100" value="0"></div><div class="arcade-control-row"><label><span>Spin</span><span id="spinVal">0</span></label><input id="arcadeSpin" type="range" min="-100" max="100" value="0"></div><div><label style="display:flex;justify-content:space-between;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--polo);margin-bottom:4px;"><span>Power / timing</span><span>sweet spot 76–85</span></label><div class="power-meter"><div class="power-sweet"></div><div class="power-needle" id="powerNeedle"></div></div></div><button class="primary roll-btn" id="btnArcadeRoll">ROLL</button></div>`;
+ const aim=document.getElementById('arcadeAim'),spin=document.getElementById('arcadeSpin');aim.addEventListener('input',()=>document.getElementById('aimVal').textContent=aim.value);spin.addEventListener('input',()=>document.getElementById('spinVal').textContent=spin.value);document.getElementById('btnArcadeRoll').addEventListener('click',()=>performArcadeRoll({aim:+aim.value,spin:+spin.value,power:currentArcadePower()}));startPowerMeter();
+}
+function startPowerMeter(){if(arcade.powerRaf)cancelAnimationFrame(arcade.powerRaf);arcade.powerStart=performance.now();const tick=()=>{const needle=document.getElementById('powerNeedle');if(!needle)return;needle.style.left=`${currentArcadePower()}%`;arcade.powerRaf=requestAnimationFrame(tick);};arcade.powerRaf=requestAnimationFrame(tick);}
+function currentArcadePower(){const t=(performance.now()-arcade.powerStart)/850;return Math.round(50+49*Math.sin(t*Math.PI*2-Math.PI/2));}
+function inputQuality(input){if(!input)return .58;const line=input.aim+input.spin*.34;const lineQ=Math.max(0,1-Math.abs(line-arcade.targetAim)/72);const powerQ=Math.max(0,1-Math.abs(input.power-81)/58);return Math.max(0,Math.min(1,.57*lineQ+.43*powerQ));}
+function chooseRollPins(pl,standing,input){
+ const avg=calcBlendedAvg(pl)+(pl.formModifier||0),skill=Math.max(0,Math.min(1,(avg-70)/170)),q=inputQuality(input);
+ if(standing===10){const strikeP=Math.max(.035,Math.min(.62,.045+skill*.47+(q-.5)*.18));if(Math.random()<strikeP)return 10;const mu=5.1+skill*3.15+(q-.5)*1.4;return Math.max(0,Math.min(9,Math.round(mu+gaussian()*1.45)));}
+ const spareP=Math.max(.07,Math.min(.9,.2+skill*.53+(q-.5)*.24-standing*.012));if(Math.random()<spareP)return standing;const mu=standing*(.38+skill*.38+q*.13);return Math.max(0,Math.min(standing-1,Math.round(mu+gaussian()*Math.max(.7,standing*.14))));
+}
+function advanceArcadeTurn(){
+ if(!arcade.active||arcade.rolling)return;if(arcade.gA.complete&&arcade.gB.complete){finishArcadeGame();return;}
+ const gs=currentGameState();if(gs.complete){if(arcade.turn==='A'){arcade.turn='B';}else{arcade.turn='A';arcade.frameRound++;}arcade.targetAim=Math.round((Math.random()-.5)*34);renderArcadeLive();return advanceArcadeTurn();}
+ renderArcadeLive();if(!arcade.controlId||gs.pl.id!==arcade.controlId){arcade.timers.push(setTimeout(()=>performArcadeRoll(null),520));}
+}
+function performArcadeRoll(input){
+ if(arcade.rolling)return;arcade.rolling=true;if(arcade.powerRaf)cancelAnimationFrame(arcade.powerRaf);arcade.powerRaf=null;const gs=currentGameState(),before=gs.pinsStanding,frame=gs.frameIndex,pins=chooseRollPins(gs.pl,before,input),q=inputQuality(input);let frameDone=false;playArcadeSound('roll');
+ const ball=document.getElementById('arcadeBall');if(ball){const line=input?(input.aim+input.spin*.34):arcade.targetAim+(Math.random()-.5)*22;ball.style.left=`calc(50% + ${line*.52}px - 15px)`;ball.classList.add('rolling');}
+ renderArcadeControls();arcade.timers.push(setTimeout(()=>{const beforeFrame=gs.frameIndex;applyBowlingRoll(gs,pins);frameDone=gs.complete||gs.frameIndex!==beforeFrame;playArcadeSound(pins===before?'strike':'pins');arcadeComment(gs.pl,pins,before,frame,q);renderArcadePins(Math.max(0,before-pins));const board=document.getElementById('arcadeScoreboard');if(board)board.innerHTML=scoreRowHtml(arcade.gA)+scoreRowHtml(arcade.gB);const comm=document.getElementById('arcadeCommentary');if(comm)comm.innerHTML=arcade.commentary.slice(-4).map((x,i,a)=>`<div class="commentary-line ${i===a.length-1?'latest':''}">${x}</div>`).join('');},610));arcade.timers.push(setTimeout(()=>{const b=document.getElementById('arcadeBall');if(b){b.classList.remove('rolling');b.style.left='calc(50% - 15px)';}if(frameDone){if(arcade.turn==='A')arcade.turn='B';else{arcade.turn='A';arcade.frameRound++;}arcade.targetAim=Math.round((Math.random()-.5)*34);}arcade.rolling=false;advanceArcadeTurn();},980));
+}
+function arcadeComment(pl,pins,before,frame,q){
+ let text;if(before===10&&pins===10)text=`💥 STRIKE! ${pl.emoji} ${pl.name} flushes the pocket in frame ${frame+1}.`;else if(pins===before)text=`✅ ${pl.name} cleans up the spare in frame ${frame+1}.`;else if(pins===0)text=`😬 Gutter ball for ${pl.name}. Nothing down.`;else if(before===10&&pins===9)text=`🎯 ${pl.name} leaves a lonely pin after a nine-count.`;else if(before===10&&pins<=5)text=`⚠️ Trouble for ${pl.name}: only ${pins} on the first ball.`;else text=`${pl.emoji} ${pl.name} knocks down ${pins}${before<10?` of the ${before} remaining`:''}.`;
+ if(q>.9&&pins<before)text+=` The release was nearly perfect, but the pins didn't cooperate.`;arcade.commentary.push(text);
+}
+function finishArcadeGame(){
+ const a=finalBowlingScore(arcade.gA),b=finalBowlingScore(arcade.gB);recordArcadeGameScore(arcade.pA,a);recordArcadeGameScore(arcade.pB,b);arcade.gamesA.push(a);arcade.gamesB.push(b);arcade.commentary.push(`📺 Game ${arcade.gameIndex+1} final: ${arcade.pA.name} ${a}, ${arcade.pB.name} ${b}.`);arcade.gameIndex++;
+ if(arcade.gameIndex<3){document.getElementById('arcadeStage').innerHTML=`<div class="game-intermission"><div class="broadcast-kicker">${playoffs.M[arcade.key].roundLabel}</div><h3>Game ${arcade.gameIndex} Complete</h3><div class="game-score">${arcade.pA.emoji} ${arcade.pA.name} ${a} · ${b} ${arcade.pB.name} ${arcade.pB.emoji}</div><p>Match aggregate: ${arcade.gamesA.reduce((x,y)=>x+y,0)}–${arcade.gamesB.reduce((x,y)=>x+y,0)}</p><div class="arcade-choice"><button class="primary" id="btnNextArcadeGame">Bowl Game ${arcade.gameIndex+1}</button><button class="ghost" onclick="window.__arcadeSimMatch()">Sim Rest of Match</button></div></div>`;document.getElementById('btnNextArcadeGame').addEventListener('click',startArcadeGame);}else finishArcadeMatch();
+}
+function recordArcadeGameScore(pl,score){pl.seasonGames.push(score);if(score>pl.allTimeHigh){const prev=pl.allTimeHigh;pl.allTimeHigh=score;logMilestone(`🎳 NEW CAREER HIGH — ${pl.emoji} ${pl.name} rolls ${score}, breaking the previous record of ${prev}!`);}}
+function makeMatchResultFromArcade(){
+ const totalA=arcade.gamesA.reduce((a,b)=>a+b,0),totalB=arcade.gamesB.reduce((a,b)=>a+b,0);let winner,loser,tiebreak=false;if(totalA===totalB){tiebreak=true;const pa=calcBlendedAvg(arcade.pA),pb=calcBlendedAvg(arcade.pB),prob=softmaxProb(pa,pb);winner=Math.random()<prob?arcade.pA:arcade.pB;loser=winner.id===arcade.pA.id?arcade.pB:arcade.pA;}else{winner=totalA>totalB?arcade.pA:arcade.pB;loser=winner.id===arcade.pA.id?arcade.pB:arcade.pA;}return {pA:arcade.pA,pB:arcade.pB,gamesA:arcade.gamesA.slice(),gamesB:arcade.gamesB.slice(),totalA,totalB,winner,loser,winScore:winner.id===arcade.pA.id?totalA:totalB,loseScore:winner.id===arcade.pA.id?totalB:totalA,tiebreak};
+}
+function finishArcadeMatch(){
+ const res=makeMatchResultFromArcade();playoffs.recordsWL[res.winner.id]=(playoffs.recordsWL[res.winner.id]||0)+1;playoffs.recordsWL[res.loser.id]=(playoffs.recordsWL[res.loser.id]||0);commitMatch(arcade.key,res);renderBracket();const tie=res.tiebreak?'<p class="hint">Aggregate tie was decided by a skill-weighted one-ball roll-off.</p>':'';
+ document.getElementById('arcadeStage').innerHTML=`<div class="game-intermission"><div class="broadcast-kicker">Match Final</div><h3>${res.winner.emoji} ${res.winner.name} wins ${playoffs.M[arcade.key].roundLabel}</h3><div class="game-score">${res.gamesA.join(' · ')} (${res.totalA}) &nbsp; vs &n
