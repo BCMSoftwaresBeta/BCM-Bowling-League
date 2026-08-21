@@ -1,0 +1,531 @@
+(function(){
+
+ 
+
+/* =========================================================================
+
+  PLAYER DATA — historical scores pulled from MASTER_HISTORICAL_DATA.md
+
+  ========================================================================= */
+
+const RAW_PLAYERS = [
+
+ { id:'opus',    name:'Opus',    emoji:'♠️', history:[81,147,146,100,130,79,124,131,115,123,143,134,132,163,127,118,191,94,143,97,94,135,151,157,149,154,121,181,180,180,207,156,149,208,219,168,146,147,143,133,182,145,193,129,190,89,124,135,248,109,179,147,130,150,174,157] },
+
+ { id:'carter',  name:'Carter',  emoji:'🔥', history:[114,168,111,117,137,117,166,171,145,133,155,148,155,161,128,128] },
+
+ { id:'gavin',   name:'Gavin',   emoji:'🎯', history:[122,150,133,115,158,136,151,142,171,131,141,104] },
+
+ { id:'fademan', name:'Fademan', emoji:'🐰', history:[117,134,164,111,163,147,133,143,124,127,102,85,187,90,143,128,135,134,122,151,136,136,177,133,135,119] },
+
+ { id:'farb',    name:'Farb',    emoji:'☭', history:[106,139,120,116,112,109,118,116,118,115,98,112,98,111,100,89,74,99,93,132,88,133,95,159,101,134,134,175,120,187,117,166,131,91,95,204] },
+
+ { id:'bau',     name:'Bau',     emoji:'🌿', history:[91,107,79,120,120,119,97,98,130,107,144,81,91,109,98,99,82,103,93,81,123,80,93,104,98,131,129,129,117,137,113,105,140,160,98,124,114,112,82,115,116,105,124,127,103,93,101,117,111,156,117] },
+
+ { id:'q',       name:'Q',       emoji:'🏆', history:[134,79,90,103,87,100,135] },
+
+ { id:'woo',     name:'Woo',     emoji:'🎥', history:[87,104,79,64,89,102,72,123,59,108,100,133,94,92,100,96,84,75,94,99,119,107,100,135,118,105,40,98,86,75,97,98,96,133,122,84,84,66,106,92,103,110,93,96,119,130,107,120] },
+
+ { id:'staub',   name:'Staub',   emoji:'🎲', history:[121,100,83,84] },
+
+];
+
+// Note: Farb's history includes the corrected all-time-high 204 game (never 187).
+
+ 
+
+/* =========================================================================
+
+  RANDOM / STATS HELPERS
+
+  ========================================================================= */
+
+function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+
+function stdev(arr){
+
+ const m = mean(arr);
+
+ const v = arr.reduce((a,b)=>a+(b-m)*(b-m),0)/arr.length;
+
+ return Math.sqrt(v);
+
+}
+
+// Box-Muller transform for a normally distributed random value
+
+function gaussian(){
+
+ let u=0, v=0;
+
+ while(u===0) u = Math.random();
+
+ while(v===0) v = Math.random();
+
+ return Math.sqrt(-2.0*Math.log(u)) * Math.cos(2.0*Math.PI*v);
+
+}
+
+function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+
+ 
+
+/* =========================================================================
+
+  SIMULATION STATE
+
+  ========================================================================= */
+
+let PLAYERS = {}; // id -> player state object
+
+let currentWeek = 0;
+
+const TOTAL_WEEKS = 10;
+
+let standingsSnapshotPrev = null; // for computing weekly rank movement
+
+let weeklyRecaps = [];
+
+let playoffs = null; // playoff bracket state
+
+let seasonLocked = false;
+
+ 
+
+function freshPlayerState(p){
+
+ const careerAvg = mean(p.history);
+
+ const careerSd = clamp(stdev(p.history), 10, 38);
+
+ const startHigh = Math.max(...p.history);
+
+ return {
+
+   id:p.id, name:p.name, emoji:p.emoji,
+
+   careerHistory: p.history.slice(),
+
+   careerAvg, careerSd,
+
+   startAvg: careerAvg,        // frozen original level, used for career-mode floors/targets
+
+   allTimeHigh: startHigh,
+
+   tier: null, tierGroup:null, targetYear:null, proTarget:null,
+
+   seniorTour: false,
+
+   championships: 0,           // total career titles won
+
+   regularSeasonMvps: 0,       // regular-season MVP awards
+
+   playoffMvps: 0,             // playoff MVP awards
+
+   allTimeGreat: false,        // permanent legacy designation once earned
+
+   careerSeasons: [],          // archived per-year résumé snapshots
+
+   bestSeasonAvg: 0, bestSeasonTotal: 0, bestPlayoffWins: 0,
+
+   championshipYears: [], playerOfWeekAwards: 0,
+
+   formState: 'NORMAL', formModifier: 0, formWeeksLeft: 0,
+
+   finishHistory: [],          // final standings rank (1-9) for each completed year
+
+   lastFinish: null,           // prior year's final regular-season rank
+
+   lastSeasonTotal: 0,
+
+   lastSeasonWeeklyAvg: 0,
+
+   lastSeasonLastWeekTotal: 0,
+
+   seasonGames: [],       // flat chronological list of games played this season
+
+   weeklyTotals: [],      // total pins per week
+
+   seasonTotal: 0,
+
+   lastWeekTotal: 0,
+
+   rank: 0, prevRank: 0,
+
+ };
+
+}
+
+ 
+
+/* =========================================================================
+
+  CAREER MODE — tiers, progression, milestones
+
+  ========================================================================= */
+
+const TIER_ORDER = [
+
+ 'BCM League',
+
+ 'Enzo League',
+
+ 'Semi-Pro Tour',
+
+ 'Pro Tour',
+
+ 'Elite Level Pro',
+
+ 'All-Time Great',
+
+];
+
+const ALL_TIME_GREAT_MIN_RINGS = 8;
+
+const ALL_TIME_GREAT_MIN_MVPS = 5;
+
+const ALL_TIME_GREAT_MIN_PRESTIGE = 225;
+
+function totalMVPs(pl){
+
+ return (pl.regularSeasonMvps||0) + (pl.playoffMvps||0);
+
+}
+
+function qualifiesAllTimeGreat(pl, prestige){
+
+ return !!pl &&
+
+   (pl.championships||0) >= ALL_TIME_GREAT_MIN_RINGS &&
+
+   totalMVPs(pl) >= ALL_TIME_GREAT_MIN_MVPS &&
+
+   prestige >= ALL_TIME_GREAT_MIN_PRESTIGE;
+
+}
+
+function computeTier(score, pl){
+
+ // All-Time Great is a legacy tier, not just a high average. Once earned, it sticks.
+
+ if(pl && (pl.allTimeGreat || qualifiesAllTimeGreat(pl, score))){
+
+   pl.allTimeGreat = true;
+
+   return 'All-Time Great';
+
+ }
+
+ if(score < 120) return 'BCM League';
+
+ if(score < 150) return 'Enzo League';
+
+ if(score < 180) return 'Semi-Pro Tour';
+
+ if(score < 210) return 'Pro Tour';
+
+ return 'Elite Level Pro';
+
+}
+
+function tierRank(label){ return TIER_ORDER.indexOf(label); }
+
+/* Tier status isn't pure bowling average — deep playoff runs, awards, and past
+
+  finishes matter too. Rings and MVPs build prestige, but All-Time Great still
+
+  requires a genuinely historic résumé. */
+
+function computePrestigeScore(pl){
+
+ const champBonus = (pl.championships||0) * 8;
+
+ const mvpBonus = (pl.regularSeasonMvps||0) * 3 + (pl.playoffMvps||0) * 2;
+
+ let finishBonus = 0;
+
+ if(pl.finishHistory && pl.finishHistory.length){
+
+   const recent = pl.finishHistory.slice(-3);
+
+   const avgFinish = mean(recent);
+
+   finishBonus = (5 - avgFinish) * 3;
+
+ }
+
+ return pl.careerAvg + champBonus + mvpBonus + finishBonus;
+
+}
+
+let careerModeOn = false;
+
+let careerYear = 1;
+
+let careerMilestones = []; // {year, text}
+
+let careerHistoryLog = []; // {year, champion, mvp, comeback, playoffMVP, highRound}
+
+let rivalryBook = {}; // pairKey -> playoff head-to-head history
+
+let bulkSimMode = false;
+
+let silentMode = false;
+
+const SAVE_KEY = 'bcmBowlingLeagueArcadeV4';
+
+ 
+
+function assignTierGroups(){
+
+ const ranked = Object.values(PLAYERS).slice().sort((a,b)=>b.careerAvg-a.careerAvg);
+
+ ranked.forEach((pl,i)=>{
+
+   if(i<3){ pl.tierGroup='top'; pl.targetYear=10; pl.proTarget=215; }
+
+   else if(i<6){ pl.tierGroup='mid'; pl.targetYear=15; pl.proTarget=205; }
+
+   else { pl.tierGroup='bottom'; pl.targetYear=20; pl.proTarget=195; }
+
+   pl.tier = computeTier(computePrestigeScore(pl), pl);
+
+ });
+
+}
+
+ 
+
+function logMilestone(text){
+
+ careerMilestones.push({ year: careerModeOn ? careerYear : seasonNumber, text });
+
+ if(!bulkSimMode) renderCareerMilestones();
+
+ if(!silentMode) showMilestoneToast(text);
+
+}
+
+ 
+
+function showMilestoneToast(text){
+
+ const host = document.getElementById('milestoneToastHost');
+
+ if(!host) return;
+
+ const el = document.createElement('div');
+
+ el.className = 'milestone-toast';
+
+ el.textContent = text;
+
+ host.appendChild(el);
+
+ setTimeout(()=>{ el.classList.add('fade-out'); setTimeout(()=> el.remove(), 500); }, 4000);
+
+}
+
+ 
+
+function advancePlayerCareer(pl){
+
+ const prevTier = pl.tier;
+
+ if(careerYear <= 40){
+
+   if(careerYear <= pl.targetYear){
+
+     const remaining = pl.targetYear - careerYear + 1;
+
+     const gap = pl.proTarget - pl.careerAvg;
+
+     pl.careerAvg += gap / Math.max(1, remaining);
+
+   } else {
+
+     pl.careerAvg += (Math.random()-0.5)*2; // small plateau wobble
+
+   }
+
+ } else {
+
+   if(!pl.seniorTour){
+
+     pl.seniorTour = true;
+
+     logMilestone(`🎗️ ${pl.emoji} ${pl.name} enters the Senior Tour at Year ${careerYear}.`);
+
+   }
+
+   pl.careerAvg -= (1 + Math.random()*2);
+
+   pl.careerAvg = Math.max(pl.careerAvg, pl.startAvg*0.85);
+
+ }
+
+ pl.careerAvg = Math.round(pl.careerAvg*10)/10;
+
+ pl.tier = computeTier(computePrestigeScore(pl), pl);
+
+ if(pl.tier !== prevTier){
+
+   const promoted = tierRank(pl.tier) > tierRank(prevTier);
+
+   logMilestone(`${promoted?'⬆️':'⬇️'} ${pl.emoji} ${pl.name} ${promoted?'promoted to':'drops to'} ${pl.tier}.`);
+
+ }
+
+}
+
+ 
+
+/* Snapshot the year that's about to end: champion, regular-season MVP,
+
+  comeback player of the year, playoff MVP, and the season's high round.
+
+  Must be called BEFORE season-specific fields are reset for the next year. */
+
+function recordYearSummary(year){
+
+ // Never write an empty/incomplete season into career history.
+
+ if(careerHistoryLog.some(y=>y.year===year)) return true;
+
+ if(currentWeek < TOTAL_WEEKS || !playoffs || !playoffs.champion){
+
+   console.warn(`Career Year ${year} was not complete, so no history entry was recorded.`);
+
+   return false;
+
+ }
+
+ const playersArr = Object.values(PLAYERS);
+
+ if(!playersArr.length || !playersArr.some(pl=>pl.seasonGames.length)){
+
+   console.warn(`Career Year ${year} had no game data, so no history entry was recorded.`);
+
+   return false;
+
+ }
+
+ const mvp = playersArr.slice().sort((a,b)=>b.seasonTotal-a.seasonTotal)[0];
+
+ let highRoundPlayer=null, highRoundVal=-1;
+
+ playersArr.forEach(pl=> pl.seasonGames.forEach(g=>{ if(g>highRoundVal){ highRoundVal=g; highRoundPlayer=pl; } }));
+
+ let comeback=null, comebackDelta=-999;
+
+ playersArr.forEach(pl=>{
+
+   if(pl.finishHistory && pl.finishHistory.length>=2){
+
+     const cur = pl.finishHistory[pl.finishHistory.length-1];
+
+     const prev = pl.finishHistory[pl.finishHistory.length-2];
+
+     const delta = prev - cur; // positive = moved up in the standings
+
+     if(delta>comebackDelta){ comebackDelta = delta; comeback = pl; }
+
+   }
+
+ });
+
+ let playoffMVP=null, playoffMVPWins=0;
+
+ if(playoffs.recordsWL){
+
+   Object.entries(playoffs.recordsWL).forEach(([id,wins])=>{
+
+     if(wins>playoffMVPWins){ playoffMVPWins=wins; playoffMVP=PLAYERS[id]; }
+
+   });
+
+ }
+
+ const champion = playoffs.champion;
+
+ // Career award counters are updated exactly once because the year guard above is idempotent.
+
+ mvp.regularSeasonMvps = (mvp.regularSeasonMvps||0) + 1;
+
+ if(playoffMVP) playoffMVP.playoffMvps = (playoffMVP.playoffMvps||0) + 1;
+
+ careerHistoryLog.push({
+
+   year,
+
+   champion: { name:champion.name, emoji:champion.emoji },
+
+   mvp: { name:mvp.name, emoji:mvp.emoji, total:mvp.seasonTotal },
+
+   comeback: (comeback && comebackDelta>0) ? { name:comeback.name, emoji:comeback.emoji, delta:comebackDelta } : null,
+
+   playoffMVP: playoffMVP ? { name:playoffMVP.name, emoji:playoffMVP.emoji, wins:playoffMVPWins } : null,
+
+   highRound: highRoundPlayer ? { name:highRoundPlayer.name, emoji:highRoundPlayer.emoji, score:highRoundVal } : null,
+
+ });
+
+ renderHistoryChannel();
+
+ return true;
+
+}
+
+function renderHistoryChannel(){
+
+ const wrap = document.getElementById('historyChannelPanel');
+
+ if(!wrap) return;
+
+ if(careerHistoryLog.length===0){ wrap.style.display='none'; return; }
+
+ wrap.style.display='block';
+
+ const cards = careerHistoryLog.slice().reverse().map(y=>`
+
+   <div class="history-year-card clickable" onclick="window.__openSeasonArchive(${y.year})">
+
+     <div class="hy-year">Year ${y.year} · tap for full archive</div>
+
+     <div class="hy-grid">
+
+       <div><span class="hy-label">Champion</span><span class="hy-val">${y.champion ? y.champion.emoji+' '+y.champion.name : '—'}</span></div>
+
+       <div><span class="hy-label">Regular Season MVP</span><span class="hy-val">${y.mvp ? y.mvp.emoji+' '+y.mvp.name+' ('+y.mvp.total+')' : '—'}</span></div>
+
+       <div><span class="hy-label">Comeback Player</span><span class="hy-val">${y.comeback ? y.comeback.emoji+' '+y.comeback.name+' (+'+y.comeback.delta+' spots)' : '—'}</span></div>
+
+       <div><span class="hy-label">Playoff MVP</span><span class="hy-val">${y.playoffMVP ? y.playoffMVP.emoji+' '+y.playoffMVP.name+' ('+y.playoffMVP.wins+'W)' : '—'}</span></div>
+
+       <div><span class="hy-label">Season High Round</span><span class="hy-val">${y.highRound ? y.highRound.emoji+' '+y.highRound.name+' — '+y.highRound.score : '—'}</span></div>
+
+     </div>
+
+   </div>
+
+ `).join('');
+
+ document.getElementById('historyChannelContent').innerHTML = cards;
+
+ document.getElementById('historyChannelSummary').textContent = `▸ View history channel (${careerHistoryLog.length} year${careerHistoryLog.length>1?'s':''})`;
+
+}
+
+function renderCareerMilestones(){
+
+ const wrap = document.getElementById('careerMilestonesPanel');
+
+ if(!wrap) return;
+
+ if(careerMilestones.length===0){ wrap.style.display='none'; return; }
+
+ wrap.style.display='block';
+
+ const rows = careerMilestones.slice().reverse().slice(0,40).map(m=>`
+
+   <tr><td class="odds-seed"
