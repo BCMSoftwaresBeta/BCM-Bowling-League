@@ -1,0 +1,483 @@
+:root{
+
+   --navy:#1D3F72;
+
+   --midnight:#0B1F36;
+
+   --kashmir:#4B6B95;
+
+   --polo:#7C9CD0;
+
+   --regent:#A3C7E0;
+
+   --botticelli:#D0DFEC;
+
+   --gold:#C6A15B;
+
+   --gold-bright:#E4C888;
+
+   --white:#FFFFFF;
+
+   --paper:#F6F3EC;
+
+   --ink:#0B1F36;
+
+   --up:#4C8B6B;
+
+   --down:#B5573F;
+
+   --rule: rgba(198,161,91,0.35);
+
+ }
+
+ *{box-sizing:border-box;}
+
+ html,body{margin:0;padding:0;}
+
+ body{
+
+   background:
+
+     radial-gradient(1200px 600px at 10% -10%, rgba(75,107,149,0.35), transparent 60%),
+
+     radial-gradient(1000px 700px at 110% 10%, rgba(198,161,91,0.12), transparent 55%),
+
+     var(--midnight);
+
+   color:var(--botticelli);
+
+   font-family:'Lato', sans-serif;
+
+   min-height:100vh;
+
+   letter-spacing:0.01em;
+
+ }
+
+ ::selection{ background:var(--gold); color:var(--midnight); }
+
+ 
+
+ .wrap{ max-width:1180px; margin:0 auto; padding:28px 20px 80px; }
+
+ 
+
+ /* ---------- Header / Masthead ---------- */
+
+ .masthead{
+
+   border-bottom:1px solid var(--rule);
+
+   padding-bottom:22px;
+
+   margin-bottom:26px;
+
+   display:flex;
+
+   justify-content:space-between;
+
+   align-items:flex-end;
+
+   flex-wrap:wrap;
+
+   gap:16px;
+
+ }
+
+ .brand-row{ display:flex; align-items:center; gap:14px; }
+
+ .wallaby-mark{
+
+   width:52px;height:52px;border-radius:50%;
+
+   border:1px solid var(--gold);
+
+   display:flex;align-items:center;justify-content:center;
+
+   font-size:26px;
+
+   background:radial-gradient(circle at 35% 30%, rgba(198,161,91,0.25), rgba(11,31,54,0.4));
+
+   flex-shrink:0;
+
+ }
+
+ .brand-text .eyebrow{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:10.5px; letter-spacing:0.28em; text-transform:uppercase;
+
+   color:var(--gold); margin:0 0 4px;
+
+ }
+
+ h1{
+
+   font-family:'Playfair Display', serif;
+
+   font-weight:700;
+
+   font-size:clamp(26px, 4vw, 38px);
+
+   margin:0; color:var(--white);
+
+   letter-spacing:0.01em;
+
+ }
+
+ .tagline{
+
+   font-family:'Frank Ruhl Libre', serif;
+
+   font-style:italic;
+
+   color:var(--regent);
+
+   font-size:14px; margin-top:6px;
+
+ }
+
+ .season-status{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; text-align:right; color:var(--polo);
+
+   letter-spacing:0.05em;
+
+ }
+
+ .season-status .big{
+
+   display:block; color:var(--gold-bright); font-size:20px; margin-top:2px; font-weight:600;
+
+ }
+
+ 
+
+ /* ---------- Panels ---------- */
+
+ .panel{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.10), rgba(11,31,54,0.35));
+
+   border:1px solid var(--rule);
+
+   border-radius:4px;
+
+   padding:22px;
+
+   margin-bottom:22px;
+
+ }
+
+ .panel-head{
+
+   display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+
+   margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .panel-head h2{
+
+   font-family:'Playfair Display', serif; font-weight:600; font-size:20px; color:var(--white); margin:0;
+
+ }
+
+ .panel-head .sub{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); letter-spacing:0.05em; }
+
+ 
+
+ /* ---------- Controls ---------- */
+
+ .controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+ button{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+
+   padding:11px 18px;
+
+   border-radius:2px;
+
+   border:1px solid var(--gold);
+
+   background:transparent;
+
+   color:var(--gold-bright);
+
+   cursor:pointer;
+
+   transition:all 0.18s ease;
+
+ }
+
+ button:hover:not(:disabled){ background:var(--gold); color:var(--midnight); }
+
+ button:disabled{ opacity:0.32; cursor:not-allowed; }
+
+ button.primary{ background:var(--gold); color:var(--midnight); }
+
+ button.primary:hover:not(:disabled){ background:var(--gold-bright); }
+
+ button.ghost{ border-color:var(--rule); color:var(--polo); }
+
+ button.ghost:hover:not(:disabled){ background:rgba(198,161,91,0.12); color:var(--gold-bright); }
+
+ 
+
+ .hint{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--polo); font-size:13px; margin-top:12px; }
+
+ 
+
+ /* ---------- Standings Table ---------- */
+
+ table{ width:100%; border-collapse:collapse; }
+
+ .standings th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .standings td{ padding:11px 10px; border-bottom:1px solid rgba(198,161,91,0.14); vertical-align:middle; }
+
+ .standings tr:last-child td{ border-bottom:none; }
+
+ .standings tr.updated td{ animation: rowFlash 1.1s ease; }
+
+ @keyframes rowFlash{
+
+   0%{ background:rgba(198,161,91,0.28); } 100%{ background:transparent; }
+
+ }
+
+ .rank{ font-family:'Roboto Mono', monospace; color:var(--polo); width:34px; }
+
+ .rank.top3{ color:var(--gold-bright); font-weight:700; }
+
+ .pname{ font-family:'Playfair Display', serif; font-size:15.5px; color:var(--white); font-weight:600; }
+
+ .pname .emoji{ margin-right:8px; }
+
+ .num{ font-family:'Roboto Mono', monospace; text-align:right; color:var(--botticelli); }
+
+ .season-total{ font-weight:700; color:var(--gold-bright); font-size:15px; }
+
+ .delta{ font-family:'Roboto Mono', monospace; font-size:11px; margin-left:8px; }
+
+ .delta.up{ color:var(--up); } .delta.down{ color:var(--down); } .delta.flat{ color:var(--polo); }
+
+ .movement{ font-family:'Roboto Mono', monospace; font-size:11px; }
+
+ 
+
+ /* ---------- Recap ---------- */
+
+ .recap-card{
+
+   border:1px solid var(--rule); border-left:3px solid var(--gold); padding:16px 18px; margin-bottom:12px;
+
+   background:rgba(75,107,149,0.06); border-radius:0 3px 3px 0;
+
+ }
+
+ .recap-card .wk{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;}
+
+ .recap-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px 20px; }
+
+ .recap-item .label{ font-family:'Roboto Mono', monospace; font-size:10px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; }
+
+ .recap-item .value{ font-family:'Frank Ruhl Libre', serif; font-size:15px; color:var(--white); margin-top:2px; }
+
+ .recap-item .value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ details.past-weeks{ margin-top:6px; }
+
+ details.past-weeks summary{
+
+   cursor:pointer; font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.08em;
+
+   text-transform:uppercase; color:var(--polo); padding:8px 0;
+
+ }
+
+ 
+
+ /* ---------- Bracket ---------- */
+
+ .bracket-lane{ margin-bottom:26px; }
+
+ .lane-title{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+
+   color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:10px;
+
+ }
+
+ .lane-title::after{ content:''; flex:1; height:1px; background:var(--rule); }
+
+ .rounds{ display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; }
+
+ .round-col{ min-width:200px; display:flex; flex-direction:column; justify-content:space-around; gap:14px; }
+
+ .round-label{ font-family:'Roboto Mono', monospace; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; text-align:center; }
+
+ .match{
+
+   border:1px solid var(--rule); border-radius:3px; background:rgba(11,31,54,0.5); padding:10px 12px;
+
+   transition:border-color 0.3s ease, box-shadow 0.3s ease;
+
+ }
+
+ .match.live{ border-color:var(--gold); box-shadow:0 0 0 1px rgba(198,161,91,0.25); }
+
+ .match.done{ border-color:rgba(198,161,91,0.2); }
+
+ .m-side{ display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-family:'Roboto Mono', monospace; font-size:12.5px; }
+
+ .m-side .who{ color:var(--botticelli); display:flex; align-items:center; gap:6px; }
+
+ .m-side .seed{ color:var(--polo); font-size:10px; }
+
+ .m-side .score{ color:var(--regent); font-weight:600; }
+
+ .m-side.winner .who{ color:var(--gold-bright); font-weight:700; }
+
+ .m-side.winner .score{ color:var(--gold-bright); }
+
+ .m-side.tbd{ color:var(--polo); font-style:italic; opacity:0.5; }
+
+ .m-mid-rule{ height:1px; background:var(--rule); margin:2px 0; }
+
+ .m-games{ font-size:10px; color:var(--polo); margin-top:6px; font-family:'Roboto Mono', monospace; }
+
+ 
+
+ .champion-banner{
+
+   text-align:center; padding:44px 20px; border:1px solid var(--gold);
+
+   background:radial-gradient(ellipse at 50% 0%, rgba(198,161,91,0.18), transparent 70%);
+
+   margin-top:8px;
+
+ }
+
+ .champion-banner .ceremonial{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold);
+
+ }
+
+ .champion-banner h2{
+
+   font-family:'Playfair Display', serif; font-size:clamp(28px,5vw,44px); color:var(--white); margin:12px 0 6px;
+
+ }
+
+ .champion-banner .sub{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--regent); font-size:15px; }
+
+ 
+
+ .gf-progress{ display:flex; gap:8px; justify-content:center; margin-top:16px; }
+
+ .gf-dot{ width:9px;height:9px;border-radius:50%; border:1px solid var(--gold); }
+
+ .gf-dot.won{ background:var(--gold); }
+
+ 
+
+ /* ---------- Modals ---------- */
+
+ .modal-overlay{
+
+   position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(11,31,54,0.88); z-index:1000;
+
+   display:flex; align-items:flex-end; justify-content:center;
+
+ }
+
+ .modal-overlay.hidden{ display:none; }
+
+ .modal-sheet{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.15), rgba(11,31,54,0.5));
+
+   border:1px solid var(--rule);
+
+   border-radius:8px 8px 0 0;
+
+   width:100%;
+
+   max-width:600px;
+
+   max-height:80vh;
+
+   overflow-y:auto;
+
+   padding:24px;
+
+   animation:slideUp 0.3s ease;
+
+ }
+
+ @keyframes slideUp{ from{ transform:translateY(100%); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+
+ .modal-close{
+
+   float:right; background:none; border:none; color:var(--polo); font-size:20px; cursor:pointer; padding:0; width:24px; height:24px;
+
+ }
+
+ .modal-close:hover{ color:var(--gold); }
+
+ .modal-sheet h3{ font-family:'Playfair Display', serif; font-size:22px; color:var(--white); margin:0 0 16px; }
+
+ .stat-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--rule); }
+
+ .stat-row:last-child{ border-bottom:none; }
+
+ .stat-label{ font-family:'Roboto Mono', monospace; font-size:11px; text-transform:uppercase; color:var(--polo); letter-spacing:0.08em; }
+
+ .stat-value{ font-family:'Frank Ruhl Libre', serif; font-size:16px; color:var(--white); }
+
+ .stat-value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ .stat-value .delta{ font-family:'Roboto Mono', monospace; font-size:12px; margin-left:8px; }
+
+ .stat-value .delta.up{ color:var(--up); }
+
+ .stat-value .delta.down{ color:var(--down); }
+
+ 
+
+ /* ---------- Playoff Odds / Favorites ---------- */
+
+ .odds-panel{
+
+   margin-bottom:22px;
+
+ }
+
+ .odds-table{
+
+   width:100%; border-collapse:collapse; margin-top:12px;
+
+ }
+
+ .odds-table th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
