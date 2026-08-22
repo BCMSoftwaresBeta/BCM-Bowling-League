@@ -1,0 +1,126 @@
+/* -------------------------------------------------------------------------
+   HUMAN BOWLERS UPDATE
+   ------------------------------------------------------------------------- */
+.player-preview-wrap,.finalist-preview-wrap{display:flex;align-items:center;justify-content:center;}
+.player-preview-wrap{margin-bottom:10px;}
+.finalist-preview-wrap{margin:6px 0 8px;}
+.bowler-avatar{--shirt:#a54145;--skin:#e6b690;--ball:#d26532;--hair:#5b3a21;--height:1;--build:1;--x:0px;position:relative;width:122px;height:170px;transform:translateX(var(--x)) scale(var(--height));transform-origin:bottom center;pointer-events:none;}
+.bowler-avatar.preview{height:150px;}
+.bowler-avatar.mini{width:108px;height:138px;transform:scale(calc(var(--height) * .88));transform-origin:bottom center;}
+.bowler-avatar.player-card{width:132px;height:166px;}
+.bowler-avatar .avatar-shadow{position:absolute;left:26px;right:26px;bottom:6px;height:12px;background:radial-gradient(circle at center, rgba(0,0,0,.42), transparent 70%);filter:blur(2px);opacity:.6;}
+.bowler-avatar .avatar-body{position:absolute;left:50%;bottom:16px;width:72px;height:134px;transform:translateX(-50%);}
+.bowler-avatar .avatar-head{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:var(--skin);box-shadow:0 0 0 1px rgba(11,31,54,.25) inset;z-index:3;overflow:hidden;}
+.bowler-avatar .avatar-face{position:absolute;left:50%;top:18px;transform:translateX(-50%);width:18px;height:8px;border-bottom:2px solid rgba(11,31,54,.25);border-radius:0 0 10px 10px;opacity:.45;}
+.bowler-avatar .avatar-hair{position:absolute;left:1px;right:1px;top:-1px;height:18px;background:var(--hair);border-radius:60% 60% 45% 45%;}
+.bowler-avatar .avatar-hair.medium{height:21px;border-radius:65% 65% 50% 50%;}
+.bowler-avatar .avatar-hair.curly{height:18px;border-radius:55% 55% 48% 48%;box-shadow:4px 0 0 0 var(--hair), -4px 0 0 0 var(--hair), 0 4px 0 0 var(--hair);}
+.bowler-avatar .avatar-hair.shortblack{height:16px;background:#181818;}
+.bowler-avatar .avatar-hair.red{background:#a53a23;}
+.bowler-avatar .avatar-hair.brown{background:#5b3a21;}
+.bowler-avatar .avatar-hair.dirtyblonde{background:#a68858;}
+.bowler-avatar .avatar-hair.lightbrown{background:#8f6748;}
+.bowler-avatar .avatar-hair.black{background:#1a1b22;}
+.bowler-avatar .avatar-torso{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:calc(30px * var(--build));height:50px;background:linear-gradient(180deg,color-mix(in srgb, var(--shirt) 92%, #fff 8%),color-mix(in srgb, var(--shirt) 75%, #0b1f36 25%));border-radius:12px 12px 10px 10px;box-shadow:0 0 0 1px rgba(11,31,54,.28) inset;z-index:2;}
+.bowler-avatar .avatar-logo{position:absolute;left:50%;top:10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:7px;color:#fff;letter-spacing:.04em;text-shadow:0 1px 1px rgba(0,0,0,.35);white-space:nowrap;text-transform:uppercase;max-width:calc(100% - 6px);overflow:hidden;text-overflow:ellipsis;}
+.bowler-avatar .avatar-arm{position:absolute;top:40px;width:11px;height:44px;background:var(--skin);border-radius:9px;transform-origin:top center;z-index:1;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-arm.back{left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-arm.release{right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.back{left:auto;right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.release{right:auto;left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-support{position:absolute;top:48px;right:19px;width:10px;height:28px;background:var(--skin);border-radius:9px;transform:rotate(-5deg);display:none;z-index:2;}
+.bowler-avatar.twohanded .avatar-support{display:block;}
+.bowler-avatar.twohanded.lefty .avatar-support{right:auto;left:19px;transform:rotate(5deg);}
+.bowler-avatar .avatar-hips{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:24px;height:10px;background:color-mix(in srgb,var(--shirt) 45%, #0b1f36 55%);border-radius:5px;z-index:2;}
+.bowler-avatar .avatar-leg{position:absolute;top:84px;width:11px;height:52px;background:#d8dce6;border-radius:8px;transform-origin:top center;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-leg.left{left:24px;transform:rotate(6deg);}
+.bowler-avatar .avatar-leg.right{right:24px;transform:rotate(-4deg);}
+.bowler-avatar .avatar-shoe{position:absolute;bottom:-2px;width:18px;height:8px;background:#f8f7f4;border-radius:8px;box-shadow:0 0 0 1px rgba(11,31,54,.2) inset;}
+.bowler-avatar .avatar-shoe.left{left:18px;transform:skewX(8deg);}
+.bowler-avatar .avatar-shoe.right{right:18px;transform:skewX(-8deg);}
+.bowler-avatar .avatar-ball{position:absolute;bottom:28px;right:6px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.95), color-mix(in srgb, var(--ball) 82%, #fff 18%) 20%, var(--ball) 55%, #000 135%);box-shadow:0 3px 8px rgba(0,0,0,.25), inset -2px -2px 4px rgba(0,0,0,.18);z-index:0;}
+.bowler-avatar.lefty .avatar-ball{right:auto;left:6px;}
+.bowler-avatar .avatar-name{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:9px;color:var(--botticelli);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;opacity:.82;}
+.bowler-avatar.preview .avatar-name,.bowler-avatar.mini .avatar-name{display:none;}
+.bowler-avatar.ready{animation:bobBowler 1.5s ease-in-out infinite;}
+.bowler-avatar.rolling{animation:approachBowler .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.release{animation:releaseArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.back{animation:backswingArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-support{animation:supportArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.left{animation:leadLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.right{animation:trailLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-ball{animation:carryBall .38s ease forwards, bowlBall .62s ease .33s forwards;}
+.bowler-avatar.lefty.rolling{animation:approachBowlerLeft .95s ease forwards;}
+@keyframes bobBowler{0%,100%{transform:translateX(var(--x)) scale(var(--height)) translateY(0);}50%{transform:translateX(var(--x)) scale(var(--height)) translateY(-2px);}}
+@keyframes approachBowler{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) + 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) + 30px)) scale(var(--height));}}
+@keyframes approachBowlerLeft{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) - 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) - 30px)) scale(var(--height));}}
+@keyframes releaseArm{0%{transform:rotate(-16deg);}38%{transform:rotate(25deg);}100%{transform:rotate(76deg);}}
+@keyframes backswingArm{0%{transform:rotate(16deg);}38%{transform:rotate(-40deg);}100%{transform:rotate(18deg);}}
+.bowler-avatar.lefty .avatar-arm.release{transform:rotate(16deg);} .bowler-avatar.lefty .avatar-arm.back{transform:rotate(-16deg);} 
+@keyframes supportArm{0%{opacity:.9;transform:rotate(-5deg);}100%{opacity:.55;transform:rotate(40deg);}}
+@keyframes leadLeg{0%{transform:rotate(6deg);}50%{transform:rotate(22deg);}100%{transform:rotate(34deg);}}
+@keyframes trailLeg{0%{transform:rotate(-4deg);}50%{transform:rotate(-18deg);}100%{transform:rotate(-28deg);}}
+@keyframes carryBall{0%{transform:translate(0,0) scale(1);}100%{transform:translate(6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBall{0%{transform:translate(6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(118px,-92px) scale(.42);opacity:0;}}
+.bowler-avatar.lefty .avatar-ball{animation-direction:normal;} .bowler-avatar.lefty.rolling .avatar-ball{animation:carryBallLeft .38s ease forwards, bowlBallLeft .62s ease .33s forwards;}
+@keyframes carryBallLeft{0%{transform:translate(0,0) scale(1);}100%{transform:translate(-6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBallLeft{0%{transform:translate(-6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(-118px,-92px) scale(.42);opacity:0;}}
+.arcade-arena{align-items:start;}
+.lane-scene{overflow:hidden;min-height:520px;}
+.human-stage{position:absolute;left:50%;bottom:38px;width:220px;height:250px;transform:translateX(-50%);z-index:3;pointer-events:none;}
+.human-stage .bowler-avatar{position:absolute;left:38px;bottom:0;}
+.release-path{position:absolute;left:50%;bottom:122px;width:10px;height:145px;transform:translateX(-50%);background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0));filter:blur(2px);opacity:0;z-index:2;pointer-events:none;transition:opacity .18s ease;}
+.release-path.active{opacity:.85;}
+
+.bowler-avatar.throwing{animation:none!important;}
+.bowler-avatar.throwing .avatar-body{animation:throwBody .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-torso{animation:throwTorso .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-arm.release{animation:throwReleaseRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.release{animation:throwReleaseLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-arm.back{animation:throwBackRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.back{animation:throwBackLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-leg.left{animation:throwLead .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-leg.right{animation:throwTrail .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-head{animation:throwHead .95s ease forwards;}
+.bowler-avatar.throwing .avatar-ball{animation:none!important;}
+@keyframes throwBody{0%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-4px) rotate(-2deg)}50%{transform:translateX(-50%) translateY(2px) rotate(5deg)}72%{transform:translateX(-50%) translateY(8px) rotate(13deg)}100%{transform:translateX(-50%) translateY(2px) rotate(7deg)}}
+@keyframes throwTorso{0%{transform:translateX(-50%) rotate(0)}55%{transform:translateX(-50%) rotate(6deg)}78%{transform:translateX(-50%) rotate(14deg)}100%{transform:translateX(-50%) rotate(8deg)}}
+@keyframes throwReleaseRight{0%{transform:rotate(-12deg)}22%{transform:rotate(-76deg)}48%{transform:rotate(-118deg)}64%{transform:rotate(-8deg)}78%{transform:rotate(72deg)}100%{transform:rotate(96deg)}}
+@keyframes throwReleaseLeft{0%{transform:rotate(12deg)}22%{transform:rotate(76deg)}48%{transform:rotate(118deg)}64%{transform:rotate(8deg)}78%{transform:rotate(-72deg)}100%{transform:rotate(-96deg)}}
+@keyframes throwBackRight{0%{transform:rotate(16deg)}35%{transform:rotate(42deg)}70%{transform:rotate(-22deg)}100%{transform:rotate(-8deg)}}
+@keyframes throwBackLeft{0%{transform:rotate(-16deg)}35%{transform:rotate(-42deg)}70%{transform:rotate(22deg)}100%{transform:rotate(8deg)}}
+@keyframes throwLead{0%{transform:rotate(6deg) translate(0,0)}55%{transform:rotate(18deg) translate(2px,2px)}78%{transform:rotate(34deg) translate(5px,7px)}100%{transform:rotate(24deg) translate(4px,4px)}}
+@keyframes throwTrail{0%{transform:rotate(-4deg) translate(0,0)}55%{transform:rotate(-14deg) translate(-2px,1px)}78%{transform:rotate(-44deg) translate(-8px,-1px)}100%{transform:rotate(-32deg) translate(-6px,1px)}}
+@keyframes throwHead{0%,45%{transform:translateX(-50%) rotate(0)}75%,100%{transform:translateX(-50%) rotate(-7deg)}}
+
+.bowler-avatar.celebrate .avatar-body{animation:celebrateBody .62s cubic-bezier(.2,.85,.25,1) both;}
+.bowler-avatar.celebrate .avatar-arm.release{animation:celebrateArm .62s cubic-bezier(.2,.85,.25,1) both!important;}
+.bowler-avatar.frustrated .avatar-body{animation:frustratedBody .62s ease both;}
+.bowler-avatar.frustrated .avatar-head{animation:frustratedHead .5s ease 2;}
+.bowler-avatar.spare-react .avatar-body{animation:spareBody .55s ease both;}
+.bowler-avatar.twohanded.throwing .avatar-support{display:block;animation:twoHandSupport .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+@keyframes celebrateBody{0%{transform:translateX(-50%) translateY(0) rotate(7deg)}35%{transform:translateX(-50%) translateY(-14px) rotate(-3deg)}70%{transform:translateX(-50%) translateY(-5px) rotate(5deg)}100%{transform:translateX(-50%) translateY(0) rotate(0)}}
+@keyframes celebrateArm{0%{transform:rotate(96deg)}45%{transform:rotate(165deg)}100%{transform:rotate(125deg)}}
+@keyframes frustratedBody{0%,100%{transform:translateX(-50%) rotate(0)}35%{transform:translateX(-50%) rotate(-7deg)}70%{transform:translateX(-50%) rotate(7deg)}}
+@keyframes frustratedHead{0%,100%{transform:translateX(-50%) rotate(0)}50%{transform:translateX(-50%) rotate(12deg)}}
+@keyframes spareBody{0%{transform:translateX(-50%) rotate(7deg)}45%{transform:translateX(-50%) translateY(-6px) rotate(-2deg)}100%{transform:translateX(-50%) rotate(0)}}
+@keyframes twoHandSupport{0%{transform:rotate(-5deg);opacity:1}30%{transform:rotate(-45deg);opacity:1}55%{transform:rotate(8deg);opacity:1}80%{transform:rotate(58deg);opacity:.75}100%{transform:rotate(35deg);opacity:.5}}
+
+
+
+.bowler-style-chip{display:inline-block;margin-top:4px;padding:4px 8px;border:1px solid rgba(163,199,224,.26);border-radius:999px;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--regent);text-transform:uppercase;letter-spacing:.07em;}
+.bowler-bio{font-family:'Frank Ruhl Libre',serif;font-size:13px;color:var(--regent);margin-top:8px;line-height:1.4;}
+.player-card-hero{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;padding:12px;border:1px solid var(--rule);background:rgba(75,107,149,.08);border-radius:4px;margin-bottom:12px;}
+.player-card-hero .hero-copy{font-family:'Frank Ruhl Libre',serif;color:var(--botticelli);} 
+.player-card-hero .hero-copy .hero-title{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.player-card-hero .hero-copy .hero-main{font-family:'Playfair Display',serif;font-size:20px;color:#fff;line-height:1.15;}
+.player-card-hero .hero-copy .hero-sub{font-size:13px;color:var(--regent);margin-top:4px;}
+.finalist-card .finalist-emoji{font-size:20px;}
+.finalist-card .finalist-preview-wrap .bowler-avatar{margin:0 auto;}
+.lane-hud .bowler{display:flex;align-items:center;gap:10px;min-height:40px;}
+.lane-hud .bowler .lane-bowler-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.lane-hud .bowler .lane-bowler-name{font-family:'Playfair Display',serif;color:#fff;font-size:18px;line-height:1.1;}
+.lane-hud .bowler .lane-bowler-meta{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.08em;}
+@media (max-width:900px){.player-card-hero{grid-template-columns:1fr;justify-items:center;text-align:center;}.lane-scene{min-height:500px;}.human-stage{bottom:48px;transform:translateX(-50%) scale(.88);}}
+@media (max-width:640px){.human-stage{bottom:60px;transform:translateX(-50%) scale(.72);} .lane-scene{min-height:470px;} .bowler-avatar.player-card{transform:scale(.85);} }
+
