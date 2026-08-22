@@ -1,59 +1,4641 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BCM Bowling League — Arcade Career Edition</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Frank+Ruhl+Libre:wght@400;500;700&family=Roboto+Mono:wght@400;500;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="v023/style-01.css?v=0238">
-<link rel="stylesheet" href="v023/style-02.css?v=0238">
-<link rel="stylesheet" href="v023/style-03.css?v=0238">
+
+<style>
+
+ :root{
+
+   --navy:#1D3F72;
+
+   --midnight:#0B1F36;
+
+   --kashmir:#4B6B95;
+
+   --polo:#7C9CD0;
+
+   --regent:#A3C7E0;
+
+   --botticelli:#D0DFEC;
+
+   --gold:#C6A15B;
+
+   --gold-bright:#E4C888;
+
+   --white:#FFFFFF;
+
+   --paper:#F6F3EC;
+
+   --ink:#0B1F36;
+
+   --up:#4C8B6B;
+
+   --down:#B5573F;
+
+   --rule: rgba(198,161,91,0.35);
+
+ }
+
+ *{box-sizing:border-box;}
+
+ html,body{margin:0;padding:0;}
+
+ body{
+
+   background:
+
+     radial-gradient(1200px 600px at 10% -10%, rgba(75,107,149,0.35), transparent 60%),
+
+     radial-gradient(1000px 700px at 110% 10%, rgba(198,161,91,0.12), transparent 55%),
+
+     var(--midnight);
+
+   color:var(--botticelli);
+
+   font-family:'Lato', sans-serif;
+
+   min-height:100vh;
+
+   letter-spacing:0.01em;
+
+ }
+
+ ::selection{ background:var(--gold); color:var(--midnight); }
+
+ 
+
+ .wrap{ max-width:1180px; margin:0 auto; padding:28px 20px 80px; }
+
+ 
+
+ /* ---------- Header / Masthead ---------- */
+
+ .masthead{
+
+   border-bottom:1px solid var(--rule);
+
+   padding-bottom:22px;
+
+   margin-bottom:26px;
+
+   display:flex;
+
+   justify-content:space-between;
+
+   align-items:flex-end;
+
+   flex-wrap:wrap;
+
+   gap:16px;
+
+ }
+
+ .brand-row{ display:flex; align-items:center; gap:14px; }
+
+ .wallaby-mark{
+
+   width:52px;height:52px;border-radius:50%;
+
+   border:1px solid var(--gold);
+
+   display:flex;align-items:center;justify-content:center;
+
+   font-size:26px;
+
+   background:radial-gradient(circle at 35% 30%, rgba(198,161,91,0.25), rgba(11,31,54,0.4));
+
+   flex-shrink:0;
+
+ }
+
+ .brand-text .eyebrow{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:10.5px; letter-spacing:0.28em; text-transform:uppercase;
+
+   color:var(--gold); margin:0 0 4px;
+
+ }
+
+ h1{
+
+   font-family:'Playfair Display', serif;
+
+   font-weight:700;
+
+   font-size:clamp(26px, 4vw, 38px);
+
+   margin:0; color:var(--white);
+
+   letter-spacing:0.01em;
+
+ }
+
+ .tagline{
+
+   font-family:'Frank Ruhl Libre', serif;
+
+   font-style:italic;
+
+   color:var(--regent);
+
+   font-size:14px; margin-top:6px;
+
+ }
+
+ .season-status{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; text-align:right; color:var(--polo);
+
+   letter-spacing:0.05em;
+
+ }
+
+ .season-status .big{
+
+   display:block; color:var(--gold-bright); font-size:20px; margin-top:2px; font-weight:600;
+
+ }
+
+ 
+
+ /* ---------- Panels ---------- */
+
+ .panel{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.10), rgba(11,31,54,0.35));
+
+   border:1px solid var(--rule);
+
+   border-radius:4px;
+
+   padding:22px;
+
+   margin-bottom:22px;
+
+ }
+
+ .panel-head{
+
+   display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+
+   margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .panel-head h2{
+
+   font-family:'Playfair Display', serif; font-weight:600; font-size:20px; color:var(--white); margin:0;
+
+ }
+
+ .panel-head .sub{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); letter-spacing:0.05em; }
+
+ 
+
+ /* ---------- Controls ---------- */
+
+ .controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+ button{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+
+   padding:11px 18px;
+
+   border-radius:2px;
+
+   border:1px solid var(--gold);
+
+   background:transparent;
+
+   color:var(--gold-bright);
+
+   cursor:pointer;
+
+   transition:all 0.18s ease;
+
+ }
+
+ button:hover:not(:disabled){ background:var(--gold); color:var(--midnight); }
+
+ button:disabled{ opacity:0.32; cursor:not-allowed; }
+
+ button.primary{ background:var(--gold); color:var(--midnight); }
+
+ button.primary:hover:not(:disabled){ background:var(--gold-bright); }
+
+ button.ghost{ border-color:var(--rule); color:var(--polo); }
+
+ button.ghost:hover:not(:disabled){ background:rgba(198,161,91,0.12); color:var(--gold-bright); }
+
+ 
+
+ .hint{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--polo); font-size:13px; margin-top:12px; }
+
+ 
+
+ /* ---------- Standings Table ---------- */
+
+ table{ width:100%; border-collapse:collapse; }
+
+ .standings th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .standings td{ padding:11px 10px; border-bottom:1px solid rgba(198,161,91,0.14); vertical-align:middle; }
+
+ .standings tr:last-child td{ border-bottom:none; }
+
+ .standings tr.updated td{ animation: rowFlash 1.1s ease; }
+
+ @keyframes rowFlash{
+
+   0%{ background:rgba(198,161,91,0.28); } 100%{ background:transparent; }
+
+ }
+
+ .rank{ font-family:'Roboto Mono', monospace; color:var(--polo); width:34px; }
+
+ .rank.top3{ color:var(--gold-bright); font-weight:700; }
+
+ .pname{ font-family:'Playfair Display', serif; font-size:15.5px; color:var(--white); font-weight:600; }
+
+ .pname .emoji{ margin-right:8px; }
+
+ .num{ font-family:'Roboto Mono', monospace; text-align:right; color:var(--botticelli); }
+
+ .season-total{ font-weight:700; color:var(--gold-bright); font-size:15px; }
+
+ .delta{ font-family:'Roboto Mono', monospace; font-size:11px; margin-left:8px; }
+
+ .delta.up{ color:var(--up); } .delta.down{ color:var(--down); } .delta.flat{ color:var(--polo); }
+
+ .movement{ font-family:'Roboto Mono', monospace; font-size:11px; }
+
+ 
+
+ /* ---------- Recap ---------- */
+
+ .recap-card{
+
+   border:1px solid var(--rule); border-left:3px solid var(--gold); padding:16px 18px; margin-bottom:12px;
+
+   background:rgba(75,107,149,0.06); border-radius:0 3px 3px 0;
+
+ }
+
+ .recap-card .wk{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;}
+
+ .recap-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px 20px; }
+
+ .recap-item .label{ font-family:'Roboto Mono', monospace; font-size:10px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; }
+
+ .recap-item .value{ font-family:'Frank Ruhl Libre', serif; font-size:15px; color:var(--white); margin-top:2px; }
+
+ .recap-item .value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ details.past-weeks{ margin-top:6px; }
+
+ details.past-weeks summary{
+
+   cursor:pointer; font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.08em;
+
+   text-transform:uppercase; color:var(--polo); padding:8px 0;
+
+ }
+
+ 
+
+ /* ---------- Bracket ---------- */
+
+ .bracket-lane{ margin-bottom:26px; }
+
+ .lane-title{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+
+   color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:10px;
+
+ }
+
+ .lane-title::after{ content:''; flex:1; height:1px; background:var(--rule); }
+
+ .rounds{ display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; }
+
+ .round-col{ min-width:200px; display:flex; flex-direction:column; justify-content:space-around; gap:14px; }
+
+ .round-label{ font-family:'Roboto Mono', monospace; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; text-align:center; }
+
+ .match{
+
+   border:1px solid var(--rule); border-radius:3px; background:rgba(11,31,54,0.5); padding:10px 12px;
+
+   transition:border-color 0.3s ease, box-shadow 0.3s ease;
+
+ }
+
+ .match.live{ border-color:var(--gold); box-shadow:0 0 0 1px rgba(198,161,91,0.25); }
+
+ .match.done{ border-color:rgba(198,161,91,0.2); }
+
+ .m-side{ display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-family:'Roboto Mono', monospace; font-size:12.5px; }
+
+ .m-side .who{ color:var(--botticelli); display:flex; align-items:center; gap:6px; }
+
+ .m-side .seed{ color:var(--polo); font-size:10px; }
+
+ .m-side .score{ color:var(--regent); font-weight:600; }
+
+ .m-side.winner .who{ color:var(--gold-bright); font-weight:700; }
+
+ .m-side.winner .score{ color:var(--gold-bright); }
+
+ .m-side.tbd{ color:var(--polo); font-style:italic; opacity:0.5; }
+
+ .m-mid-rule{ height:1px; background:var(--rule); margin:2px 0; }
+
+ .m-games{ font-size:10px; color:var(--polo); margin-top:6px; font-family:'Roboto Mono', monospace; }
+
+ 
+
+ .champion-banner{
+
+   text-align:center; padding:44px 20px; border:1px solid var(--gold);
+
+   background:radial-gradient(ellipse at 50% 0%, rgba(198,161,91,0.18), transparent 70%);
+
+   margin-top:8px;
+
+ }
+
+ .champion-banner .ceremonial{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold);
+
+ }
+
+ .champion-banner h2{
+
+   font-family:'Playfair Display', serif; font-size:clamp(28px,5vw,44px); color:var(--white); margin:12px 0 6px;
+
+ }
+
+ .champion-banner .sub{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--regent); font-size:15px; }
+
+ 
+
+ .gf-progress{ display:flex; gap:8px; justify-content:center; margin-top:16px; }
+
+ .gf-dot{ width:9px;height:9px;border-radius:50%; border:1px solid var(--gold); }
+
+ .gf-dot.won{ background:var(--gold); }
+
+ 
+
+ /* ---------- Modals ---------- */
+
+ .modal-overlay{
+
+   position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(11,31,54,0.88); z-index:1000;
+
+   display:flex; align-items:flex-end; justify-content:center;
+
+ }
+
+ .modal-overlay.hidden{ display:none; }
+
+ .modal-sheet{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.15), rgba(11,31,54,0.5));
+
+   border:1px solid var(--rule);
+
+   border-radius:8px 8px 0 0;
+
+   width:100%;
+
+   max-width:600px;
+
+   max-height:80vh;
+
+   overflow-y:auto;
+
+   padding:24px;
+
+   animation:slideUp 0.3s ease;
+
+ }
+
+ @keyframes slideUp{ from{ transform:translateY(100%); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+
+ .modal-close{
+
+   float:right; background:none; border:none; color:var(--polo); font-size:20px; cursor:pointer; padding:0; width:24px; height:24px;
+
+ }
+
+ .modal-close:hover{ color:var(--gold); }
+
+ .modal-sheet h3{ font-family:'Playfair Display', serif; font-size:22px; color:var(--white); margin:0 0 16px; }
+
+ .stat-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--rule); }
+
+ .stat-row:last-child{ border-bottom:none; }
+
+ .stat-label{ font-family:'Roboto Mono', monospace; font-size:11px; text-transform:uppercase; color:var(--polo); letter-spacing:0.08em; }
+
+ .stat-value{ font-family:'Frank Ruhl Libre', serif; font-size:16px; color:var(--white); }
+
+ .stat-value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ .stat-value .delta{ font-family:'Roboto Mono', monospace; font-size:12px; margin-left:8px; }
+
+ .stat-value .delta.up{ color:var(--up); }
+
+ .stat-value .delta.down{ color:var(--down); }
+
+ 
+
+ /* ---------- Playoff Odds / Favorites ---------- */
+
+ .odds-panel{
+
+   margin-bottom:22px;
+
+ }
+
+ .odds-table{
+
+   width:100%; border-collapse:collapse; margin-top:12px;
+
+ }
+
+ .odds-table th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .odds-table td{ padding:9px 10px; border-bottom:1px solid rgba(198,161,91,0.14); font-family:'Roboto Mono', monospace; font-size:13px; }
+
+ .odds-table tr:last-child td{ border-bottom:none; }
+
+ .odds-seed{ color:var(--polo); }
+
+ .odds-name{ color:var(--white); font-weight:600; }
+
+ .odds-prob{ color:var(--regent); text-align:right; }
+
+ .odds-odds{ color:var(--gold-bright); text-align:right; font-weight:700; }
+
+ 
+
+ /* ---------- Match Animation Modal ---------- */
+
+ .match-modal-sheet{ max-width:640px; }
+
+ .match-modal-head{ text-align:center; margin-bottom:18px; }
+
+ .match-modal-head .vs-title{ font-family:'Playfair Display', serif; font-size:20px; color:var(--white); margin-bottom:4px; }
+
+ .match-modal-head .vs-sub{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; }
+
+ .match-tally{ display:flex; justify-content:center; gap:22px; margin-bottom:18px; }
+
+ .match-tally .t-item{ text-align:center; }
+
+ .match-tally .t-name{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); }
+
+ .match-tally .t-wins{ font-family:'Playfair Display', serif; font-size:22px; color:var(--gold-bright); }
+
+ 
+
+ .lanes-wrap{ display:flex; gap:16px; margin-bottom:18px; }
+
+ .bowl-lane{ flex:1; border:1px solid var(--rule); border-radius:4px; padding:14px 10px; text-align:center; background:rgba(11,31,54,0.45); }
+
+ .bowl-lane .lane-name{ font-family:'Roboto Mono', monospace; font-size:12px; color:var(--botticelli); margin-bottom:10px; }
+
+ .bowl-lane .lane-name .em{ margin-right:5px; }
+
+ .pin-rack{ display:flex; flex-direction:column; align-items:center; gap:3px; height:60px; justify-content:flex-end; margin-bottom:10px; }
+
+ .pin-row{ display:flex; gap:4px; justify-content:center; }
+
+ .pin{
+
+   width:9px; height:12px; border-radius:40% 40% 50% 50%;
+
+   background:linear-gradient(180deg, #fff, #cfd9e6);
+
+   box-shadow:0 0 0 1px rgba(198,161,91,0.4) inset;
+
+   transition:opacity 0.25s ease, transform 0.25s ease;
+
+ }
+
+ .pin.down{ opacity:0.15; transform:scale(0.5) rotate(25deg); }
+
+ .lane-track{ position:relative; height:26px; margin-bottom:10px; display:flex; align-items:flex-end; justify-content:center; }
+
+ .lane-track::before{ content:''; position:absolute; bottom:0; left:10%; right:10%; height:2px; background:var(--rule); }
+
+ .bowl-ball{
+
+   width:14px; height:14px; border-radius:50%;
+
+   background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #7a6134);
+
+   transform:translateY(0);
+
+   transition:transform 0.5s cubic-bezier(.4,0,.2,1);
+
+ }
+
+ .bowl-ball.rolling{ transform:translateY(-22px); }
+
+ .lane-score{ font-family:'Roboto Mono', monospace; font-size:20px; font-weight:700; color:var(--white); }
+
+ .lane-score .lbl{ display:block; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; font-weight:400; margin-top:2px; }
+
+ 
+
+ .game-progress{ text-align:center; font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:14px; }
+
+ .game-log{ text-align:center; font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--regent); font-size:13px; min-height:20px; margin-bottom:14px; }
+
+ .match-modal-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+ .match-summary{ text-align:center; padding:14px 0; }
+
+ .match-summary .winner-line{ font-family:'Playfair Display', serif; font-size:19px; color:var(--gold-bright); margin-bottom:4px; }
+
+ .match-summary .score-line{ font-family:'Roboto Mono', monospace; font-size:13px; color:var(--botticelli); }
+
+ 
+
+ /* ---------- Career Mode ---------- */
+
+ .career-toggle{
+
+   display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer;
+
+   font-family:'Roboto Mono', monospace; font-size:12px; color:var(--polo);
+
+ }
+
+ .career-toggle input{ width:16px; height:16px; accent-color:var(--gold); cursor:pointer; }
+
+ .follow-select{
+
+   font-family:'Roboto Mono', monospace; font-size:12px; background:var(--midnight); color:var(--gold-bright);
+
+   border:1px solid var(--rule); border-radius:2px; padding:5px 8px; cursor:pointer;
+
+ }
+
+ .tier-pill{
+
+   display:inline-block; font-family:'Roboto Mono', monospace; font-size:9px; letter-spacing:0.05em;
+
+   text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-left:8px; vertical-align:middle;
+
+   border:1px solid var(--rule); color:var(--polo);
+
+ }
+
+ .tier-pill.t0{ color:#9BB0C7; border-color:#9BB0C7; }
+
+ .tier-pill.t1{ color:var(--polo); border-color:var(--polo); }
+
+ .tier-pill.t2{ color:var(--regent); border-color:var(--regent); }
+
+ .tier-pill.t3{ color:var(--gold); border-color:var(--gold); }
+
+ .tier-pill.t4{ color:var(--gold-bright); border-color:var(--gold-bright); background:rgba(198,161,91,0.10); }
+
+ .tier-pill.t5{ color:#F3DFA6; border-color:#F3DFA6; background:rgba(198,161,91,0.20); box-shadow:0 0 0 1px rgba(228,200,136,0.16) inset; }
+
+ 
+
+ #milestoneToastHost{ position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:2000; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; }
+
+ .milestone-toast{
+
+   background:var(--midnight); border:1px solid var(--gold); color:var(--gold-bright);
+
+   font-family:'Frank Ruhl Libre', serif; font-style:italic; font-size:13px;
+
+   padding:10px 18px; border-radius:3px; box-shadow:0 4px 18px rgba(0,0,0,0.5);
+
+   max-width:90vw; text-align:center; animation:toastIn 0.3s ease;
+
+ }
+
+ .milestone-toast.fade-out{ opacity:0; transition:opacity 0.5s ease; }
+
+ @keyframes toastIn{ from{ opacity:0; transform:translateY(-10px); } to{ opacity:1; transform:translateY(0); } }
+
+ 
+
+ .history-year-card{
+
+   border:1px solid var(--rule); border-left:3px solid var(--gold); border-radius:0 3px 3px 0;
+
+   padding:12px 16px; margin-bottom:10px; background:rgba(75,107,149,0.06);
+
+ }
+
+ .history-year-card .hy-year{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;
+
+ }
+
+ .hy-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:6px 20px; }
+
+ .hy-label{ display:block; font-family:'Roboto Mono', monospace; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; }
+
+ .hy-val{ display:block; font-family:'Frank Ruhl Libre', serif; font-size:14px; color:var(--white); margin-top:1px; }
+
+ 
+
+ footer{ text-align:center; margin-top:40px; font-family:'Roboto Mono', monospace; font-size:10.5px; color:var(--kashmir); letter-spacing:0.1em; }
+
+ 
+
+ @media (prefers-reduced-motion: reduce){
+
+   .standings tr.updated td{ animation:none; }
+
+   .match{ transition:none; }
+
+ }
+
+ 
+
+ @media (max-width:640px){
+
+   .season-status{ text-align:left; }
+
+   .masthead{ flex-direction:column; align-items:flex-start; }
+
+ }
+
+
+
+/* =========================================================================
+   ARCADE EDITION — career command center, race desk, saves & championship TV
+   ========================================================================= */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+.metric-card{border:1px solid var(--rule);background:rgba(75,107,149,.06);padding:14px;border-radius:3px;min-height:88px;}
+.metric-card .metric-kicker{font-family:'Roboto Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.11em;color:var(--polo);}
+.metric-card .metric-main{font-family:'Playfair Display',serif;font-size:20px;color:var(--white);margin-top:5px;}
+.metric-card .metric-sub{font-family:'Frank Ruhl Libre',serif;font-size:13px;color:var(--regent);margin-top:4px;}
+.career-table-wrap{overflow-x:auto;}
+.career-table{min-width:880px;}
+.career-table th,.career-table td{white-space:nowrap;}
+.badge-mini{display:inline-block;font-family:'Roboto Mono',monospace;font-size:9px;line-height:1;padding:3px 6px;border:1px solid var(--rule);border-radius:10px;color:var(--polo);margin-left:5px;vertical-align:middle;}
+.badge-mini.ring{color:var(--gold-bright);border-color:rgba(228,200,136,.55);}
+.badge-mini.mvp{color:var(--regent);}
+.badge-mini.dynasty{color:#ffe2a0;border-color:#ffe2a0;background:rgba(198,161,91,.13);}
+.badge-mini.hot{color:#ffb36a;border-color:#ffb36a;}
+.badge-mini.cold{color:#87b9ff;border-color:#87b9ff;}
+.click-row{cursor:pointer;transition:background .15s ease;}
+.click-row:hover{background:rgba(198,161,91,.08);}
+.history-year-card.clickable{cursor:pointer;transition:border-color .15s ease,transform .15s ease;}
+.history-year-card.clickable:hover{border-color:var(--gold);transform:translateY(-1px);}
+.story-stack{display:grid;gap:7px;margin-top:12px;}
+.story-line{padding:8px 10px;border-left:2px solid var(--gold);background:rgba(11,31,54,.34);font-family:'Frank Ruhl Libre',serif;color:var(--botticelli);font-size:13px;}
+.race-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px;margin-bottom:12px;}
+.race-chip{border:1px solid var(--rule);padding:10px 12px;border-radius:3px;background:rgba(75,107,149,.05);}
+.race-chip .r-seed{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--gold);}
+.race-chip .r-name{font-family:'Playfair Display',serif;color:var(--white);font-size:16px;margin-top:2px;}
+.race-chip .r-meta{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);margin-top:4px;}
+.race-safe{border-color:rgba(76,139,107,.5);}.race-bubble{border-color:rgba(198,161,91,.7);}.race-danger{border-color:rgba(181,87,63,.7);}
+.save-strip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);}
+.save-status{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);margin-right:auto;}
+.save-status.good{color:var(--up);}
+.atg-track{margin-top:14px;padding:14px;border:1px solid var(--rule);background:rgba(75,107,149,.05);}
+.atg-track-title{font-family:'Roboto Mono',monospace;color:var(--gold);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+.progress-row{display:grid;grid-template-columns:82px 1fr 70px;gap:8px;align-items:center;margin:7px 0;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);}
+.progress-bar{height:7px;border:1px solid var(--rule);background:rgba(11,31,54,.5);overflow:hidden;border-radius:8px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--kashmir),var(--gold));}
+.archive-standings{margin-top:14px;}
+.modal-sheet.wide{max-width:880px;}
+.save-code{width:100%;min-height:190px;resize:vertical;background:#081827;border:1px solid var(--rule);color:var(--botticelli);padding:12px;font-family:'Roboto Mono',monospace;font-size:10px;line-height:1.45;}
+
+/* Championship arcade full-screen broadcast */
+#arcadeModal{align-items:stretch;background:#050b12;z-index:3000;}
+#arcadeModal.hidden{display:none;}
+.arcade-shell{width:100%;min-height:100vh;background:
+ radial-gradient(900px 420px at 50% -10%,rgba(198,161,91,.18),transparent 68%),
+ linear-gradient(180deg,#081420 0%,#0b1f36 48%,#07121f 100%);color:var(--white);display:flex;flex-direction:column;overflow-y:auto;}
+.arcade-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(198,161,91,.35);background:rgba(4,12,22,.78);position:sticky;top:0;z-index:8;backdrop-filter:blur(8px);}
+.arcade-brand{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;}
+.arcade-title{font-family:'Playfair Display',serif;font-size:clamp(18px,3vw,26px);color:#fff;}
+.arcade-top-actions{display:flex;gap:7px;align-items:center;}
+.arcade-icon-btn{padding:8px 10px;font-size:10px;background:transparent;}
+.arcade-stage{width:min(1180px,100%);margin:0 auto;padding:18px 14px 36px;flex:1;}
+.broadcast-intro{text-align:center;padding:18px 0 6px;}
+.broadcast-kicker{font-family:'Roboto Mono',monospace;color:var(--gold);letter-spacing:.22em;text-transform:uppercase;font-size:10px;}
+.broadcast-intro h2{font-family:'Playfair Display',serif;font-size:clamp(30px,6vw,56px);margin:8px 0 6px;color:#fff;}
+.broadcast-intro p{font-family:'Frank Ruhl Libre',serif;font-style:italic;color:var(--regent);margin:0;}
+.finalist-grid{display:grid;grid-template-columns:1fr minmax(90px,130px) 1fr;gap:14px;align-items:stretch;margin:22px 0;}
+.finalist-card{position:relative;overflow:hidden;border:1px solid rgba(198,161,91,.5);background:linear-gradient(160deg,rgba(75,107,149,.28),rgba(11,31,54,.75));padding:20px;border-radius:6px;text-align:center;box-shadow:0 20px 45px rgba(0,0,0,.28);}
+.finalist-card:before{content:'';position:absolute;inset:-45% 20% auto;height:140%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.08),transparent);transform:rotate(15deg);animation:spotSweep 4.8s linear infinite;}
+@keyframes spotSweep{from{transform:translateX(-180%) rotate(15deg)}to{transform:translateX(220%) rotate(15deg)}}
+.finalist-emoji{font-size:44px;position:relative;}.finalist-name{font-family:'Playfair Display',serif;font-size:28px;margin-top:6px;position:relative;}.finalist-seed{font-family:'Roboto Mono',monospace;color:var(--gold);font-size:10px;position:relative;}
+.finalist-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px;position:relative;}.finalist-stat{border-top:1px solid var(--rule);padding-top:7px;}.finalist-stat b{display:block;font-family:'Roboto Mono',monospace;color:#fff;font-size:12px;}.finalist-stat span{font-family:'Roboto Mono',monospace;color:var(--polo);font-size:8px;text-transform:uppercase;letter-spacing:.08em;}
+.vs-medallion{display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-bright);font-size:30px;}
+.arcade-choice{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:16px 0 8px;}
+.walkout{border:1px solid var(--rule);background:linear-gradient(90deg,rgba(11,31,54,.7),rgba(75,107,149,.18),rgba(11,31,54,.7));padding:16px;text-align:center;margin:10px 0 16px;}
+.walkout .series-score{font-family:'Roboto Mono',monospace;color:var(--gold);font-size:11px;letter-spacing:.12em;text-transform:uppercase;}
+.walkout .walkout-main{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);margin:5px 0;color:#fff;}
+.tv-scoreboard{border:1px solid rgba(198,161,91,.42);background:#07131f;overflow-x:auto;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.score-row{display:grid;grid-template-columns:minmax(120px,170px) repeat(9,minmax(42px,1fr)) minmax(64px,1.2fr) 72px;min-width:690px;border-bottom:1px solid rgba(198,161,91,.16);}
+.score-row:last-child{border-bottom:none}.score-cell{min-height:48px;border-right:1px solid rgba(198,161,91,.12);padding:5px;position:relative;}.score-cell:last-child{border-right:none}.score-name{display:flex;align-items:center;gap:7px;padding:8px 10px;font-family:'Playfair Display',serif;font-weight:700;color:#fff;}.frame-num{font-family:'Roboto Mono',monospace;font-size:7px;color:var(--kashmir);position:absolute;left:4px;top:3px}.frame-marks{text-align:right;font-family:'Roboto Mono',monospace;color:#fff;font-size:11px;min-height:14px}.frame-cume{text-align:center;font-family:'Roboto Mono',monospace;color:var(--gold-bright);font-size:12px;margin-top:5px}.score-total{display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-bright);}
+.arcade-arena{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,.75fr);gap:14px;margin-top:14px;}
+.lane-scene{position:relative;height:min(58vh,560px);min-height:410px;border:1px solid rgba(198,161,91,.45);overflow:hidden;background:linear-gradient(#07111d 0 17%,#142437 17% 22%,#c59655 22% 100%);perspective:800px;}
+.crowd{position:absolute;inset:0 0 auto;height:20%;background:radial-gradient(circle at 8px 8px,rgba(255,255,255,.14) 0 2px,transparent 3px) 0 0/18px 16px,linear-gradient(#050b12,#111f2d);opacity:.9;}
+.lane-light{position:absolute;top:16%;left:12%;right:12%;height:5%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);filter:blur(5px);opacity:.35;}
+.arcade-lane{position:absolute;left:16%;right:16%;top:22%;bottom:-9%;background:repeating-linear-gradient(90deg,rgba(80,45,18,.13) 0 1px,rgba(255,220,155,.06) 1px 8.5%),linear-gradient(180deg,#e4bd7d,#b47a39 78%,#8f5e2e);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);}
+.gutter{position:absolute;top:22%;bottom:-8%;width:16%;background:linear-gradient(180deg,#1a2937,#101b26);}.gutter.left{left:0;clip-path:polygon(100% 0,100% 100%,0 100%,55% 0)}.gutter.right{right:0;clip-path:polygon(0 0,45% 0,100% 100%,0 100%)}
+.foul-line{position:absolute;left:15%;right:15%;bottom:18%;height:3px;background:#2a2015;box-shadow:0 0 4px rgba(255,255,255,.3)}
+.pocket-marker{position:absolute;top:36%;width:10px;height:10px;border:1px solid var(--gold-bright);transform:rotate(45deg);opacity:.85;box-shadow:0 0 9px rgba(228,200,136,.45);}
+.arcade-ball{position:absolute;width:30px;height:30px;border-radius:50%;left:50%;top:78%;background:radial-gradient(circle at 35% 28%,#f2d79b,#c6a15b 38%,#5d4727 72%);box-shadow:0 7px 14px rgba(0,0,0,.5);z-index:4;opacity:0;pointer-events:none;will-change:transform,left,top,opacity;}
+.arcade-ball.rolling{opacity:1;}
+.pin-deck{position:absolute;left:36%;right:36%;top:23.5%;height:82px;z-index:3;}
+.arcade-pin{position:absolute;width:12px;height:30px;background:linear-gradient(90deg,#dfe8ef,#fff 45%,#c7d2dc);border-radius:48% 48% 42% 42%;transform-origin:50% 100%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14);transition:transform .28s ease,opacity .28s ease;}
+.arcade-pin:after{content:'';position:absolute;left:1px;right:1px;top:8px;height:3px;background:#b3483e;}.arcade-pin.down{transform:translate(5px,8px) rotate(78deg);opacity:.25;}
+.lane-hud{position:absolute;left:12px;top:12px;z-index:5;background:rgba(4,12,20,.78);border:1px solid rgba(198,161,91,.38);padding:9px 11px;max-width:72%;}.lane-hud .bowler{font-family:'Playfair Display',serif;color:#fff;font-size:18px}.lane-hud .turnmeta{font-family:'Roboto Mono',monospace;color:var(--gold);font-size:9px;margin-top:2px;text-transform:uppercase;letter-spacing:.08em;}
+.arcade-sidepanel{border:1px solid var(--rule);background:rgba(5,14,24,.72);padding:14px;display:flex;flex-direction:column;gap:12px;}
+.commentary-box{min-height:110px;border-bottom:1px solid var(--rule);padding-bottom:10px;}.commentary-title,.control-title{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}.commentary-line{font-family:'Frank Ruhl Libre',serif;color:var(--botticelli);font-size:13px;line-height:1.4;margin:4px 0;}.commentary-line.latest{color:#fff;}
+.arcade-controls{display:grid;gap:9px;}.arcade-control-row label{display:flex;justify-content:space-between;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--polo);margin-bottom:4px;}.arcade-controls input[type=range]{width:100%;accent-color:var(--gold);}
+.power-meter{height:14px;border:1px solid var(--rule);position:relative;background:linear-gradient(90deg,#7f3940,#caa35f 38%,#5a9a77 70%,#caa35f 88%,#7f3940);overflow:hidden;}.power-needle{position:absolute;top:-2px;bottom:-2px;width:3px;background:#fff;box-shadow:0 0 5px #fff;left:50%;}.power-sweet{position:absolute;top:0;bottom:0;left:76%;width:9%;border-left:1px solid rgba(255,255,255,.45);border-right:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.08);}
+.roll-btn{font-size:14px;padding:14px 18px;}.cpu-thinking{text-align:center;padding:18px 8px;font-family:'Roboto Mono',monospace;color:var(--polo);font-size:11px;animation:pulseText 1.1s ease-in-out infinite alternate;}@keyframes pulseText{from{opacity:.45}to{opacity:1}}
+.game-intermission{text-align:center;padding:26px 14px;border:1px solid var(--rule);background:rgba(11,31,54,.4);}.game-intermission h3{font-family:'Playfair Display',serif;font-size:28px;margin:0 0 7px;color:#fff;}.game-intermission .game-score{font-family:'Roboto Mono',monospace;color:var(--gold-bright);font-size:18px;}.game-intermission p{font-family:'Frank Ruhl Libre',serif;color:var(--regent);}
+.trophy-stage{text-align:center;padding:34px 12px;position:relative;overflow:hidden;min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}.trophy-icon{font-size:82px;filter:drop-shadow(0 0 25px rgba(228,200,136,.45));animation:trophyFloat 2.2s ease-in-out infinite alternate;}@keyframes trophyFloat{from{transform:translateY(4px) scale(.98)}to{transform:translateY(-7px) scale(1.04)}}
+.trophy-stage h2{font-family:'Playfair Display',serif;font-size:clamp(38px,7vw,72px);margin:8px 0 4px;color:#fff}.trophy-stage .champ-sub{font-family:'Roboto Mono',monospace;color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:10px}.trophy-stats{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:9px;width:min(620px,100%);margin:22px auto}.trophy-stat{border:1px solid var(--rule);padding:12px;background:rgba(11,31,54,.52)}.trophy-stat b{display:block;font-family:'Playfair Display',serif;font-size:22px;color:#fff}.trophy-stat span{font-family:'Roboto Mono',monospace;font-size:8px;color:var(--polo);text-transform:uppercase;letter-spacing:.08em}
+.confetti{position:absolute;top:-20px;width:8px;height:16px;background:var(--gold);opacity:.85;animation:confettiFall linear forwards;}@keyframes confettiFall{to{transform:translateY(85vh) rotate(720deg);opacity:.1}}
+@media(max-width:800px){.arcade-arena{grid-template-columns:1fr}.lane-scene{height:52vh;min-height:390px}.finalist-grid{grid-template-columns:1fr;}.vs-medallion{min-height:50px}.score-row{grid-template-columns:110px repeat(9,40px) 58px 60px}.arcade-stage{padding:12px 8px 28px}.trophy-stats{grid-template-columns:1fr 1fr}.progress-row{grid-template-columns:72px 1fr 56px}}
+@media(max-width:520px){.lane-scene{height:48vh;min-height:350px}.arcade-topbar{padding:9px 10px}.arcade-title{font-size:16px}.arcade-brand{display:none}.finalist-card{padding:15px}.finalist-name{font-size:24px}.trophy-stats{grid-template-columns:1fr}.save-strip button{padding:8px 10px}.badge-mini{display:none}}
+
+
+
+.build-badge{display:inline-block;margin-top:10px;padding:6px 10px;border:1px solid var(--rule);border-radius:999px;font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-bright);background:rgba(198,161,91,.08);} 
+
+/* -------------------------------------------------------------------------
+   HUMAN BOWLERS UPDATE
+   ------------------------------------------------------------------------- */
+.player-preview-wrap,.finalist-preview-wrap{display:flex;align-items:center;justify-content:center;}
+.player-preview-wrap{margin-bottom:10px;}
+.finalist-preview-wrap{margin:6px 0 8px;}
+.bowler-avatar{--shirt:#a54145;--skin:#e6b690;--ball:#d26532;--hair:#5b3a21;--height:1;--build:1;--x:0px;position:relative;width:122px;height:170px;transform:translateX(var(--x)) scale(var(--height));transform-origin:bottom center;pointer-events:none;}
+.bowler-avatar.preview{height:150px;}
+.bowler-avatar.mini{width:108px;height:138px;transform:scale(calc(var(--height) * .88));transform-origin:bottom center;}
+.bowler-avatar.player-card{width:132px;height:166px;}
+.bowler-avatar .avatar-shadow{position:absolute;left:26px;right:26px;bottom:6px;height:12px;background:radial-gradient(circle at center, rgba(0,0,0,.42), transparent 70%);filter:blur(2px);opacity:.6;}
+.bowler-avatar .avatar-body{position:absolute;left:50%;bottom:16px;width:72px;height:134px;transform:translateX(-50%);}
+.bowler-avatar .avatar-head{position:absolute;left:50%;top:4px;transform:translateX(-50%);width:34px;height:34px;border-radius:50%;background:var(--skin);box-shadow:0 0 0 1px rgba(11,31,54,.25) inset;z-index:3;overflow:hidden;}
+.bowler-avatar .avatar-face{position:absolute;left:50%;top:18px;transform:translateX(-50%);width:18px;height:8px;border-bottom:2px solid rgba(11,31,54,.25);border-radius:0 0 10px 10px;opacity:.45;}
+.bowler-avatar .avatar-hair{position:absolute;left:1px;right:1px;top:-1px;height:18px;background:var(--hair);border-radius:60% 60% 45% 45%;}
+.bowler-avatar .avatar-hair.medium{height:21px;border-radius:65% 65% 50% 50%;}
+.bowler-avatar .avatar-hair.curly{height:18px;border-radius:55% 55% 48% 48%;box-shadow:4px 0 0 0 var(--hair), -4px 0 0 0 var(--hair), 0 4px 0 0 var(--hair);}
+.bowler-avatar .avatar-hair.shortblack{height:16px;background:#181818;}
+.bowler-avatar .avatar-hair.red{background:#a53a23;}
+.bowler-avatar .avatar-hair.brown{background:#5b3a21;}
+.bowler-avatar .avatar-hair.dirtyblonde{background:#a68858;}
+.bowler-avatar .avatar-hair.lightbrown{background:#8f6748;}
+.bowler-avatar .avatar-hair.black{background:#1a1b22;}
+.bowler-avatar .avatar-torso{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:calc(30px * var(--build));height:50px;background:linear-gradient(180deg,color-mix(in srgb, var(--shirt) 92%, #fff 8%),color-mix(in srgb, var(--shirt) 75%, #0b1f36 25%));border-radius:12px 12px 10px 10px;box-shadow:0 0 0 1px rgba(11,31,54,.28) inset;z-index:2;}
+.bowler-avatar .avatar-logo{position:absolute;left:50%;top:10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:7px;color:#fff;letter-spacing:.04em;text-shadow:0 1px 1px rgba(0,0,0,.35);white-space:nowrap;text-transform:uppercase;max-width:calc(100% - 6px);overflow:hidden;text-overflow:ellipsis;}
+.bowler-avatar .avatar-arm{position:absolute;top:40px;width:11px;height:44px;background:var(--skin);border-radius:9px;transform-origin:top center;z-index:1;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-arm.back{left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-arm.release{right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.back{left:auto;right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.release{right:auto;left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-support{position:absolute;top:48px;right:19px;width:10px;height:28px;background:var(--skin);border-radius:9px;transform:rotate(-5deg);display:none;z-index:2;}
+.bowler-avatar.twohanded .avatar-support{display:block;}
+.bowler-avatar.twohanded.lefty .avatar-support{right:auto;left:19px;transform:rotate(5deg);}
+.bowler-avatar .avatar-hips{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:24px;height:10px;background:color-mix(in srgb,var(--shirt) 45%, #0b1f36 55%);border-radius:5px;z-index:2;}
+.bowler-avatar .avatar-leg{position:absolute;top:84px;width:11px;height:52px;background:#d8dce6;border-radius:8px;transform-origin:top center;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-leg.left{left:24px;transform:rotate(6deg);}
+.bowler-avatar .avatar-leg.right{right:24px;transform:rotate(-4deg);}
+.bowler-avatar .avatar-shoe{position:absolute;bottom:-2px;width:18px;height:8px;background:#f8f7f4;border-radius:8px;box-shadow:0 0 0 1px rgba(11,31,54,.2) inset;}
+.bowler-avatar .avatar-shoe.left{left:18px;transform:skewX(8deg);}
+.bowler-avatar .avatar-shoe.right{right:18px;transform:skewX(-8deg);}
+.bowler-avatar .avatar-ball{position:absolute;bottom:28px;right:6px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.95), color-mix(in srgb, var(--ball) 82%, #fff 18%) 20%, var(--ball) 55%, #000 135%);box-shadow:0 3px 8px rgba(0,0,0,.25), inset -2px -2px 4px rgba(0,0,0,.18);z-index:0;}
+.bowler-avatar.lefty .avatar-ball{right:auto;left:6px;}
+.bowler-avatar .avatar-name{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:9px;color:var(--botticelli);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;opacity:.82;}
+.bowler-avatar.preview .avatar-name,.bowler-avatar.mini .avatar-name{display:none;}
+.bowler-avatar.ready{animation:bobBowler 1.5s ease-in-out infinite;}
+.bowler-avatar.rolling{animation:approachBowler .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.release{animation:releaseArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.back{animation:backswingArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-support{animation:supportArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.left{animation:leadLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.right{animation:trailLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-ball{animation:carryBall .38s ease forwards, bowlBall .62s ease .33s forwards;}
+.bowler-avatar.lefty.rolling{animation:approachBowlerLeft .95s ease forwards;}
+@keyframes bobBowler{0%,100%{transform:translateX(var(--x)) scale(var(--height)) translateY(0);}50%{transform:translateX(var(--x)) scale(var(--height)) translateY(-2px);}}
+@keyframes approachBowler{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) + 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) + 30px)) scale(var(--height));}}
+@keyframes approachBowlerLeft{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) - 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) - 30px)) scale(var(--height));}}
+@keyframes releaseArm{0%{transform:rotate(-16deg);}38%{transform:rotate(25deg);}100%{transform:rotate(76deg);}}
+@keyframes backswingArm{0%{transform:rotate(16deg);}38%{transform:rotate(-40deg);}100%{transform:rotate(18deg);}}
+.bowler-avatar.lefty .avatar-arm.release{transform:rotate(16deg);} .bowler-avatar.lefty .avatar-arm.back{transform:rotate(-16deg);} 
+@keyframes supportArm{0%{opacity:.9;transform:rotate(-5deg);}100%{opacity:.55;transform:rotate(40deg);}}
+@keyframes leadLeg{0%{transform:rotate(6deg);}50%{transform:rotate(22deg);}100%{transform:rotate(34deg);}}
+@keyframes trailLeg{0%{transform:rotate(-4deg);}50%{transform:rotate(-18deg);}100%{transform:rotate(-28deg);}}
+@keyframes carryBall{0%{transform:translate(0,0) scale(1);}100%{transform:translate(6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBall{0%{transform:translate(6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(118px,-92px) scale(.42);opacity:0;}}
+.bowler-avatar.lefty .avatar-ball{animation-direction:normal;} .bowler-avatar.lefty.rolling .avatar-ball{animation:carryBallLeft .38s ease forwards, bowlBallLeft .62s ease .33s forwards;}
+@keyframes carryBallLeft{0%{transform:translate(0,0) scale(1);}100%{transform:translate(-6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBallLeft{0%{transform:translate(-6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(-118px,-92px) scale(.42);opacity:0;}}
+.arcade-arena{align-items:start;}
+.lane-scene{overflow:hidden;min-height:520px;}
+.human-stage{position:absolute;left:50%;bottom:38px;width:220px;height:250px;transform:translateX(-50%);z-index:3;pointer-events:none;}
+.human-stage .bowler-avatar{position:absolute;left:38px;bottom:0;}
+.release-path{position:absolute;left:50%;bottom:122px;width:10px;height:145px;transform:translateX(-50%);background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0));filter:blur(2px);opacity:0;z-index:2;pointer-events:none;transition:opacity .18s ease;}
+.release-path.active{opacity:.85;}
+
+.bowler-avatar.throwing{animation:none!important;}
+.bowler-avatar.throwing .avatar-body{animation:throwBody .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-torso{animation:throwTorso .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-arm.release{animation:throwReleaseRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.release{animation:throwReleaseLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-arm.back{animation:throwBackRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.back{animation:throwBackLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-leg.left{animation:throwLead .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-leg.right{animation:throwTrail .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-head{animation:throwHead .95s ease forwards;}
+.bowler-avatar.throwing .avatar-ball{animation:none!important;}
+@keyframes throwBody{0%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-4px) rotate(-2deg)}50%{transform:translateX(-50%) translateY(2px) rotate(5deg)}72%{transform:translateX(-50%) translateY(8px) rotate(13deg)}100%{transform:translateX(-50%) translateY(2px) rotate(7deg)}}
+@keyframes throwTorso{0%{transform:translateX(-50%) rotate(0)}55%{transform:translateX(-50%) rotate(6deg)}78%{transform:translateX(-50%) rotate(14deg)}100%{transform:translateX(-50%) rotate(8deg)}}
+@keyframes throwReleaseRight{0%{transform:rotate(-12deg)}22%{transform:rotate(-76deg)}48%{transform:rotate(-118deg)}64%{transform:rotate(-8deg)}78%{transform:rotate(72deg)}100%{transform:rotate(96deg)}}
+@keyframes throwReleaseLeft{0%{transform:rotate(12deg)}22%{transform:rotate(76deg)}48%{transform:rotate(118deg)}64%{transform:rotate(8deg)}78%{transform:rotate(-72deg)}100%{transform:rotate(-96deg)}}
+@keyframes throwBackRight{0%{transform:rotate(16deg)}35%{transform:rotate(42deg)}70%{transform:rotate(-22deg)}100%{transform:rotate(-8deg)}}
+@keyframes throwBackLeft{0%{transform:rotate(-16deg)}35%{transform:rotate(-42deg)}70%{transform:rotate(22deg)}100%{transform:rotate(8deg)}}
+@keyframes throwLead{0%{transform:rotate(6deg) translate(0,0)}55%{transform:rotate(18deg) translate(2px,2px)}78%{transform:rotate(34deg) translate(5px,7px)}100%{transform:rotate(24deg) translate(4px,4px)}}
+@keyframes throwTrail{0%{transform:rotate(-4deg) translate(0,0)}55%{transform:rotate(-14deg) translate(-2px,1px)}78%{transform:rotate(-44deg) translate(-8px,-1px)}100%{transform:rotate(-32deg) translate(-6px,1px)}}
+@keyframes throwHead{0%,45%{transform:translateX(-50%) rotate(0)}75%,100%{transform:translateX(-50%) rotate(-7deg)}}
+
+.bowler-avatar.celebrate .avatar-body{animation:celebrateBody .62s cubic-bezier(.2,.85,.25,1) both;}
+.bowler-avatar.celebrate .avatar-arm.release{animation:celebrateArm .62s cubic-bezier(.2,.85,.25,1) both!important;}
+.bowler-avatar.frustrated .avatar-body{animation:frustratedBody .62s ease both;}
+.bowler-avatar.frustrated .avatar-head{animation:frustratedHead .5s ease 2;}
+.bowler-avatar.spare-react .avatar-body{animation:spareBody .55s ease both;}
+.bowler-avatar.twohanded.throwing .avatar-support{display:block;animation:twoHandSupport .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+@keyframes celebrateBody{0%{transform:translateX(-50%) translateY(0) rotate(7deg)}35%{transform:translateX(-50%) translateY(-14px) rotate(-3deg)}70%{transform:translateX(-50%) translateY(-5px) rotate(5deg)}100%{transform:translateX(-50%) translateY(0) rotate(0)}}
+@keyframes celebrateArm{0%{transform:rotate(96deg)}45%{transform:rotate(165deg)}100%{transform:rotate(125deg)}}
+@keyframes frustratedBody{0%,100%{transform:translateX(-50%) rotate(0)}35%{transform:translateX(-50%) rotate(-7deg)}70%{transform:translateX(-50%) rotate(7deg)}}
+@keyframes frustratedHead{0%,100%{transform:translateX(-50%) rotate(0)}50%{transform:translateX(-50%) rotate(12deg)}}
+@keyframes spareBody{0%{transform:translateX(-50%) rotate(7deg)}45%{transform:translateX(-50%) translateY(-6px) rotate(-2deg)}100%{transform:translateX(-50%) rotate(0)}}
+@keyframes twoHandSupport{0%{transform:rotate(-5deg);opacity:1}30%{transform:rotate(-45deg);opacity:1}55%{transform:rotate(8deg);opacity:1}80%{transform:rotate(58deg);opacity:.75}100%{transform:rotate(35deg);opacity:.5}}
+
+
+
+.bowler-style-chip{display:inline-block;margin-top:4px;padding:4px 8px;border:1px solid rgba(163,199,224,.26);border-radius:999px;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--regent);text-transform:uppercase;letter-spacing:.07em;}
+.bowler-bio{font-family:'Frank Ruhl Libre',serif;font-size:13px;color:var(--regent);margin-top:8px;line-height:1.4;}
+.player-card-hero{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;padding:12px;border:1px solid var(--rule);background:rgba(75,107,149,.08);border-radius:4px;margin-bottom:12px;}
+.player-card-hero .hero-copy{font-family:'Frank Ruhl Libre',serif;color:var(--botticelli);} 
+.player-card-hero .hero-copy .hero-title{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.player-card-hero .hero-copy .hero-main{font-family:'Playfair Display',serif;font-size:20px;color:#fff;line-height:1.15;}
+.player-card-hero .hero-copy .hero-sub{font-size:13px;color:var(--regent);margin-top:4px;}
+.finalist-card .finalist-emoji{font-size:20px;}
+.finalist-card .finalist-preview-wrap .bowler-avatar{margin:0 auto;}
+.lane-hud .bowler{display:flex;align-items:center;gap:10px;min-height:40px;}
+.lane-hud .bowler .lane-bowler-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.lane-hud .bowler .lane-bowler-name{font-family:'Playfair Display',serif;color:#fff;font-size:18px;line-height:1.1;}
+.lane-hud .bowler .lane-bowler-meta{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.08em;}
+@media (max-width:900px){.player-card-hero{grid-template-columns:1fr;justify-items:center;text-align:center;}.lane-scene{min-height:500px;}.human-stage{bottom:48px;transform:translateX(-50%) scale(.88);}}
+@media (max-width:640px){.human-stage{bottom:60px;transform:translateX(-50%) scale(.72);} .lane-scene{min-height:470px;} .bowler-avatar.player-card{transform:scale(.85);} }
+
+</style>
+
 </head>
+
 <body>
+
 <div class="wrap">
+
+ 
+
  <div class="masthead">
+
    <div class="brand-row">
+
      <div class="wallaby-mark">🦘</div>
+
      <div class="brand-text">
+
        <p class="eyebrow">Benny Capital Management</p>
+
        <h1>BCM Bowling League</h1>
-       <div class="tagline">Career Simulator · Championship Arcade · League History</div><div class="build-badge">Beta v0.2.3 · Human Throw + Reactions</div>
+
+       <div class="tagline">Career Simulator · Championship Arcade · League History</div><div class="build-badge">Beta v0.2.6 · Stable Core + Custom Bowler Data</div>
+
+     </div>
+
+   </div>
+
+   <div class="season-status" id="seasonStatus">
+
+     Regular Season
+
+     <span class="big" id="weekIndicator">Week 0 of 10</span><span id="careerYearBadge" style="font-size:12px; color:var(--gold);"></span>
+
+   </div>
+
+ </div>
+
+ 
+
+ <!-- HALL OF FAME -->
+
+ <div class="panel" id="hallOfFamePanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Hall of Fame</h2>
+
+     <span class="sub">Champions this session</span>
+
+   </div>
+
+   <div id="hallOfFameContent"></div>
+
+ </div>
+
+ 
+
+ <!-- CAREER MILESTONES -->
+
+ <div class="panel" id="careerMilestonesPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Career Milestones</h2>
+
+     <span class="sub">Records, promotions &amp; tour entries</span>
+
+   </div>
+
+   <details class="past-weeks" id="careerMilestonesDetails">
+
+     <summary id="careerMilestonesSummary">▸ View career milestones</summary>
+
+     <div id="careerMilestonesContent"></div>
+
+   </details>
+
+ </div>
+
+ 
+
+ <!-- HISTORY CHANNEL -->
+
+ <div class="panel" id="historyChannelPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>History Channel</h2>
+
+     <span class="sub">Every year's champion &amp; award winners</span>
+
+   </div>
+
+   <details class="past-weeks" id="historyChannelDetails">
+
+     <summary id="historyChannelSummary">▸ View history channel</summary>
+
+     <div id="historyChannelContent"></div>
+
+   </details>
+
+ </div>
+
+ 
+
+
+
+ <!-- CAREER COMMAND CENTER -->
+ <div class="panel" id="careerHubPanel" style="display:none;">
+   <div class="panel-head">
+     <h2>Career Command Center</h2>
+     <span class="sub">Résumés, dynasties, records &amp; rivalries</span>
+   </div>
+   <div id="careerHubContent"></div>
+ </div>
+
+ <!-- CONTROLS -->
+
+ <div class="panel">
+
+   <div class="panel-head">
+
+     <h2>Season Controls</h2>
+
+     <span class="sub">3 games / night · 3 nights / week · aggregate pins</span>
+
+   </div>
+
+   <label class="career-toggle">
+
+     <input type="checkbox" id="careerModeToggle">
+
+     <span>Career Mode — carry player progression across years instead of resetting</span>
+
+   </label>
+
+   <div class="controls">
+
+     <button class="primary" id="btnSimWeek">Simulate Next Week</button>
+
+     <button class="ghost" id="btnSimAll">Fast-Forward Regular Season</button>
+
+     <button class="ghost" id="btnReset">New Season</button>
+
+     <button class="ghost" id="btnSim5Years" style="display:none;">Sim 5 Years</button>
+
+     <button class="ghost" id="btnSim10Years" style="display:none;">Sim 10 Years</button>
+
+   </div>
+
+   <p class="hint" id="controlHint">Each week, every bowler rolls three nights of three games apiece. Standings are cumulative pinfall — no head-to-head, pure aggregate. Results are freshly simulated every run, so no two seasons play out the same.</p>
+   <div class="save-strip">
+     <span class="save-status" id="saveStatus">Local autosave ready</span>
+     <button class="ghost" id="btnExportSave">Share Save Code</button>
+     <button class="ghost" id="btnImportSave">Import Save</button>
+     <button class="ghost" id="btnClearSave">Clear Saved Progress</button>
+   </div>
+
+ </div>
+
+ 
+
+ <div id="milestoneToastHost"></div>
+
+ 
+
+ <!-- LIVE LEADERBOARD -->
+
+ <div class="panel">
+
+   <div class="panel-head">
+
+     <h2>Live Leaderboard</h2>
+
+     <span class="sub" id="leaderboardSub">Season not yet started</span>
+
+   </div>
+
+   <table class="standings">
+
+     <thead>
+
+       <tr>
+
+         <th>#</th><th>Bowler</th><th id="standingsWeekHead" style="text-align:right">This Week</th>
+
+         <th id="standingsAvgHead" style="text-align:right">Weekly Avg</th><th id="standingsTotalHead" style="text-align:right">Season Total</th><th>Move</th>
+
+       </tr>
+
+     </thead>
+
+     <tbody id="standingsBody"></tbody>
+
+   </table>
+
+ </div>
+
+ 
+
+ <!-- WEEKLY RECAP -->
+
+ <div class="panel" id="recapPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Weekly Recap</h2>
+
+     <span class="sub">Filed after every week's close</span>
+
+   </div>
+
+   <div id="latestRecap"></div>
+
+   <details class="past-weeks" id="pastWeeksWrap" style="display:none;">
+
+     <summary>▸ View prior weekly recaps</summary>
+
+     <div id="pastRecaps"></div>
+
+   </details>
+
+ </div>
+
+ 
+
+
+
+ <!-- PLAYOFF RACE DESK -->
+ <div class="panel" id="racePanel" style="display:none;">
+   <div class="panel-head">
+     <h2>Playoff Race Desk</h2>
+     <span class="sub" id="racePanelSub">Projection desk</span>
+   </div>
+   <div id="racePanelContent"></div>
+ </div>
+
+ <!-- PLAYOFF ODDS / FAVORITES -->
+
+ <div class="panel odds-panel" id="oddsPanelWrap" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Championship Favorites</h2>
+
+     <span class="sub">Based on final standings</span>
+
+   </div>
+
+   <p class="hint" style="margin:0 0 14px;">Win probabilities use a 65% last-10 average / 35% career average blend, with softmax-weighted odds.</p>
+
+   <table class="odds-table" id="oddsTable"></table>
+
+ </div>
+
+ 
+
+ <!-- PLAYOFF RECAP -->
+
+ <div class="panel" id="playoffRecapPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Season Recap</h2>
+
+     <span class="sub">Playoff results</span>
+
+   </div>
+
+   <div id="playoffRecapContent"></div>
+
+ </div>
+
+ 
+
+ <!-- PLAYER CARD MODAL -->
+
+ <div class="modal-overlay hidden" id="playerCardModal">
+
+   <div class="modal-sheet">
+
+     <button class="modal-close" onclick="document.getElementById('playerCardModal').classList.add('hidden');">✕</button>
+
+     <h3 id="playerCardName"></h3>
+
+     <div id="playerCardContent"></div>
+
+   </div>
+
+ </div>
+
+ 
+
+ <!-- MATCH ANIMATION MODAL -->
+
+ <div class="modal-overlay hidden" id="matchAnimModal">
+
+   <div class="modal-sheet match-modal-sheet">
+
+     <button class="modal-close" id="matchModalCloseBtn">✕</button>
+
+     <div class="match-modal-head">
+
+       <div class="vs-title" id="matchModalTitle">— vs —</div>
+
+       <div class="vs-sub" id="matchModalSub">Round</div>
+
+     </div>
+
+     <div id="matchModalBody"></div>
+
+   </div>
+
+ </div>
+
+ 
+
+
+
+ <!-- SEASON ARCHIVE MODAL -->
+ <div class="modal-overlay hidden" id="seasonArchiveModal">
+   <div class="modal-sheet wide">
+     <button class="modal-close" onclick="document.getElementById('seasonArchiveModal').classList.add('hidden');">✕</button>
+     <h3 id="seasonArchiveTitle">Season Archive</h3>
+     <div id="seasonArchiveContent"></div>
+   </div>
+ </div>
+
+ <!-- SAVE CODE MODAL -->
+ <div class="modal-overlay hidden" id="saveCodeModal">
+   <div class="modal-sheet wide">
+     <button class="modal-close" onclick="document.getElementById('saveCodeModal').classList.add('hidden');">✕</button>
+     <h3 id="saveCodeTitle">Share Save Code</h3>
+     <p class="hint" id="saveCodeHint">Copy this code to another device or send it to a friend. Importing it recreates the career.</p>
+     <textarea class="save-code" id="saveCodeText" spellcheck="false"></textarea>
+     <div class="controls" style="margin-top:12px;">
+       <button class="primary" id="btnCopySaveCode">Copy Code</button>
+       <button class="primary" id="btnApplySaveCode" style="display:none;">Load This Save</button>
      </div>
    </div>
-   <div class="season-status" id="seasonStatus">Regular Season<span class="big" id="weekIndicator">Week 0 of 10</span><span id="careerYearBadge" style="font-size:12px; color:var(--gold);"></span></div>
  </div>
- <div class="panel" id="hallOfFamePanel" style="display:none;"><div class="panel-head"><h2>Hall of Fame</h2><span class="sub">Champions this session</span></div><div id="hallOfFameContent"></div></div>
- <div class="panel" id="careerMilestonesPanel" style="display:none;"><div class="panel-head"><h2>Career Milestones</h2><span class="sub">Records, promotions &amp; tour entries</span></div><details class="past-weeks" id="careerMilestonesDetails"><summary id="careerMilestonesSummary">▸ View career milestones</summary><div id="careerMilestonesContent"></div></details></div>
- <div class="panel" id="historyChannelPanel" style="display:none;"><div class="panel-head"><h2>History Channel</h2><span class="sub">Every year's champion &amp; award winners</span></div><details class="past-weeks" id="historyChannelDetails"><summary id="historyChannelSummary">▸ View history channel</summary><div id="historyChannelContent"></div></details></div>
- <div class="panel" id="careerHubPanel" style="display:none;"><div class="panel-head"><h2>Career Command Center</h2><span class="sub">Résumés, dynasties, records &amp; rivalries</span></div><div id="careerHubContent"></div></div>
- <div class="panel"><div class="panel-head"><h2>Season Controls</h2><span class="sub">3 games / night · 3 nights / week · aggregate pins</span></div><label class="career-toggle"><input type="checkbox" id="careerModeToggle"><span>Career Mode — carry player progression across years instead of resetting</span></label><div class="controls"><button class="primary" id="btnSimWeek">Simulate Next Week</button><button class="ghost" id="btnSimAll">Fast-Forward Regular Season</button><button class="ghost" id="btnReset">New Season</button><button class="ghost" id="btnSim5Years" style="display:none;">Sim 5 Years</button><button class="ghost" id="btnSim10Years" style="display:none;">Sim 10 Years</button></div><p class="hint" id="controlHint">Each week, every bowler rolls three nights of three games apiece. Standings are cumulative pinfall — no head-to-head, pure aggregate. Results are freshly simulated every run, so no two seasons play out the same.</p><div class="save-strip"><span class="save-status" id="saveStatus">Local autosave ready</span><button class="ghost" id="btnExportSave">Share Save Code</button><button class="ghost" id="btnImportSave">Import Save</button><button class="ghost" id="btnClearSave">Clear Saved Progress</button></div></div>
- <div id="milestoneToastHost"></div>
- <div class="panel"><div class="panel-head"><h2>Live Leaderboard</h2><span class="sub" id="leaderboardSub">Season not yet started</span></div><table class="standings"><thead><tr><th>#</th><th>Bowler</th><th id="standingsWeekHead" style="text-align:right">This Week</th><th id="standingsAvgHead" style="text-align:right">Weekly Avg</th><th id="standingsTotalHead" style="text-align:right">Season Total</th><th>Move</th></tr></thead><tbody id="standingsBody"></tbody></table></div>
- <div class="panel" id="recapPanel" style="display:none;"><div class="panel-head"><h2>Weekly Recap</h2><span class="sub">Filed after every week's close</span></div><div id="latestRecap"></div><details class="past-weeks" id="pastWeeksWrap" style="display:none;"><summary>▸ View prior weekly recaps</summary><div id="pastRecaps"></div></details></div>
- <div class="panel" id="racePanel" style="display:none;"><div class="panel-head"><h2>Playoff Race Desk</h2><span class="sub" id="racePanelSub">Projection desk</span></div><div id="racePanelContent"></div></div>
- <div class="panel odds-panel" id="oddsPanelWrap" style="display:none;"><div class="panel-head"><h2>Championship Favorites</h2><span class="sub">Based on final standings</span></div><p class="hint" style="margin:0 0 14px;">Win probabilities use a 65% last-10 average / 35% career average blend, with softmax-weighted odds.</p><table class="odds-table" id="oddsTable"></table></div>
- <div class="panel" id="playoffRecapPanel" style="display:none;"><div class="panel-head"><h2>Season Recap</h2><span class="sub">Playoff results</span></div><div id="playoffRecapContent"></div></div>
- <div class="modal-overlay hidden" id="playerCardModal"><div class="modal-sheet"><button class="modal-close" onclick="document.getElementById('playerCardModal').classList.add('hidden');">✕</button><h3 id="playerCardName"></h3><div id="playerCardContent"></div></div></div>
- <div class="modal-overlay hidden" id="matchAnimModal"><div class="modal-sheet match-modal-sheet"><button class="modal-close" id="matchModalCloseBtn">✕</button><div class="match-modal-head"><div class="vs-title" id="matchModalTitle">— vs —</div><div class="vs-sub" id="matchModalSub">Round</div></div><div id="matchModalBody"></div></div></div>
- <div class="modal-overlay hidden" id="seasonArchiveModal"><div class="modal-sheet wide"><button class="modal-close" onclick="document.getElementById('seasonArchiveModal').classList.add('hidden');">✕</button><h3 id="seasonArchiveTitle">Season Archive</h3><div id="seasonArchiveContent"></div></div></div>
- <div class="modal-overlay hidden" id="saveCodeModal"><div class="modal-sheet wide"><button class="modal-close" onclick="document.getElementById('saveCodeModal').classList.add('hidden');">✕</button><h3 id="saveCodeTitle">Share Save Code</h3><p class="hint" id="saveCodeHint">Copy this code to another device or send it to a friend. Importing it recreates the career.</p><textarea class="save-code" id="saveCodeText" spellcheck="false"></textarea><div class="controls" style="margin-top:12px;"><button class="primary" id="btnCopySaveCode">Copy Code</button><button class="primary" id="btnApplySaveCode" style="display:none;">Load This Save</button></div></div></div>
- <div class="modal-overlay hidden" id="arcadeModal"><div class="arcade-shell"><div class="arcade-topbar"><div class="arcade-brand">BCM Sports Network</div><div class="arcade-title" id="arcadeTopTitle">Championship Bowling</div><div class="arcade-top-actions"><button class="arcade-icon-btn ghost" id="btnArcadeSound">Sound On</button><button class="arcade-icon-btn ghost" id="btnArcadeExit">Exit</button></div></div><div class="arcade-stage" id="arcadeStage"></div></div></div>
- <div class="panel" id="playoffIntroPanel" style="display:none;"><div class="panel-head"><h2>Playoff Bracket</h2><span class="sub">Regular season complete · double elimination</span></div><p class="hint">All nine bowlers make the playoffs. Seeds 8 and 9 open with a play-in; from there it's a standard winners bracket against a running losers bracket, and the two survivors meet in a best-of-three championship. Every match is three games, aggregate pins, decided fresh.</p><div class="controls" style="margin-top:14px;"><button class="primary" id="btnStartPlayoffs">Start Playoffs</button></div></div>
- <div class="panel" id="playoffPanel" style="display:none;"><div class="panel-head"><h2>Playoff Bracket</h2><span class="sub" id="playoffSub">In progress</span></div><label class="career-toggle" style="margin-bottom:12px;"><span style="font-family:'Roboto Mono', monospace; font-size:12px; color:var(--polo);">Follow a player — their matches always play out live, everything else sims instantly:</span><select id="followPlayerSelect" class="follow-select"><option value="">— Watch All Games —</option></select></label><div class="controls" style="margin-bottom:18px;"><button class="primary" data-role="nextMatch">Play Next Match</button><button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button></div><div class="bracket-lane"><div class="lane-title">Winners Bracket</div><div class="rounds" id="winnersRounds"></div></div><div class="bracket-lane"><div class="lane-title">Losers Bracket</div><div class="controls" style="margin-bottom:14px;"><button class="primary" data-role="nextMatch">Play Next Match</button><button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button></div><div class="rounds" id="losersRounds"></div></div><div class="bracket-lane"><div class="lane-title">Championship — Best of Three Matches</div><div class="controls" style="margin-bottom:14px;"><button class="primary" id="btnWatchFinals" disabled>Play / Watch Championship</button><button class="ghost" id="btnSimToChamp">Sim to Championship</button><button class="primary" data-role="nextMatch">Play Next Match</button><button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button></div><div class="rounds" id="grandFinalRound"></div></div></div>
- <div class="panel" id="championPanel" style="display:none;"><div class="champion-banner"><div class="ceremonial">BCM Bowling League</div><h2 id="championName">—</h2><div class="sub" id="championSub">Season Champion</div></div></div>
+
+ <!-- CHAMPIONSHIP ARCADE -->
+ <div class="modal-overlay hidden" id="arcadeModal">
+   <div class="arcade-shell">
+     <div class="arcade-topbar">
+       <div class="arcade-brand">BCM Sports Network</div>
+       <div class="arcade-title" id="arcadeTopTitle">Championship Bowling</div>
+       <div class="arcade-top-actions">
+         <button class="arcade-icon-btn ghost" id="btnArcadeSound">Sound On</button>
+         <button class="arcade-icon-btn ghost" id="btnArcadeExit">Exit</button>
+       </div>
+     </div>
+     <div class="arcade-stage" id="arcadeStage"></div>
+   </div>
+ </div>
+
+ <!-- PLAYOFFS -->
+
+ <div class="panel" id="playoffIntroPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Playoff Bracket</h2>
+
+     <span class="sub">Regular season complete · double elimination</span>
+
+   </div>
+
+   <p class="hint">All nine bowlers make the playoffs. Seeds 8 and 9 open with a play-in; from there it's a standard winners bracket against a running losers bracket, and the two survivors meet in a best-of-three championship. Every match is three games, aggregate pins, decided fresh.</p>
+
+   <div class="controls" style="margin-top:14px;">
+
+     <button class="primary" id="btnStartPlayoffs">Start Playoffs</button>
+
+   </div>
+
+ </div>
+
+ 
+
+ <div class="panel" id="playoffPanel" style="display:none;">
+
+   <div class="panel-head">
+
+     <h2>Playoff Bracket</h2>
+
+     <span class="sub" id="playoffSub">In progress</span>
+
+   </div>
+
+   <label class="career-toggle" style="margin-bottom:12px;">
+
+     <span style="font-family:'Roboto Mono', monospace; font-size:12px; color:var(--polo);">Follow a player — their matches always play out live, everything else sims instantly:</span>
+
+     <select id="followPlayerSelect" class="follow-select"><option value="">— Watch All Games —</option></select>
+
+   </label>
+
+   <div class="controls" style="margin-bottom:18px;">
+
+     <button class="primary" data-role="nextMatch">Play Next Match</button>
+
+     <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
+
+   </div>
+
+ 
+
+   <div class="bracket-lane">
+
+     <div class="lane-title">Winners Bracket</div>
+
+     <div class="rounds" id="winnersRounds"></div>
+
+   </div>
+
+   <div class="bracket-lane">
+
+     <div class="lane-title">Losers Bracket</div>
+
+     <div class="controls" style="margin-bottom:14px;">
+
+       <button class="primary" data-role="nextMatch">Play Next Match</button>
+
+       <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
+
+     </div>
+
+     <div class="rounds" id="losersRounds"></div>
+
+   </div>
+
+   <div class="bracket-lane">
+
+     <div class="lane-title">Championship — Best of Three Matches</div>
+
+     <div class="controls" style="margin-bottom:14px;">
+
+       <button class="primary" id="btnWatchFinals" disabled>Play / Watch Championship</button>
+
+       <button class="ghost" id="btnSimToChamp">Sim to Championship</button>
+
+       <button class="primary" data-role="nextMatch">Play Next Match</button>
+
+       <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
+
+     </div>
+
+     <div class="rounds" id="grandFinalRound"></div>
+
+   </div>
+
+ </div>
+
+ 
+
+ <div class="panel" id="championPanel" style="display:none;">
+
+   <div class="champion-banner">
+
+     <div class="ceremonial">BCM Bowling League</div>
+
+     <h2 id="championName">—</h2>
+
+     <div class="sub" id="championSub">Season Champion</div>
+
+   </div>
+
+ </div>
+
+ 
+
  <footer>Benny Capital Management &nbsp;·&nbsp; Est. 2026 &nbsp;·&nbsp; League Operations</footer>
+
 </div>
-<script src="v023/game-01.js?v=0238"></script>
-<script src="v023/game-02.js?v=0238"></script>
-<script src="v023/game-03.js?v=0238"></script>
-<script src="v023/game-04.js?v=0238"></script>
-<script src="v023/game-05.js?v=0238"></script>
-<script src="v023/game-06.js?v=0238"></script>
-<script src="v023/game-07.js?v=0238"></script>
-<script src="v023/game-08a.js?v=0238"></script>
-<script src="v023/game-08b.js?v=0238"></script>
-<script src="v023/game-08c.js?v=0238"></script>
-<script src="v023/game-09.js?v=0238"></script>
+
+ 
+
+<script>
+
+(function(){
+
+ 
+
+/* =========================================================================
+
+  PLAYER DATA — historical scores pulled from MASTER_HISTORICAL_DATA.md
+
+  ========================================================================= */
+
+const RAW_PLAYERS = [
+
+ { id:'opus',    name:'Opus',    emoji:'♠️', history:[81,147,146,100,130,79,124,131,115,123,143,134,132,163,127,118,191,94,143,97,94,135,151,157,149,154,121,181,180,180,207,156,149,208,219,168,146,147,143,133,182,145,193,129,190,89,124,135,248,109,179,147,130,150,174,157] },
+
+ { id:'carter',  name:'Carter',  emoji:'🔥', history:[114,168,111,117,137,117,166,171,145,133,155,148,155,161,128,128] },
+
+ { id:'gavin',   name:'Gavin',   emoji:'🎯', history:[122,150,133,115,158,136,151,142,171,131,141,104] },
+
+ { id:'fademan', name:'Fademan', emoji:'🐰', history:[117,134,164,111,163,147,133,143,124,127,102,85,187,90,143,128,135,134,122,151,136,136,177,133,135,119] },
+
+ { id:'farb',    name:'Farb',    emoji:'☭', history:[106,139,120,116,112,109,118,116,118,115,98,112,98,111,100,89,74,99,93,132,88,133,95,159,101,134,134,175,120,187,117,166,131,91,95,204] },
+
+ { id:'bau',     name:'Bau',     emoji:'🌿', history:[91,107,79,120,120,119,97,98,130,107,144,81,91,109,98,99,82,103,93,81,123,80,93,104,98,131,129,129,117,137,113,105,140,160,98,124,114,112,82,115,116,105,124,127,103,93,101,117,111,156,117] },
+
+ { id:'q',       name:'Q',       emoji:'🏆', history:[134,79,90,103,87,100,135] },
+
+ { id:'woo',     name:'Woo',     emoji:'🎥', history:[87,104,79,64,89,102,72,123,59,108,100,133,94,92,100,96,84,75,94,99,119,107,100,135,118,105,40,98,86,75,97,98,96,133,122,84,84,66,106,92,103,110,93,96,119,130,107,120] },
+
+ { id:'staub',   name:'Staub',   emoji:'🎲', history:[121,100,83,84] },
+
+];
+
+// Note: Farb's history includes the corrected all-time-high 204 game (never 187).
+
+ 
+
+/* =========================================================================
+
+  RANDOM / STATS HELPERS
+
+  ========================================================================= */
+
+function mean(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+
+function stdev(arr){
+
+ const m = mean(arr);
+
+ const v = arr.reduce((a,b)=>a+(b-m)*(b-m),0)/arr.length;
+
+ return Math.sqrt(v);
+
+}
+
+// Box-Muller transform for a normally distributed random value
+
+function gaussian(){
+
+ let u=0, v=0;
+
+ while(u===0) u = Math.random();
+
+ while(v===0) v = Math.random();
+
+ return Math.sqrt(-2.0*Math.log(u)) * Math.cos(2.0*Math.PI*v);
+
+}
+
+function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+
+ 
+
+/* =========================================================================
+
+  SIMULATION STATE
+
+  ========================================================================= */
+
+let PLAYERS = {}; // id -> player state object
+
+let currentWeek = 0;
+
+const TOTAL_WEEKS = 10;
+
+let standingsSnapshotPrev = null; // for computing weekly rank movement
+
+let weeklyRecaps = [];
+
+let playoffs = null; // playoff bracket state
+
+let seasonLocked = false;
+
+ 
+
+function freshPlayerState(p){
+
+ const careerAvg = mean(p.history);
+
+ const careerSd = clamp(stdev(p.history), 10, 38);
+
+ const startHigh = Math.max(...p.history);
+
+ return {
+
+   id:p.id, name:p.name, emoji:p.emoji,
+
+   careerHistory: p.history.slice(),
+
+   careerAvg, careerSd,
+
+   startAvg: careerAvg,        // frozen original level, used for career-mode floors/targets
+
+   allTimeHigh: startHigh,
+
+   tier: null, tierGroup:null, targetYear:null, proTarget:null,
+
+   seniorTour: false,
+
+   championships: 0,           // total career titles won
+
+   regularSeasonMvps: 0,       // regular-season MVP awards
+
+   playoffMvps: 0,             // playoff MVP awards
+
+   allTimeGreat: false,        // permanent legacy designation once earned
+
+   careerSeasons: [],          // archived per-year résumé snapshots
+
+   bestSeasonAvg: 0, bestSeasonTotal: 0, bestPlayoffWins: 0,
+
+   championshipYears: [], playerOfWeekAwards: 0,
+
+   formState: 'NORMAL', formModifier: 0, formWeeksLeft: 0,
+
+   finishHistory: [],          // final standings rank (1-9) for each completed year
+
+   lastFinish: null,           // prior year's final regular-season rank
+
+   lastSeasonTotal: 0,
+
+   lastSeasonWeeklyAvg: 0,
+
+   lastSeasonLastWeekTotal: 0,
+
+   seasonGames: [],       // flat chronological list of games played this season
+
+   weeklyTotals: [],      // total pins per week
+
+   seasonTotal: 0,
+
+   lastWeekTotal: 0,
+
+   rank: 0, prevRank: 0,
+
+ };
+
+}
+
+ 
+
+/* =========================================================================
+
+  CAREER MODE — tiers, progression, milestones
+
+  ========================================================================= */
+
+const TIER_ORDER = [
+
+ 'BCM League',
+
+ 'Enzo League',
+
+ 'Semi-Pro Tour',
+
+ 'Pro Tour',
+
+ 'Elite Level Pro',
+
+ 'All-Time Great',
+
+];
+
+const ALL_TIME_GREAT_MIN_RINGS = 8;
+
+const ALL_TIME_GREAT_MIN_MVPS = 5;
+
+const ALL_TIME_GREAT_MIN_PRESTIGE = 225;
+
+function totalMVPs(pl){
+
+ return (pl.regularSeasonMvps||0) + (pl.playoffMvps||0);
+
+}
+
+function qualifiesAllTimeGreat(pl, prestige){
+
+ return !!pl &&
+
+   (pl.championships||0) >= ALL_TIME_GREAT_MIN_RINGS &&
+
+   totalMVPs(pl) >= ALL_TIME_GREAT_MIN_MVPS &&
+
+   prestige >= ALL_TIME_GREAT_MIN_PRESTIGE;
+
+}
+
+function computeTier(score, pl){
+
+ // All-Time Great is a legacy tier, not just a high average. Once earned, it sticks.
+
+ if(pl && (pl.allTimeGreat || qualifiesAllTimeGreat(pl, score))){
+
+   pl.allTimeGreat = true;
+
+   return 'All-Time Great';
+
+ }
+
+ if(score < 120) return 'BCM League';
+
+ if(score < 150) return 'Enzo League';
+
+ if(score < 180) return 'Semi-Pro Tour';
+
+ if(score < 210) return 'Pro Tour';
+
+ return 'Elite Level Pro';
+
+}
+
+function tierRank(label){ return TIER_ORDER.indexOf(label); }
+
+/* Tier status isn't pure bowling average — deep playoff runs, awards, and past
+
+  finishes matter too. Rings and MVPs build prestige, but All-Time Great still
+
+  requires a genuinely historic résumé. */
+
+function computePrestigeScore(pl){
+
+ const champBonus = (pl.championships||0) * 8;
+
+ const mvpBonus = (pl.regularSeasonMvps||0) * 3 + (pl.playoffMvps||0) * 2;
+
+ let finishBonus = 0;
+
+ if(pl.finishHistory && pl.finishHistory.length){
+
+   const recent = pl.finishHistory.slice(-3);
+
+   const avgFinish = mean(recent);
+
+   finishBonus = (5 - avgFinish) * 3;
+
+ }
+
+ return pl.careerAvg + champBonus + mvpBonus + finishBonus;
+
+}
+
+let careerModeOn = false;
+
+let careerYear = 1;
+
+let careerMilestones = []; // {year, text}
+
+let careerHistoryLog = []; // {year, champion, mvp, comeback, playoffMVP, highRound}
+
+let rivalryBook = {}; // pairKey -> playoff head-to-head history
+
+let bulkSimMode = false;
+
+let silentMode = false;
+
+const SAVE_KEY = 'bcmBowlingLeagueArcadeV4';
+
+ 
+
+function assignTierGroups(){
+
+ const ranked = Object.values(PLAYERS).slice().sort((a,b)=>b.careerAvg-a.careerAvg);
+
+ ranked.forEach((pl,i)=>{
+
+   if(i<3){ pl.tierGroup='top'; pl.targetYear=10; pl.proTarget=215; }
+
+   else if(i<6){ pl.tierGroup='mid'; pl.targetYear=15; pl.proTarget=205; }
+
+   else { pl.tierGroup='bottom'; pl.targetYear=20; pl.proTarget=195; }
+
+   pl.tier = computeTier(computePrestigeScore(pl), pl);
+
+ });
+
+}
+
+ 
+
+function logMilestone(text){
+
+ careerMilestones.push({ year: careerModeOn ? careerYear : seasonNumber, text });
+
+ if(!bulkSimMode) renderCareerMilestones();
+
+ if(!silentMode) showMilestoneToast(text);
+
+}
+
+ 
+
+function showMilestoneToast(text){
+
+ const host = document.getElementById('milestoneToastHost');
+
+ if(!host) return;
+
+ const el = document.createElement('div');
+
+ el.className = 'milestone-toast';
+
+ el.textContent = text;
+
+ host.appendChild(el);
+
+ setTimeout(()=>{ el.classList.add('fade-out'); setTimeout(()=> el.remove(), 500); }, 4000);
+
+}
+
+ 
+
+function advancePlayerCareer(pl){
+
+ const prevTier = pl.tier;
+
+ if(careerYear <= 40){
+
+   if(careerYear <= pl.targetYear){
+
+     const remaining = pl.targetYear - careerYear + 1;
+
+     const gap = pl.proTarget - pl.careerAvg;
+
+     pl.careerAvg += gap / Math.max(1, remaining);
+
+   } else {
+
+     pl.careerAvg += (Math.random()-0.5)*2; // small plateau wobble
+
+   }
+
+ } else {
+
+   if(!pl.seniorTour){
+
+     pl.seniorTour = true;
+
+     logMilestone(`🎗️ ${pl.emoji} ${pl.name} enters the Senior Tour at Year ${careerYear}.`);
+
+   }
+
+   pl.careerAvg -= (1 + Math.random()*2);
+
+   pl.careerAvg = Math.max(pl.careerAvg, pl.startAvg*0.85);
+
+ }
+
+ pl.careerAvg = Math.round(pl.careerAvg*10)/10;
+
+ pl.tier = computeTier(computePrestigeScore(pl), pl);
+
+ if(pl.tier !== prevTier){
+
+   const promoted = tierRank(pl.tier) > tierRank(prevTier);
+
+   logMilestone(`${promoted?'⬆️':'⬇️'} ${pl.emoji} ${pl.name} ${promoted?'promoted to':'drops to'} ${pl.tier}.`);
+
+ }
+
+}
+
+ 
+
+/* Snapshot the year that's about to end: champion, regular-season MVP,
+
+  comeback player of the year, playoff MVP, and the season's high round.
+
+  Must be called BEFORE season-specific fields are reset for the next year. */
+
+function recordYearSummary(year){
+
+ // Never write an empty/incomplete season into career history.
+
+ if(careerHistoryLog.some(y=>y.year===year)) return true;
+
+ if(currentWeek < TOTAL_WEEKS || !playoffs || !playoffs.champion){
+
+   console.warn(`Career Year ${year} was not complete, so no history entry was recorded.`);
+
+   return false;
+
+ }
+
+ const playersArr = Object.values(PLAYERS);
+
+ if(!playersArr.length || !playersArr.some(pl=>pl.seasonGames.length)){
+
+   console.warn(`Career Year ${year} had no game data, so no history entry was recorded.`);
+
+   return false;
+
+ }
+
+ const mvp = playersArr.slice().sort((a,b)=>b.seasonTotal-a.seasonTotal)[0];
+
+ let highRoundPlayer=null, highRoundVal=-1;
+
+ playersArr.forEach(pl=> pl.seasonGames.forEach(g=>{ if(g>highRoundVal){ highRoundVal=g; highRoundPlayer=pl; } }));
+
+ let comeback=null, comebackDelta=-999;
+
+ playersArr.forEach(pl=>{
+
+   if(pl.finishHistory && pl.finishHistory.length>=2){
+
+     const cur = pl.finishHistory[pl.finishHistory.length-1];
+
+     const prev = pl.finishHistory[pl.finishHistory.length-2];
+
+     const delta = prev - cur; // positive = moved up in the standings
+
+     if(delta>comebackDelta){ comebackDelta = delta; comeback = pl; }
+
+   }
+
+ });
+
+ let playoffMVP=null, playoffMVPWins=0;
+
+ if(playoffs.recordsWL){
+
+   Object.entries(playoffs.recordsWL).forEach(([id,wins])=>{
+
+     if(wins>playoffMVPWins){ playoffMVPWins=wins; playoffMVP=PLAYERS[id]; }
+
+   });
+
+ }
+
+ const champion = playoffs.champion;
+
+ // Career award counters are updated exactly once because the year guard above is idempotent.
+
+ mvp.regularSeasonMvps = (mvp.regularSeasonMvps||0) + 1;
+
+ if(playoffMVP) playoffMVP.playoffMvps = (playoffMVP.playoffMvps||0) + 1;
+
+ careerHistoryLog.push({
+
+   year,
+
+   champion: { name:champion.name, emoji:champion.emoji },
+
+   mvp: { name:mvp.name, emoji:mvp.emoji, total:mvp.seasonTotal },
+
+   comeback: (comeback && comebackDelta>0) ? { name:comeback.name, emoji:comeback.emoji, delta:comebackDelta } : null,
+
+   playoffMVP: playoffMVP ? { name:playoffMVP.name, emoji:playoffMVP.emoji, wins:playoffMVPWins } : null,
+
+   highRound: highRoundPlayer ? { name:highRoundPlayer.name, emoji:highRoundPlayer.emoji, score:highRoundVal } : null,
+
+ });
+
+ renderHistoryChannel();
+
+ return true;
+
+}
+
+function renderHistoryChannel(){
+
+ const wrap = document.getElementById('historyChannelPanel');
+
+ if(!wrap) return;
+
+ if(careerHistoryLog.length===0){ wrap.style.display='none'; return; }
+
+ wrap.style.display='block';
+
+ const cards = careerHistoryLog.slice().reverse().map(y=>`
+
+   <div class="history-year-card clickable" onclick="window.__openSeasonArchive(${y.year})">
+
+     <div class="hy-year">Year ${y.year} · tap for full archive</div>
+
+     <div class="hy-grid">
+
+       <div><span class="hy-label">Champion</span><span class="hy-val">${y.champion ? y.champion.emoji+' '+y.champion.name : '—'}</span></div>
+
+       <div><span class="hy-label">Regular Season MVP</span><span class="hy-val">${y.mvp ? y.mvp.emoji+' '+y.mvp.name+' ('+y.mvp.total+')' : '—'}</span></div>
+
+       <div><span class="hy-label">Comeback Player</span><span class="hy-val">${y.comeback ? y.comeback.emoji+' '+y.comeback.name+' (+'+y.comeback.delta+' spots)' : '—'}</span></div>
+
+       <div><span class="hy-label">Playoff MVP</span><span class="hy-val">${y.playoffMVP ? y.playoffMVP.emoji+' '+y.playoffMVP.name+' ('+y.playoffMVP.wins+'W)' : '—'}</span></div>
+
+       <div><span class="hy-label">Season High Round</span><span class="hy-val">${y.highRound ? y.highRound.emoji+' '+y.highRound.name+' — '+y.highRound.score : '—'}</span></div>
+
+     </div>
+
+   </div>
+
+ `).join('');
+
+ document.getElementById('historyChannelContent').innerHTML = cards;
+
+ document.getElementById('historyChannelSummary').textContent = `▸ View history channel (${careerHistoryLog.length} year${careerHistoryLog.length>1?'s':''})`;
+
+}
+
+function renderCareerMilestones(){
+
+ const wrap = document.getElementById('careerMilestonesPanel');
+
+ if(!wrap) return;
+
+ if(careerMilestones.length===0){ wrap.style.display='none'; return; }
+
+ wrap.style.display='block';
+
+ const rows = careerMilestones.slice().reverse().slice(0,40).map(m=>`
+
+   <tr><td class="odds-seed">${careerModeOn?'Year':'Season'} ${m.year}</td><td class="odds-name">${m.text}</td></tr>
+
+ `).join('');
+
+ document.getElementById('careerMilestonesContent').innerHTML = `<table class="odds-table">${rows}</table>`;
+
+ document.getElementById('careerMilestonesSummary').textContent = `▸ View career milestones (${careerMilestones.length})`;
+
+}
+
+function updateResetButtonLabel(){
+
+ const btn = document.getElementById('btnReset');
+
+ if(!btn) return;
+
+ if(!careerModeOn){
+
+   btn.textContent = 'New Season';
+
+   return;
+
+ }
+
+ btn.textContent = (playoffs && playoffs.champion)
+
+   ? `Advance to Year ${careerYear+1}`
+
+   : `Simulate to Year ${careerYear+1}`;
+
+}
+
+function setPlayoffButtonsDisabled(disabled){
+
+ document.querySelectorAll('[data-role="nextMatch"]').forEach(b=> b.disabled = disabled);
+
+ document.querySelectorAll('[data-role="simAllPlayoffs"]').forEach(b=> b.disabled = disabled);
+
+}
+
+ 
+
+let firstInit = true;
+
+let seasonNumber = 1;
+
+let hallOfFame = []; // {season, name, emoji, seed, seasonTotal}
+
+ 
+
+function resetSeasonUI(){
+
+ currentWeek = 0;
+
+ standingsSnapshotPrev = null;
+
+ weeklyRecaps = [];
+
+ playoffs = null;
+
+ seasonLocked = false;
+
+ followedPlayerId = null;
+
+ autoSimAfterModal = null;
+
+ document.getElementById('recapPanel').style.display='none';
+
+ document.getElementById('playoffIntroPanel').style.display='none';
+
+ document.getElementById('playoffPanel').style.display='none';
+
+ document.getElementById('championPanel').style.display='none';
+
+ document.getElementById('oddsPanelWrap').style.display='none';
+
+ document.getElementById('playoffRecapPanel').style.display='none';
+
+ document.getElementById('playerCardModal').classList.add('hidden');
+
+ document.getElementById('matchAnimModal').classList.add('hidden');
+
+ if(typeof clearModalTimers === 'function') clearModalTimers();
+
+ matchModal = { active:false, key:null, res:null, gameIndex:0, chainMode:false, timers:[], skipRequested:false };
+
+ document.getElementById('btnWatchFinals').disabled = true;
+
+ document.getElementById('btnSimToChamp').disabled = false;
+
+ document.getElementById('pastRecaps').innerHTML='';
+
+ document.getElementById('pastWeeksWrap').style.display='none';
+
+ document.getElementById('latestRecap').innerHTML='';
+
+ document.getElementById('btnSimWeek').disabled=false;
+
+ document.getElementById('btnSimAll').disabled=false;
+
+ setPlayoffButtonsDisabled(false);
+
+ document.getElementById('controlHint').textContent = careerModeOn
+
+   ? 'Career Mode: each "year" is a full season. Players gradually climb the league ladder toward pro caliber, then taper off after year 40.'
+
+   : 'Each week, every bowler rolls three nights of three games apiece. Standings are cumulative pinfall — no head-to-head, pure aggregate. Results are freshly simulated every run, so no two seasons play out the same.';
+
+ renderStandings(true);
+
+ updateStatus();
+
+ renderHallOfFame();
+
+ renderCareerMilestones();
+
+ renderHistoryChannel();
+
+ renderCareerHub();
+
+ renderRacePanel();
+
+ updateResetButtonLabel();
+
+}
+
+ 
+
+function initSeason(){
+
+ if(!firstInit) seasonNumber++;
+
+ firstInit = false;
+
+ PLAYERS = {};
+
+ RAW_PLAYERS.forEach(p=> PLAYERS[p.id] = freshPlayerState(p));
+
+ assignTierGroups();
+
+ careerYear = 1;
+
+ careerHistoryLog = [];
+
+ resetSeasonUI();
+
+}
+
+ 
+
+function ensureCareerYearComplete(){
+
+ if(!careerModeOn) return false;
+
+ // Finish any remaining regular-season weeks first.
+
+ while(currentWeek < TOTAL_WEEKS){ simulateWeek(); }
+
+ // Defensive repair: a 10-week season should always have a bracket.
+
+ if(currentWeek >= TOTAL_WEEKS && !playoffs){ lockRegularSeason(); }
+
+ let guard=0;
+
+ while(playoffs && !playoffs.champion && guard<100){
+
+   const advanced = playNextMatch();
+
+   if(!advanced) break;
+
+   guard++;
+
+ }
+
+ if(!playoffs || !playoffs.champion){
+
+   console.error(`Career Year ${careerYear} could not be completed; advancement was cancelled instead of writing a blank season.`);
+
+   return false;
+
+ }
+
+ // Idempotent safety calls keep every completion route in sync.
+
+ recordHallOfFame();
+
+ renderBracket();
+
+ showChampion();
+
+ return true;
+
+}
+
+function advanceCareerYear(autoComplete=true){
+
+ if(!careerModeOn) return false;
+
+ if(autoComplete && !ensureCareerYearComplete()) return false;
+
+ if(currentWeek < TOTAL_WEEKS || !playoffs || !playoffs.champion){
+
+   console.warn(`Career Year ${careerYear} is incomplete; advancement was blocked.`);
+
+   return false;
+
+ }
+
+ const endingYear = careerYear;
+
+ const ordered = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ ordered.forEach((pl,i)=>{
+
+   const finish = i+1;
+
+   pl.finishHistory[endingYear-1] = finish;
+
+   pl.lastFinish = finish;
+
+   pl.lastSeasonTotal = pl.seasonTotal;
+
+   pl.lastSeasonWeeklyAvg = pl.weeklyTotals.length ? Math.round(mean(pl.weeklyTotals)) : 0;
+
+   pl.lastSeasonLastWeekTotal = pl.lastWeekTotal || (pl.weeklyTotals.length ? pl.weeklyTotals[pl.weeklyTotals.length-1] : 0);
+
+ });
+
+ recordHallOfFame();
+
+ if(!recordYearSummary(endingYear)) return false;
+
+ finalizeCareerSeasonMetrics(endingYear);
+
+ careerYear++;
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   pl.seasonGames = [];
+
+   pl.weeklyTotals = [];
+
+   pl.seasonTotal = 0;
+
+   pl.lastWeekTotal = 0;
+
+   pl.rank=0;
+
+   pl.prevRank=0;
+
+   pl.formState='NORMAL'; pl.formModifier=0; pl.formWeeksLeft=0;
+
+   advancePlayerCareer(pl);
+
+ });
+
+ resetSeasonUI();
+
+ return true;
+
+}
+
+/* Instantly resolves an entire career year (regular season + full playoffs),
+
+  records every award/result, and advances to the next year. */
+
+function simulateFullCareerYear(){
+
+ return advanceCareerYear(true);
+
+}
+
+function simulateCareerYears(n){
+ if(!careerModeOn) return;
+ const priorBulk = bulkSimMode, priorSilent = silentMode;
+ bulkSimMode = true; silentMode = true;
+ try{
+   if(playoffs && playoffs.champion){
+     if(!advanceCareerYear(false)) return;
+   }
+   for(let i=0;i<n;i++){
+     if(!simulateFullCareerYear()) break;
+   }
+ } finally {
+   bulkSimMode = priorBulk; silentMode = priorSilent;
+   renderAllCareerPanels();
+   autosaveGame();
+ }
+}
+
+/* Rolling blended average: 65% last-10 (career+season combined, chronological), 35% career avg */
+
+function blendedAverage(pl){
+
+ const combined = pl.careerHistory.concat(pl.seasonGames);
+
+ const last10 = combined.slice(-10);
+
+ const l10avg = mean(last10);
+
+ return 0.65*l10avg + 0.35*pl.careerAvg;
+
+}
+
+ 
+
+function simulateGame(pl){
+
+ const target = blendedAverage(pl) + (pl.formModifier||0);
+
+ let mean_ = target, sd = pl.careerSd;
+
+ const roll = Math.random();
+
+ if(roll < 0.08){ mean_ += sd*0.9; sd *= 1.15; }        // hot night
+
+ else if(roll < 0.16){ mean_ -= sd*0.9; sd *= 1.15; }   // cold night
+
+ let score = Math.round(mean_ + sd * gaussian());
+
+ score = clamp(score, 30, 300);
+
+ pl.seasonGames.push(score);
+
+ if(score > pl.allTimeHigh){
+
+   const prev = pl.allTimeHigh;
+
+   pl.allTimeHigh = score;
+
+   logMilestone(`🎳 NEW CAREER HIGH — ${pl.emoji} ${pl.name} rolls ${score}, breaking the previous record of ${prev}!`);
+
+ }
+
+ return score;
+
+}
+
+ 
+
+function simulateNight(pl){
+
+ const g = [simulateGame(pl), simulateGame(pl), simulateGame(pl)];
+
+ return { games:g, total:g[0]+g[1]+g[2] };
+
+}
+
+ 
+
+/* =========================================================================
+
+  REGULAR SEASON — WEEK SIMULATION
+
+  ========================================================================= */
+
+function simulateWeek(){
+
+ if(seasonLocked) return;
+
+ currentWeek++;
+
+ const formEvents = prepareWeeklyForms();
+
+ const weekData = {}; // playerId -> {nights:[...], weekTotal}
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   const nights = [simulateNight(pl), simulateNight(pl), simulateNight(pl)];
+
+   const weekTotal = nights.reduce((a,n)=>a+n.total,0);
+
+   pl.weeklyTotals.push(weekTotal);
+
+   pl.lastWeekTotal = weekTotal;
+
+   pl.seasonTotal += weekTotal;
+
+   weekData[pl.id] = { nights, weekTotal };
+
+ });
+
+ 
+
+ // snapshot standings before ranking update (for movement)
+
+ const prevOrder = Object.values(PLAYERS).slice().sort((a,b)=> (b.seasonTotal-b.lastWeekTotal) - (a.seasonTotal-a.lastWeekTotal));
+
+ prevOrder.forEach((pl,i)=> pl.prevRank = i+1);
+
+ 
+
+ const newOrder = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ newOrder.forEach((pl,i)=> pl.rank = i+1);
+
+ 
+
+ buildRecap(weekData, newOrder, formEvents);
+
+ decayWeeklyForms();
+
+ if(!bulkSimMode){
+   renderStandings(false);
+   updateStatus();
+   renderRacePanel();
+   renderCareerHub();
+ }
+
+ 
+
+ if(currentWeek >= TOTAL_WEEKS){
+
+   lockRegularSeason();
+
+ }
+
+ if(!bulkSimMode) autosaveGame();
+
+}
+
+ 
+
+function buildRecap(weekData, orderedStandings, formEvents){
+
+ let weekLeaderId=null, weekLeaderTotal=-1;
+
+ let highGamePlayer=null, highGameVal=-1;
+
+ Object.entries(weekData).forEach(([id,d])=>{
+
+   if(d.weekTotal>weekLeaderTotal){ weekLeaderTotal=d.weekTotal; weekLeaderId=id; }
+
+   d.nights.forEach(n=> n.games.forEach(g=>{
+
+     if(g>highGameVal){ highGameVal=g; highGamePlayer=id; }
+
+   }));
+
+ });
+
+ let bigRiser=null, riserDelta=-999;
+
+ Object.values(PLAYERS).forEach(pl=>{
+
+   const delta = pl.prevRank - pl.rank;
+
+   if(delta>riserDelta){ riserDelta=delta; bigRiser=pl.id; }
+
+ });
+
+ const leader = orderedStandings[0];
+
+ weeklyRecaps.push({
+
+   week: currentWeek,
+
+   weekLeader: PLAYERS[weekLeaderId].name+' '+PLAYERS[weekLeaderId].emoji,
+
+   weekLeaderTotal,
+
+   highGame: PLAYERS[highGamePlayer].name+' '+PLAYERS[highGamePlayer].emoji,
+
+   highGameVal,
+
+   bigRiser: riserDelta>0 ? (PLAYERS[bigRiser].name+' '+PLAYERS[bigRiser].emoji) : null,
+
+   riserDelta,
+
+   seasonLeader: leader.name+' '+leader.emoji,
+
+   seasonLeaderTotal: leader.seasonTotal,
+
+   stories: generateWeeklyStorylines(weekData, orderedStandings, formEvents||[]),
+
+ });
+
+ if(PLAYERS[weekLeaderId]) PLAYERS[weekLeaderId].playerOfWeekAwards = (PLAYERS[weekLeaderId].playerOfWeekAwards||0)+1;
+
+ renderRecap();
+
+}
+
+ 
+
+function renderRecap(){
+
+ if(bulkSimMode) return;
+
+ document.getElementById('recapPanel').style.display='block';
+
+ const latest = weeklyRecaps[weeklyRecaps.length-1];
+
+ document.getElementById('latestRecap').innerHTML = recapCardHtml(latest);
+
+ const past = weeklyRecaps.slice(0,-1).reverse();
+
+ const wrap = document.getElementById('pastWeeksWrap');
+
+ if(past.length>0){
+
+   wrap.style.display='block';
+
+   document.getElementById('pastRecaps').innerHTML = past.map(recapCardHtml).join('');
+
+ }
+
+}
+
+ 
+
+function recapCardHtml(r){
+
+ return `<div class="recap-card">
+
+   <div class="wk">Week ${r.week} of ${TOTAL_WEEKS}</div>
+
+   <div class="recap-grid">
+
+     <div class="recap-item"><div class="label">Week Leader</div><div class="value"><span class="accent">${r.weekLeader}</span> — ${r.weekLeaderTotal} pins</div></div>
+
+     <div class="recap-item"><div class="label">High Game</div><div class="value">${r.highGame} — <span class="accent">${r.highGameVal}</span></div></div>
+
+     <div class="recap-item"><div class="label">Biggest Riser</div><div class="value">${r.bigRiser ? r.bigRiser+' <span class="accent">(+'+r.riserDelta+' spots)</span>' : '— no change —'}</div></div>
+
+     <div class="recap-item"><div class="label">Season Leader</div><div class="value"><span class="accent">${r.seasonLeader}</span> — ${r.seasonLeaderTotal} pins</div></div>
+
+   </div>
+
+   ${r.stories && r.stories.length ? `<div class="story-stack">${r.stories.map(x=>`<div class="story-line">${x}</div>`).join('')}</div>` : ''}
+
+ </div>`;
+
+}
+
+ 
+
+/* =========================================================================
+
+  STANDINGS RENDER
+
+  ========================================================================= */
+
+function renderStandings(initial){
+
+ const tbody = document.getElementById('standingsBody');
+
+ const players = Object.values(PLAYERS);
+
+ const showingPriorSeason = careerModeOn && currentWeek===0 && players.some(pl=>pl.lastFinish!==null);
+
+ const ordered = players.slice().sort((a,b)=>{
+
+   if(showingPriorSeason){
+
+     return (a.lastFinish ?? 99) - (b.lastFinish ?? 99);
+
+   }
+
+   return (b.seasonTotal-a.seasonTotal) || (b.careerAvg-a.careerAvg);
+
+ });
+
+ ordered.forEach((pl,i)=> pl.rank = showingPriorSeason ? (pl.lastFinish || i+1) : i+1);
+
+ tbody.innerHTML = ordered.map(pl=>{
+
+   const currentWeeklyAvg = pl.weeklyTotals.length ? Math.round(mean(pl.weeklyTotals)) : 0;
+
+   const weeklyAvg = showingPriorSeason ? pl.lastSeasonWeeklyAvg : currentWeeklyAvg;
+
+   const weekValue = showingPriorSeason
+
+     ? (pl.lastSeasonLastWeekTotal || '—')
+
+     : (pl.lastWeekTotal || (pl.weeklyTotals.length ? pl.weeklyTotals[pl.weeklyTotals.length-1] : '—'));
+
+   const totalValue = showingPriorSeason ? pl.lastSeasonTotal : pl.seasonTotal;
+
+   let deltaHtml = '<span class="delta flat">—</span>';
+
+   if(!showingPriorSeason && !initial && pl.weeklyTotals.length>0){
+
+     const moved = pl.prevRank - pl.rank;
+
+     if(moved>0) deltaHtml = `<span class="delta up">▲ ${moved}</span>`;
+
+     else if(moved<0) deltaHtml = `<span class="delta down">▼ ${Math.abs(moved)}</span>`;
+
+     else deltaHtml = `<span class="delta flat">— hold</span>`;
+
+   }
+
+   const tRank = Math.max(0, tierRank(pl.tier));
+
+   return `<tr class="${!initial && !showingPriorSeason ? 'updated':''}">
+
+     <td class="rank ${pl.rank<=3?'top3':''}">${pl.rank}</td>
+
+     <td class="pname" style="cursor:pointer;" onclick="window.__showPlayerCard('${pl.id}')"><span class="emoji">${pl.emoji}</span>${pl.name}${accoladeMiniHtml(pl)}<span class="tier-pill t${tRank}">${pl.tier}</span></td>
+
+     <td class="num">${weekValue}</td>
+
+     <td class="num">${weeklyAvg || '—'}</td>
+
+     <td class="num season-total">${totalValue}</td>
+
+     <td class="movement">${deltaHtml}</td>
+
+   </tr>`;
+
+ }).join('');
+
+ const weekHead = document.getElementById('standingsWeekHead');
+
+ const avgHead = document.getElementById('standingsAvgHead');
+
+ const totalHead = document.getElementById('standingsTotalHead');
+
+ if(weekHead) weekHead.textContent = showingPriorSeason ? 'Prev. Final Week' : 'This Week';
+
+ if(avgHead) avgHead.textContent = showingPriorSeason ? 'Prev. Weekly Avg' : 'Weekly Avg';
+
+ if(totalHead) totalHead.textContent = showingPriorSeason ? 'Prev. Season Total' : 'Season Total';
+
+ document.getElementById('leaderboardSub').textContent = showingPriorSeason
+
+   ? `Year ${careerYear} preseason · showing Year ${careerYear-1} final standings`
+
+   : (currentWeek===0 ? 'Season not yet started' : `Through Week ${currentWeek} of ${TOTAL_WEEKS}`);
+
+}
+
+function updateStatus(){
+
+ document.getElementById('weekIndicator').textContent = seasonLocked
+
+   ? (playoffs && playoffs.champion ? 'Season Complete' : 'Regular Season Complete')
+
+   : `Week ${currentWeek} of ${TOTAL_WEEKS}`;
+
+ document.getElementById('seasonStatus').firstChild.textContent = seasonLocked ? 'Playoffs ' : 'Regular Season ';
+
+ const yearBadge = document.getElementById('careerYearBadge');
+
+ if(yearBadge) yearBadge.textContent = careerModeOn ? ` · Career Year ${careerYear}` : '';
+
+ if(!bulkSimMode){ renderCareerHub(); renderRacePanel(); }
+
+}
+
+ 
+
+/* =========================================================================
+
+  LOCK REGULAR SEASON -> SEED BRACKET
+
+  ========================================================================= */
+
+function lockRegularSeason(){
+
+ seasonLocked = true;
+
+ document.getElementById('btnSimWeek').disabled = true;
+
+ document.getElementById('btnSimAll').disabled = true;
+
+ document.getElementById('controlHint').textContent = 'Regular season closed. Scroll down to view seeding and start the playoffs.';
+
+ const seeded = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ seeded.forEach((pl,i)=> pl.seed = i+1);
+
+ playoffs = { seeds: seeded, matches: [], idx:0, champion:null, buildOnly:true, recordsWL:{} };
+
+ buildBracketStructure();
+
+ if(!bulkSimMode){
+   buildOddsTable();
+   populateFollowPlayerSelect(seeded);
+   document.getElementById('playoffIntroPanel').style.display='block';
+   updateStatus();
+ }
+
+}
+
+ 
+
+let followedPlayerId = null;
+
+let autoSimAfterModal = null; // null, or { stopBeforeFinals: bool } — set when the auto-sim loop pauses for a followed player's match
+
+ 
+
+function populateFollowPlayerSelect(seeded){
+
+ followedPlayerId = null;
+
+ const sel = document.getElementById('followPlayerSelect');
+
+ if(!sel) return;
+
+ sel.innerHTML = '<option value="">— Watch All Games —</option>' +
+
+   seeded.map(pl=>`<option value="${pl.id}">${pl.emoji} ${pl.name} (#${pl.seed})</option>`).join('');
+
+ sel.value = '';
+
+}
+
+ 
+
+/* =========================================================================
+
+  PLAYOFF ENGINE
+
+  Fixed-shape double-elimination for 9 seeds:
+
+    PI: 8 vs 9
+
+    QF1: 1 vs W(PI)   QF2: 4 vs 5   QF3: 3 vs 6   QF4: 2 vs 7
+
+    SF1: W(QF1) vs W(QF2)   SF2: W(QF3) vs W(QF4)
+
+    WF:  W(SF1) vs W(SF2)  -> Winners Bracket Champion
+
+    LR1: pool = [L(PI), L(QF1..4)] (5) -> bye to best seed, 2 matches
+
+    LR2: pool = LR1 survivors (3) + [L(SF1),L(SF2)] (2) = 5 -> bye, 2 matches
+
+    LR3: pool = LR2 survivors (3) + [L(WF)] (1) = 4 -> 2 matches
+
+    LR4: pool = LR3 survivors (2) -> 1 match -> Losers Bracket Champion
+
+    GF: best-of-3 matches, Winners Champ vs Losers Champ
+
+  ========================================================================= */
+
+function buildBracketStructure(){
+
+ const s = playoffs.seeds; // sorted seed 1..9
+
+ const bySeed = n => s[n-1];
+
+ 
+
+ playoffs.M = {}; // named matches, participants resolved lazily
+
+ playoffs.order = [];
+
+ 
+
+ function addMatch(key, lane, roundLabel, getA, getB){
+
+   playoffs.M[key] = { key, lane, roundLabel, getA, getB, played:false, result:null };
+
+   playoffs.order.push(key);
+
+ }
+
+ 
+
+ addMatch('PI','winners','Play-In', ()=>bySeed(8), ()=>bySeed(9));
+
+ addMatch('QF1','winners','Quarterfinal', ()=>bySeed(1), ()=>winnerOf('PI'));
+
+ addMatch('QF2','winners','Quarterfinal', ()=>bySeed(4), ()=>bySeed(5));
+
+ addMatch('QF3','winners','Quarterfinal', ()=>bySeed(3), ()=>bySeed(6));
+
+ addMatch('QF4','winners','Quarterfinal', ()=>bySeed(2), ()=>bySeed(7));
+
+ addMatch('SF1','winners','Semifinal', ()=>winnerOf('QF1'), ()=>winnerOf('QF2'));
+
+ addMatch('SF2','winners','Semifinal', ()=>winnerOf('QF3'), ()=>winnerOf('QF4'));
+
+ addMatch('WF','winners','Winners Final', ()=>winnerOf('SF1'), ()=>winnerOf('SF2'));
+
+ 
+
+ // Losers Round 1: pool of 5 -> [loser(PI), loser(QF1..4)] sorted by seed asc, bye to best seed
+
+ addMatch('LR1a','losers','Round 1', ()=>lr1Pool()[1], ()=>lr1Pool()[2]);
+
+ addMatch('LR1b','losers','Round 1', ()=>lr1Pool()[3], ()=>lr1Pool()[4]);
+
+ // LR1 bye recipient = lr1Pool()[0]
+
+ 
+
+ addMatch('LR2a','losers','Round 2', ()=>lr2Pool()[1], ()=>lr2Pool()[2]);
+
+ addMatch('LR2b','losers','Round 2', ()=>lr2Pool()[3], ()=>lr2Pool()[4]);
+
+ // LR2 bye recipient = lr2Pool()[0]
+
+ 
+
+ addMatch('LR3a','losers','Round 3', ()=>lr3Pool()[0], ()=>lr3Pool()[1]);
+
+ addMatch('LR3b','losers','Round 3', ()=>lr3Pool()[2], ()=>lr3Pool()[3]);
+
+ 
+
+ addMatch('LR4','losers','Losers Final', ()=>winnerOf('LR3a'), ()=>winnerOf('LR3b'));
+
+ 
+
+ addMatch('GF1','grandfinal','Match 1', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ addMatch('GF2','grandfinal','Match 2', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ addMatch('GF3','grandfinal','Match 3 (if needed)', ()=>winnerOf('WF'), ()=>winnerOf('LR4'));
+
+ 
+
+ playoffs.gfWins = {}; // playerId -> match wins in grand final
+
+}
+
+ 
+
+function winnerOf(key){
+
+ const m = playoffs.M[key];
+
+ return m && m.played ? m.result.winner : null;
+
+}
+
+function loserOf(key){
+
+ const m = playoffs.M[key];
+
+ return m && m.played ? m.result.loser : null;
+
+}
+
+function bySeedSort(arr){ return arr.slice().sort((a,b)=>a.seed-b.seed); }
+
+ 
+
+function lr1Pool(){
+
+ return bySeedSort([loserOf('PI'), loserOf('QF1'), loserOf('QF2'), loserOf('QF3'), loserOf('QF4')].filter(Boolean));
+
+}
+
+function lr2Pool(){
+
+ const survivors = [lr1Pool()[0]||null, winnerOf('LR1a'), winnerOf('LR1b')].filter(Boolean);
+
+ return bySeedSort(survivors.concat([loserOf('SF1'), loserOf('SF2')].filter(Boolean)));
+
+}
+
+function lr3Pool(){
+
+ const survivors = [lr2Pool()[0]||null, winnerOf('LR2a'), winnerOf('LR2b')].filter(Boolean);
+
+ return bySeedSort(survivors.concat([loserOf('WF')].filter(Boolean)));
+
+}
+
+ 
+
+function playMatchTrack(pA, pB){
+
+ const res = playMatch(pA, pB);
+
+ // Track wins in bracket by player seed
+
+ if(!playoffs.recordsWL){ playoffs.recordsWL={}; }
+
+ playoffs.recordsWL[res.winner.id] = (playoffs.recordsWL[res.winner.id]||0)+1;
+
+ playoffs.recordsWL[res.loser.id] = (playoffs.recordsWL[res.loser.id]||0);
+
+ return res;
+
+}
+
+ 
+
+/* =========================================================================
+
+  PLAYER SEASON CARD
+
+  ========================================================================= */
+
+
+const PLAYER_VISUALS = {
+ opus:{height:1.0,build:1.0,shirt:'#6f1f32',shirtLabel:'BCM',ball:'#2f6fda',skin:'#e2bb97',hairClass:'black',handed:'right',twoHanded:true,style:'Two-Handed Righty',archetype:'Modern high-rev strike artist',bio:"5'11 Asian right-hander with a two-handed release and a rhythmic, intense approach.",x:0,approach:'Rhythmic',personality:'Intense',celebration:'Small fist pump',badShot:'Angry gesture',iconic:'Kicks the ball return after a gutter'},
+ carter:{height:.98,build:1.14,shirt:'#b43333',shirtLabel:'BCM',ball:'#e08a2d',skin:'#efc29d',hairClass:'red',handed:'left',twoHanded:false,style:'One-Handed Lefty',archetype:'Compact lefty power bowler',bio:"Red-haired stockier lefty with an aggressive approach and chill demeanor.",x:-14,approach:'Aggressive',personality:'Chill',celebration:'Walk-off',badShot:'Shrug',iconic:'Starts way far left'},
+ gavin:{height:1.03,build:1.0,shirt:'#b43333',shirtLabel:'BCM',ball:'#cc3636',skin:'#e6b690',hairClass:'brown',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Textbook smooth control bowler',bio:"6'0 right-hander with a smooth delivery and crazy spin.",x:0,approach:'Smooth',personality:'Chill',celebration:'Double fist pump',badShot:'Hands on hips',iconic:'Crazy spin'},
+ farb:{height:1.0,build:1.0,shirt:'#c22d35',shirtLabel:'BCM',ball:'#e08a2d',skin:'#edc39e',hairClass:'curly lightbrown',handed:'left',twoHanded:false,style:'One-Handed Lefty',archetype:'Expressive lefty shot-maker',bio:"Curly-haired scarlet-shirted lefty with a casual, cocky approach.",x:0,approach:'Casual',personality:'Cocky',celebration:'Big fist pump',badShot:'Stare down lane',iconic:'Says “bang” after a spare'},
+ fademan:{height:.98,build:1.08,shirt:'#f5f5f5',shirtLabel:'BCM',ball:'#1d1d22',skin:'#dca97f',hairClass:'curly shortblack',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Athletic power bowler',bio:"Muscular right-hander with smooth mechanics and a businesslike demeanor.",x:0,approach:'Smooth',personality:'Businesslike',celebration:'Calm nod',badShot:'Laugh it off',iconic:'Very humble'},
+ bau:{height:1.08,build:.95,shirt:'#de7f25',shirtLabel:'BCM',ball:'#de7f25',skin:'#e5b38c',hairClass:'brown',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Tall long-stride smooth power bowler',bio:"6'3 right-hander with a casual approach and founder energy.",x:0,approach:'Casual',personality:'Businesslike',celebration:'Point',badShot:'Stare down lane',iconic:'Says “Who do you think you are? I am!” after strikes'},
+ q:{height:1.0,build:1.0,shirt:'#ba3134',shirtLabel:'BCM',ball:'#2f6fda',skin:'#dca97f',hairClass:'black',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Compact efficient technician',bio:"Compact right-hander with smooth mechanics and showman energy.",x:0,approach:'Smooth',personality:'Showman',celebration:'Flex',badShot:'Shrug',iconic:''},
+ woo:{height:1.03,build:1.08,shirt:'#27446d',shirtLabel:'BCM',ball:'#2f6fda',skin:'#efc7a4',hairClass:'medium brown',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Emotional rhythm bowler',bio:"Right-hander with awkward timing, big emotions, and an NBA shirt lineage.",x:0,approach:'Awkward',personality:'Emotional',celebration:'Yell / scream',badShot:'Angry gesture',iconic:'Says “How is that not a strike?” after every non-strike'},
+ staub:{height:1.12,build:1.02,shirt:'#2d8b74',shirtLabel:'BCM',ball:'#cc3636',skin:'#f0c8a8',hairClass:'dirtyblonde',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'Tall high-release power bowler',bio:"6'5 right-hander with a slow approach and showman personality.",x:0,approach:'Slow',personality:'Showman',celebration:'Yell / scream',badShot:'Angry gesture',iconic:''}
+};
+function tierJerseyText(pl){
+ const tier=pl&&pl.tier;
+ if(tier==='Enzo League') return 'ENZO';
+ if(tier==='Semi-Pro Tour') return 'SEMI';
+ if(tier==='Pro Tour') return 'PRO';
+ if(tier==='Elite Level Pro') return 'ELITE';
+ if(tier==='All-Time Great') return 'GOAT';
+ return 'BCM';
+}
+function playerVisual(pl){
+ const base=PLAYER_VISUALS[pl.id]||{height:1,build:1,shirt:'#9a3940',shirtLabel:'BCM',ball:'#ad6a36',skin:'#e1b38d',hairClass:'brown',handed:'right',twoHanded:false,style:'One-Handed Righty',archetype:'League bowler',bio:'',x:0};
+ return {...base,shirtLabel:tierJerseyText(pl)};
+}
+function bowlerPreviewHtml(pl,mode='lane',state='ready'){
+ const v=playerVisual(pl); const cls=[mode,state,v.handed==='left'?'lefty':'',v.twoHanded?'twohanded':''].join(' ').trim();
+ return `<div class="bowler-avatar ${cls}" style="--shirt:${v.shirt};--ball:${v.ball};--skin:${v.skin};--height:${v.height};--build:${v.build};--x:${v.x||0}px;"><div class="avatar-shadow"></div><div class="avatar-body"><div class="avatar-head"><div class="avatar-hair ${v.hairClass||''}"></div><div class="avatar-face"></div></div><div class="avatar-arm back"></div><div class="avatar-arm release"></div><div class="avatar-support"></div><div class="avatar-torso"><div class="avatar-logo">${v.shirtLabel||''}</div></div><div class="avatar-hips"></div><div class="avatar-leg left"></div><div class="avatar-leg right"></div><div class="avatar-shoe left"></div><div class="avatar-shoe right"></div></div><div class="avatar-ball"></div><div class="avatar-name">${pl.name}</div></div>`;
+}
+function bowlerStyleSummary(pl){ const v=playerVisual(pl); return `${v.style} · ${v.archetype}`; }
+function animateHumanThrow(line){
+ const scene=document.querySelector('.lane-scene');
+ const stage=document.getElementById('arcadeHumanStage');
+ const root=document.querySelector('#arcadeHumanStage .bowler-avatar');
+ const avatarBall=root&&root.querySelector('.avatar-ball');
+ const laneBall=document.getElementById('arcadeBall');
+ const pinDeck=document.getElementById('arcadePinDeck');
+ const path=document.getElementById('releasePath');
+ if(!scene||!stage||!root||!avatarBall||!laneBall||!pinDeck) return;
+ root.classList.remove('ready','celebrate','frustrated','spare-react');
+ root.classList.add('throwing');
+ // Make the approach itself visible: the bowler moves toward the foul line while the limbs cycle.
+ root.animate([{bottom:'0px'},{bottom:'5px',offset:.22},{bottom:'13px',offset:.48},{bottom:'22px',offset:.72},{bottom:'18px'}],{duration:950,easing:'cubic-bezier(.2,.72,.22,1)',fill:'forwards'});
+ const sceneRect=scene.getBoundingClientRect(), pinRect=pinDeck.getBoundingClientRect();
+ if(path){path.classList.add('active');setTimeout(()=>path.classList.remove('active'),720);}
+ // The ball stays visibly in the hand during the backswing. It becomes the lane ball at release.
+ setTimeout(()=>{
+   if(!arcade.rolling) return;
+   const handBall=document.querySelector('#arcadeHumanStage .avatar-ball');
+   if(!handBall) return;
+   const a=handBall.getBoundingClientRect();
+   const startX=(a.left-sceneRect.left)+(a.width/2)-15;
+   const startY=(a.top-sceneRect.top)+(a.height/2)-15;
+   const targetX=(pinRect.left-sceneRect.left)+(pinRect.width/2)-6+(line*.32);
+   const targetY=(pinRect.top-sceneRect.top)+(pinRect.height*.54)-6;
+   handBall.style.opacity='0';
+   laneBall.classList.add('rolling');
+   laneBall.style.opacity='1';laneBall.style.width='30px';laneBall.style.height='30px';
+   laneBall.style.left=`${startX}px`;laneBall.style.top=`${startY}px`;laneBall.style.transform='none';
+   const dx=targetX-startX,dy=targetY-startY;
+   laneBall.animate([
+     {transform:'translate(0,0) scale(1) rotate(0deg)',opacity:1,offset:0},
+     {transform:`translate(${dx*.12}px,${dy*.08}px) scale(.95) rotate(110deg)`,opacity:1,offset:.22},
+     {transform:`translate(${dx*.48}px,${dy*.43}px) scale(.70) rotate(390deg)`,opacity:1,offset:.52},
+     {transform:`translate(${dx*.80}px,${dy*.78}px) scale(.48) rotate(720deg)`,opacity:1,offset:.82},
+     {transform:`translate(${dx}px,${dy}px) scale(.36) rotate(980deg)`,opacity:1,offset:1}
+   ],{duration:700,easing:'cubic-bezier(.15,.72,.22,1)',fill:'forwards'});
+ },430);
+}
+function showBowlingReaction(pins,before){
+ const root=document.querySelector('#arcadeHumanStage .bowler-avatar');
+ if(!root)return;
+ root.getAnimations().forEach(a=>a.cancel());
+ root.classList.remove('throwing','ready','celebrate','frustrated','spare-react');
+ if(before===10&&pins===10){root.classList.add('celebrate');playArcadeSound('cheer');}
+ else if(before<10&&pins===before){root.classList.add('spare-react');}
+ else if(pins===0||(before===10&&pins<=5)){root.classList.add('frustrated');}
+ else root.classList.add('spare-react');
+}
+
+function showPlayerCard(playerId){
+ const pl = PLAYERS[playerId];
+ if(!pl) return;
+ const hasCurrentSeason = pl.seasonGames && pl.seasonGames.length>0;
+ const hasPriorSeason = careerModeOn && pl.lastFinish!==null;
+ const regularGames = hasCurrentSeason ? pl.seasonGames.slice(0,Math.min(pl.seasonGames.length,TOTAL_WEEKS*9)) : [];
+ const seasonAvg = regularGames.length ? mean(regularGames) : (pl.careerSeasons?.length ? pl.careerSeasons[pl.careerSeasons.length-1].seasonAvg : pl.careerAvg);
+ const bestGame = hasCurrentSeason ? Math.max(...pl.seasonGames) : (pl.careerSeasons?.length ? pl.careerSeasons[pl.careerSeasons.length-1].highGame : '—');
+ const worstGame = hasCurrentSeason ? Math.min(...pl.seasonGames) : '—';
+ const delta = hasCurrentSeason ? seasonAvg - pl.careerAvg : 0;
+ const deltaClass = delta>0.5 ? 'up' : delta<-0.5 ? 'down' : 'flat';
+ const deltaSymbol = delta>0.5 ? '↑' : delta<-0.5 ? '↓' : '→';
+ const displayTotal = hasCurrentSeason ? pl.seasonTotal : pl.lastSeasonTotal;
+ const displayWeeks = hasCurrentSeason ? pl.weeklyTotals.length : TOTAL_WEEKS;
+ const tRank = Math.max(0, tierRank(pl.tier));
+ const finishes = pl.finishHistory||[];
+ const top3 = finishes.filter(x=>x<=3).length;
+ const avgFinish = finishes.length ? mean(finishes).toFixed(1) : '—';
+ const prestige = Math.round(computePrestigeScore(pl));
+ const rings = pl.championships||0, mvps=totalMVPs(pl);
+ const atg = pl.allTimeGreat;
+ const dynasty = dynastyStatus(pl);
+ const form = pl.formState==='HOT' ? '🔥 Hot streak' : pl.formState==='COLD' ? '❄️ Cold spell' : 'Steady';
+ const html = `
+   <div class="stat-row">
+     <div><div class="stat-label">Tier</div><div class="stat-value"><span class="tier-pill t${tRank}" style="margin-left:0;">${pl.tier}</span>${pl.seniorTour?' <span class="tier-pill t2">Senior Tour</span>':''}${dynasty?' <span class="badge-mini dynasty">DYNASTY</span>':''}</div></div>
+     <div><div class="stat-label">Current Form</div><div class="stat-value">${form}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">${hasCurrentSeason?'Season Average':'Latest Season Avg'}</div><div class="stat-value"><span class="accent">${Math.round(seasonAvg||0)}</span></div></div>
+     <div><div class="stat-label">vs. Career</div><div class="stat-value"><span class="delta ${deltaClass}">${deltaSymbol} ${Math.abs(delta).toFixed(1)}</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Best Game (Current)</div><div class="stat-value"><span class="accent">${bestGame}</span></div></div>
+     <div><div class="stat-label">All-Time High</div><div class="stat-value"><span class="accent">${pl.allTimeHigh}</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Career Average</div><div class="stat-value">${Math.round(pl.careerAvg)}</div></div>
+     <div><div class="stat-label">Best Season Avg</div><div class="stat-value">${pl.bestSeasonAvg ? pl.bestSeasonAvg.toFixed(1) : '—'}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">${hasCurrentSeason?'Season Total':'Prior Season Total'}</div><div class="stat-value"><span class="accent">${displayTotal||0}</span></div></div>
+     <div><div class="stat-label">${hasCurrentSeason?'Weeks Active':'Prior Finish'}</div><div class="stat-value">${hasCurrentSeason ? displayWeeks : (pl.lastFinish?'#'+pl.lastFinish:'—')}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Championships</div><div class="stat-value"><span class="accent">${rings}</span></div></div>
+     <div><div class="stat-label">MVP Awards</div><div class="stat-value"><span class="accent">${mvps}</span> <span style="font-size:12px;color:var(--polo);">(${pl.regularSeasonMvps||0} RS · ${pl.playoffMvps||0} PO)</span></div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Top-3 Finishes</div><div class="stat-value">${top3}</div></div>
+     <div><div class="stat-label">Average Finish</div><div class="stat-value">${avgFinish}</div></div>
+   </div>
+   <div class="stat-row">
+     <div><div class="stat-label">Best Playoff Run</div><div class="stat-value">${pl.bestPlayoffWins||0} match wins</div></div>
+     <div><div class="stat-label">Player of the Week</div><div class="stat-value">${pl.playerOfWeekAwards||0}</div></div>
+   </div>
+   <div class="atg-track">
+     <div class="atg-track-title">All-Time Great Tracker ${atg?'· ACHIEVED':''}</div>
+     ${progressRowHtml('Rings',rings,ALL_TIME_GREAT_MIN_RINGS)}
+     ${progressRowHtml('MVPs',mvps,ALL_TIME_GREAT_MIN_MVPS)}
+     ${progressRowHtml('Prestige',prestige,ALL_TIME_GREAT_MIN_PRESTIGE)}
+     <div class="hint" style="margin-top:8px;">All-Time Great requires 8+ rings, 5+ total MVP awards and 225+ prestige. Elite Level Pro is the tier immediately below it.</div>
+   </div>
+ `;
+ document.getElementById('playerCardName').textContent = `${pl.emoji} ${pl.name}`;
+ document.getElementById('playerCardContent').innerHTML = html;
+ document.getElementById('playerCardModal').classList.remove('hidden');
+}
+
+/* =========================================================================
+
+  PLAYOFF ODDS & FAVORITES
+
+  ========================================================================= */
+
+function calcBlendedAvg(pl){
+
+ if(!pl.seasonGames || pl.seasonGames.length===0) return pl.careerAvg;
+
+ return 0.65*mean(pl.seasonGames) + 0.35*pl.careerAvg;
+
+}
+
+function softmaxProb(blend1, blend2){
+
+ const w1 = Math.exp(blend1/25), w2 = Math.exp(blend2/25);
+
+ return w1/(w1+w2);
+
+}
+
+function toAmericanOdds(prob){
+
+ if(prob>=0.5) return '-'+Math.round(prob/(1-prob)*100);
+
+ else return '+'+Math.round((1-prob)/prob*100);
+
+}
+
+ 
+
+function buildOddsTable(){
+
+ const ordered = Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+
+ const odds = ordered.slice(0,6).map(pl=>{
+
+   const blend = calcBlendedAvg(pl);
+
+   return {pl, blend};
+
+ });
+
+ const totalWeight = odds.reduce((s,o)=>s+Math.exp(o.blend/25),0);
+
+ const html = odds.map((o,i)=>{
+
+   const prob = Math.exp(o.blend/25)/totalWeight;
+
+   const americanOdds = toAmericanOdds(prob);
+
+   return `<tr>
+
+     <td class="odds-seed">#${o.pl.seed}</td>
+
+     <td class="odds-name">${o.pl.emoji} ${o.pl.name}</td>
+
+     <td class="odds-prob">${(prob*100).toFixed(1)}%</td>
+
+     <td class="odds-odds">${americanOdds}</td>
+
+   </tr>`;
+
+ }).join('');
+
+ document.getElementById('oddsTable').innerHTML = html;
+
+ document.getElementById('oddsPanelWrap').style.display='block';
+
+}
+
+ 
+
+/* =========================================================================
+
+  PLAYOFF RECAP
+
+  ========================================================================= */
+
+function buildPlayoffRecap(){
+
+ const champ = playoffs.champion;
+
+ const runner = null; // we'd need to track losers bracket runner-up to show here; for now just show champ
+
+ const recap = `
+
+   <div style="margin-bottom:18px;">
+
+     <div style="text-align:center;">
+
+       <div style="font-family:'Roboto Mono',monospace; font-size:12px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Season Champion</div>
+
+       <div style="font-family:'Playfair Display',serif; font-size:28px; color:var(--gold-bright); margin-bottom:4px;">${champ.emoji} ${champ.name}</div>
+
+       <div style="font-family:'Frank Ruhl Libre',serif; font-style:italic; color:var(--regent); font-size:15px;">Seed #${champ.seed}</div>
+
+     </div>
+
+   </div>
+
+   <div style="border:1px solid var(--rule); border-radius:3px; padding:16px; background:rgba(75,107,149,0.06);">
+
+     <div style="font-family:'Roboto Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--polo); margin-bottom:12px;">Playoff Journey</div>
+
+     <div style="font-family:'Frank Ruhl Libre',serif; color:var(--botticelli); font-size:14px; line-height:1.6;">
+
+       ${champ.name} advanced through double-elimination bracket, defeating all challengers in best-of-three format.
+
+       Final victory clinches the 2026 BCM Bowling League Championship.
+
+     </div>
+
+   </div>
+
+ `;
+
+ document.getElementById('playoffRecapContent').innerHTML = recap;
+
+ document.getElementById('playoffRecapPanel').style.display='block';
+
+}
+
+ 
+
+/* Update bracket card rendering to show W-L */
+
+function matchCardHtmlWithRecords(m){
+
+ const A = m.getA(), B = m.getB();
+
+ const cls = m.played ? 'done' : (A && B ? 'live' : '');
+
+ if(m.skipped){
+
+   return `<div class="match"><div class="round-label" style="margin:0 0 4px;">${m.roundLabel}</div>
+
+     <div class="m-side tbd"><span class="who">Not needed</span></div></div>`;
+
+ }
+
+ let aHtml, bHtml, gamesLine='';
+
+ if(!m.played){
+
+   aHtml = A ? sideHtml(A) : sideHtml(null,undefined,false,true);
+
+   bHtml = B ? sideHtml(B) : sideHtml(null,undefined,false,true);
+
+ } else {
+
+   const r = m.result;
+
+   const wlA = playoffs.recordsWL && playoffs.recordsWL[r.pA.id] ? playoffs.recordsWL[r.pA.id] : 0;
+
+   const wlB = playoffs.recordsWL && playoffs.recordsWL[r.pB.id] ? playoffs.recordsWL[r.pB.id] : 0;
+
+   aHtml = `<div class="m-side ${r.winner.id===r.pA.id?'winner':''}">
+
+     <span class="who">${r.pA.emoji} ${r.pA.name}<span class="seed">#${r.pA.seed} (${wlA}W)</span></span>
+
+     <span class="score">${r.totalA}</span>
+
+   </div>`;
+
+   bHtml = `<div class="m-side ${r.winner.id===r.pB.id?'winner':''}">
+
+     <span class="who">${r.pB.emoji} ${r.pB.name}<span class="seed">#${r.pB.seed} (${wlB}W)</span></span>
+
+     <span class="score">${r.totalB}</span>
+
+   </div>`;
+
+   gamesLine = `<div class="m-games">${r.pA.name}: ${r.gamesA.join('-')} &nbsp;|&nbsp; ${r.pB.name}: ${r.gamesB.join('-')}</div>`;
+
+ }
+
+ return `<div class="match ${cls}">
+
+   <div class="round-label" style="margin:0 0 4px;">${m.roundLabel}</div>
+
+   ${aHtml}<div class="m-mid-rule"></div>${bHtml}
+
+   ${gamesLine}
+
+ </div>`;
+
+}
+
+ 
+
+/* Play a single 3-game aggregate match between two players */
+
+function playMatch(pA, pB){
+
+ const gamesA=[simulateGame(pA),simulateGame(pA),simulateGame(pA)];
+
+ const gamesB=[simulateGame(pB),simulateGame(pB),simulateGame(pB)];
+
+ const totalA=gamesA.reduce((x,y)=>x+y,0), totalB=gamesB.reduce((x,y)=>x+y,0);
+
+ let winner,loser,winScore,loseScore,winGames,loseGames;
+
+ if(totalA>=totalB){ winner=pA; loser=pB; winScore=totalA; loseScore=totalB; winGames=gamesA; loseGames=gamesB; }
+
+ else { winner=pB; loser=pA; winScore=totalB; loseScore=totalA; winGames=gamesB; loseGames=gamesA; }
+
+ return { pA,pB,gamesA,gamesB,totalA,totalB,winner,loser,winScore,loseScore };
+
+}
+
+ 
+
+/* Find the key of the next playable match without playing it. Auto-marks
+
+  unneeded grand-final matches as skipped along the way. */
+
+function getNextPlayableMatchKey(){
+
+ if(!playoffs || playoffs.champion) return null;
+
+ const gfKeys = ['GF1','GF2','GF3'];
+
+ for(const key of playoffs.order){
+
+   const m = playoffs.M[key];
+
+   if(m.played) continue;
+
+   if(gfKeys.includes(key)){
+
+     const wins = Object.values(playoffs.gfWins);
+
+     if(wins.some(w=>w>=2)) { m.played=true; m.skipped=true; continue; }
+
+     if(key==='GF3'){
+
+       const vals = Object.values(playoffs.gfWins);
+
+       if(!(vals.length===2 && vals[0]===1 && vals[1]===1)){ m.played=true; m.skipped=true; continue; }
+
+     }
+
+   }
+
+   const A = m.getA(), B = m.getB();
+
+   if(!A || !B) continue; // dependency not resolved yet, try next in order
+
+   return key;
+
+ }
+
+ return null;
+
+}
+
+ 
+
+/* Compute (but do not commit to the bracket) the real result for a match.
+
+  Safe to call more than once for the same still-unplayed key: if the
+
+  animation modal was closed mid-reveal, the same computed result is reused
+
+  instead of re-simulating (which would double-count games in season stats). */
+
+function resolveMatch(key){
+
+ if(playoffs.pending && playoffs.pending.key===key) return playoffs.pending.res;
+
+ const m = playoffs.M[key];
+
+ const A = m.getA(), B = m.getB();
+
+ const res = playMatchTrack(A,B);
+
+ playoffs.pending = { key, res };
+
+ return res;
+
+}
+
+ 
+
+/* Finalize a resolved match into the bracket: marks it played, updates
+
+  win/loss records, grand-final series tracking, and crowns a champion
+
+  if the series is decided. */
+
+function commitMatch(key, res){
+
+ const m = playoffs.M[key];
+
+ if(!m || m.played) return;
+
+ m.played = true;
+
+ m.result = { winner:res.winner.id, loser:res.loser.id, ...res };
+
+ if(playoffs.pending && playoffs.pending.key===key) playoffs.pending = null;
+
+ 
+
+ const gfKeys = ['GF1','GF2','GF3'];
+
+ recordRivalryMatch(res, gfKeys.includes(key));
+
+ if(gfKeys.includes(key)){
+
+   playoffs.gfWins[res.winner.id] = (playoffs.gfWins[res.winner.id]||0)+1;
+
+   const w = Object.values(playoffs.gfWins);
+
+   if(Math.max(...w)>=2){
+
+     playoffs.champion = res.winner;
+
+     gfKeys.forEach(k=>{ if(!playoffs.M[k].played){ playoffs.M[k].played=true; playoffs.M[k].skipped=true; } });
+
+     recordHallOfFame();
+
+     buildPlayoffRecap();
+
+   }
+
+ }
+
+ if(!bulkSimMode) autosaveGame();
+
+}
+
+ 
+
+/* Advance exactly one unplayed match instantly, no animation. Used by
+
+  "Simulate Rest of Playoffs". */
+
+function playNextMatch(){
+
+ const key = getNextPlayableMatchKey();
+
+ if(!key) return false;
+
+ const res = resolveMatch(key);
+
+ commitMatch(key, res);
+
+ return true;
+
+}
+
+ 
+
+function simulateAllPlayoffs(){
+
+ if(followedPlayerId){ simulateRestRespectingFollow(false); return; }
+
+ let guard=0;
+
+ while(!playoffs.champion && guard<60){
+
+   const advanced = playNextMatch();
+
+   guard++;
+
+   if(!advanced) break;
+
+ }
+
+ renderBracket();
+
+ if(playoffs.champion) showChampion();
+
+}
+
+ 
+
+/* Instantly resolve the winners/losers brackets, but stop right before the
+
+  grand final so the championship can be watched via the animation. */
+
+function simToChampionship(){
+
+ if(!playoffs || playoffs.champion) return;
+
+ if(followedPlayerId){ simulateRestRespectingFollow(true); return; }
+
+ const gfKeys = ['GF1','GF2','GF3'];
+
+ let guard=0;
+
+ while(guard<60){
+
+   const key = getNextPlayableMatchKey();
+
+   if(!key || gfKeys.includes(key)) break;
+
+   playNextMatch();
+
+   guard++;
+
+ }
+
+ renderBracket();
+
+}
+
+ 
+
+/* Instantly resolves every match EXCEPT ones involving the followed player —
+
+  those pause the auto-sim and open the live animation so the user can
+
+  watch just their player's games. Resumes automatically once that match's
+
+  modal is closed (see closeMatchModal). */
+
+function simulateRestRespectingFollow(stopBeforeFinals){
+
+ if(!playoffs || playoffs.champion){ renderBracket(); return; }
+
+ const gfKeys = ['GF1','GF2','GF3'];
+
+ let guard=0;
+
+ while(guard<60){
+
+   const key = getNextPlayableMatchKey();
+
+   if(!key) break;
+
+   if(stopBeforeFinals && gfKeys.includes(key)) break;
+
+   const m = playoffs.M[key];
+
+   const A = m.getA(), B = m.getB();
+
+   if(A && B && (A.id===followedPlayerId || B.id===followedPlayerId)){
+
+     autoSimAfterModal = { stopBeforeFinals };
+
+     openMatchForKey(key, false);
+
+     return;
+
+   }
+
+   playNextMatch();
+
+   guard++;
+
+ }
+
+ renderBracket();
+
+ if(playoffs.champion) showChampion();
+
+}
+
+ 
+
+/* =========================================================================
+
+  MATCH ANIMATION MODAL — reveals an already-resolved match game-by-game
+
+  with a simple bowling animation, instead of showing the result instantly.
+
+  ========================================================================= */
+
+const ANIM_STEPS = 7;         // "rolls" per game shown in the animation
+
+const ANIM_STEP_MS = 950;     // time per roll (roll + pin reset)
+
+const ANIM_ROLL_MS = 520;     // portion of each step spent mid-roll
+
+ 
+
+let matchModal = { active:false, key:null, res:null, gameIndex:0, chainMode:false, timers:[], skipRequested:false };
+
+ 
+
+function scoreIncrements(final, steps){
+
+ if(final<=0) return Array(steps).fill(0);
+
+ const weights = Array.from({length:steps}, ()=> 0.4+Math.random());
+
+ const sumW = weights.reduce((a,b)=>a+b,0);
+
+ let incs = weights.map(w=> Math.round(final*w/sumW));
+
+ let drift = final - incs.reduce((a,b)=>a+b,0);
+
+ incs[incs.length-1] += drift;
+
+ for(let i=0;i<incs.length;i++){ if(incs[i]<0){ incs[incs.length-1] += incs[i]; incs[i]=0; } }
+
+ const sum2 = incs.reduce((a,b)=>a+b,0);
+
+ if(sum2!==final) incs[incs.length-1] += (final-sum2);
+
+ return incs;
+
+}
+
+ 
+
+function clearModalTimers(){
+
+ matchModal.timers.forEach(t=>clearTimeout(t));
+
+ matchModal.timers = [];
+
+}
+
+ 
+
+function openMatchForKey(key, chainMode){
+
+ const m = playoffs.M[key];
+
+ const A = m.getA(), B = m.getB();
+
+ clearModalTimers();
+
+ matchModal = { active:true, key, res:null, gameIndex:0, chainMode, timers:[], skipRequested:false };
+
+ document.getElementById('matchModalTitle').textContent = `${A.emoji} ${A.name} vs ${B.emoji} ${B.name}`;
+
+ document.getElementById('matchModalSub').textContent = m.roundLabel + (chainMode ? ' · Championship Series' : '');
+
+ renderMatchModalIntro(A,B);
+
+ document.getElementById('matchAnimModal').classList.remove('hidden');
+
+}
+
+ 
+
+function renderMatchModalIntro(A,B){
+
+ document.getElementById('matchModalBody').innerHTML = `
+
+   <div class="game-progress">Game 1 of 3</div>
+
+   <div class="lanes-wrap">
+
+     ${laneHtml('A', A, 0)}
+
+     ${laneHtml('B', B, 0)}
+
+   </div>
+
+   <div class="game-log">Best of three games decides this match.</div>
+
+   <div class="match-modal-actions">
+
+     <button class="primary" id="btnStartGame">Start Game</button>
+
+   </div>
+
+ `;
+
+ document.getElementById('btnStartGame').addEventListener('click', beginCurrentGameAnimation);
+
+}
+
+ 
+
+function laneHtml(side, player, score){
+
+ return `
+
+   <div class="bowl-lane">
+
+     <div class="lane-name"><span class="em">${player.emoji}</span>${player.name}</div>
+
+     <div class="pin-rack" id="pinRack${side}">
+
+       <div class="pin-row"><div class="pin"></div><div class="pin"></div><div class="pin"></div><div class="pin"></div></div>
+
+       <div class="pin-row"><div class="pin"></div><div class="pin"></div><div class="pin"></div></div>
+
+       <div class="pin-row"><div class="pin"></div><div class="pin"></div></div>
+
+       <div class="pin-row"><div class="pin"></div></div>
+
+     </div>
+
+     <div class="lane-track"><div class="bowl-ball" id="ball${side}"></div></div>
+
+     <div class="lane-score"><span id="score${side}">${score}</span><span class="lbl">pins</span></div>
+
+   </div>
+
+ `;
+
+}
+
+ 
+
+function beginCurrentGameAnimation(){
+
+ if(!matchModal.res) matchModal.res = resolveMatch(matchModal.key);
+
+ const idx = matchModal.gameIndex;
+
+ const finalA = matchModal.res.gamesA[idx];
+
+ const finalB = matchModal.res.gamesB[idx];
+
+ const incsA = scoreIncrements(finalA, ANIM_STEPS);
+
+ const incsB = scoreIncrements(finalB, ANIM_STEPS);
+
+ 
+
+ document.getElementById('matchModalBody').innerHTML = `
+
+   <div class="game-progress">Game ${idx+1} of 3</div>
+
+   <div class="lanes-wrap">
+
+     ${laneHtml('A', matchModal.res.pA, 0)}
+
+     ${laneHtml('B', matchModal.res.pB, 0)}
+
+   </div>
+
+   <div class="game-log" id="gameLog">Rolling…</div>
+
+   <div class="match-modal-actions">
+
+     <button class="ghost" id="btnSkipAnim">Skip Animation</button>
+
+   </div>
+
+ `;
+
+ document.getElementById('btnSkipAnim').addEventListener('click', ()=>{
+
+   matchModal.skipRequested = true;
+
+   clearModalTimers();
+
+   finishGameReveal(finalA, finalB);
+
+ });
+
+ 
+
+ let running = { A:0, B:0 };
+
+ const runStep = (step) => {
+
+   if(matchModal.skipRequested || step>=ANIM_STEPS){
+
+     finishGameReveal(finalA, finalB);
+
+     return;
+
+   }
+
+   const ballA = document.getElementById('ballA'), ballB = document.getElementById('ballB');
+
+   const pinsA = document.querySelectorAll('#pinRackA .pin'), pinsB = document.querySelectorAll('#pinRackB .pin');
+
+   if(ballA) ballA.classList.add('rolling');
+
+   if(ballB) ballB.classList.add('rolling');
+
+ 
+
+   matchModal.timers.push(setTimeout(()=>{
+
+     if(matchModal.skipRequested){ finishGameReveal(finalA, finalB); return; }
+
+     // knock down a random flavor subset of pins (cosmetic only)
+
+     pinsA.forEach(p=>{ if(Math.random()<0.55) p.classList.add('down'); });
+
+     pinsB.forEach(p=>{ if(Math.random()<0.55) p.classList.add('down'); });
+
+     running.A += incsA[step]; running.B += incsB[step];
+
+     const scoreA = document.getElementById('scoreA'), scoreB = document.getElementById('scoreB');
+
+     if(scoreA) scoreA.textContent = running.A;
+
+     if(scoreB) scoreB.textContent = running.B;
+
+   }, ANIM_ROLL_MS));
+
+ 
+
+   matchModal.timers.push(setTimeout(()=>{
+
+     if(matchModal.skipRequested){ finishGameReveal(finalA, finalB); return; }
+
+     if(ballA) ballA.classList.remove('rolling');
+
+     if(ballB) ballB.classList.remove('rolling');
+
+     pinsA.forEach(p=>p.classList.remove('down'));
+
+     pinsB.forEach(p=>p.classList.remove('down'));
+
+     runStep(step+1);
+
+   }, ANIM_STEP_MS));
+
+ };
+
+ runStep(0);
+
+}
+
+ 
+
+function finishGameReveal(finalA, finalB){
+
+ clearModalTimers();
+
+ const scoreA = document.getElementById('scoreA'), scoreB = document.getElementById('scoreB');
+
+ if(scoreA) scoreA.textContent = finalA;
+
+ if(scoreB) scoreB.textContent = finalB;
+
+ const log = document.getElementById('gameLog');
+
+ const idx = matchModal.gameIndex;
+
+ const A = matchModal.res.pA, B = matchModal.res.pB;
+
+ if(log) log.textContent = `Game ${idx+1}: ${A.name} ${finalA} — ${B.name} ${finalB}`;
+
+ 
+
+ matchModal.gameIndex++;
+
+ const actions = document.querySelector('.match-modal-actions');
+
+ if(matchModal.gameIndex < 3){
+
+   if(actions) actions.innerHTML = `<button class="primary" id="btnNextGame">Start Game ${matchModal.gameIndex+1}</button><button class="ghost" id="btnSkipRest">Skip Animation</button>`;
+
+   const nextBtn = document.getElementById('btnNextGame');
+
+   const skipBtn = document.getElementById('btnSkipRest');
+
+   if(nextBtn) nextBtn.addEventListener('click', ()=>{ matchModal.skipRequested=false; beginCurrentGameAnimation(); });
+
+   if(skipBtn) skipBtn.addEventListener('click', ()=>{ revealRemainingGamesInstantly(); });
+
+ } else {
+
+   showMatchSummary();
+
+ }
+
+}
+
+ 
+
+function revealRemainingGamesInstantly(){
+
+ clearModalTimers();
+
+ showMatchSummary();
+
+}
+
+ 
+
+function showMatchSummary(){
+
+ clearModalTimers();
+
+ const key = matchModal.key;
+
+ const res = matchModal.res;
+
+ commitMatch(key, res);
+
+ renderBracket();
+
+ 
+
+ const winnerWL = res.winner.name;
+
+ document.getElementById('matchModalBody').innerHTML = `
+
+   <div class="match-summary">
+
+     <div class="winner-line">${res.winner.emoji} ${res.winner.name} wins the match</div>
+
+     <div class="score-line">${res.gamesA.join('-')} (${res.totalA}) &nbsp;vs&nbsp; ${res.gamesB.join('-')} (${res.totalB})</div>
+
+   </div>
+
+   <div class="match-modal-actions" id="postMatchActions"></div>
+
+ `;
+
+ 
+
+ const nextKey = getNextPlayableMatchKey();
+
+ const gfKeys = ['GF1','GF2','GF3'];
+
+ const actions = document.getElementById('postMatchActions');
+
+ if(matchModal.chainMode && nextKey && gfKeys.includes(nextKey) && !playoffs.champion){
+
+   const label = playoffs.M[nextKey].roundLabel;
+
+   actions.innerHTML = `<button class="primary" id="btnContinueChain">Play ${label}</button>`;
+
+   document.getElementById('btnContinueChain').addEventListener('click', ()=>{
+
+     openMatchForKey(nextKey, true);
+
+   });
+
+ } else {
+
+   const label = playoffs.champion ? 'Close' : 'Continue';
+
+   actions.innerHTML = `<button class="primary" id="btnCloseMatchModal">${label}</button>`;
+
+   document.getElementById('btnCloseMatchModal').addEventListener('click', closeMatchModal);
+
+ }
+
+}
+
+ 
+
+function closeMatchModal(){
+
+ clearModalTimers();
+
+ matchModal.active = false;
+
+ document.getElementById('matchAnimModal').classList.add('hidden');
+
+ renderBracket();
+
+ if(autoSimAfterModal){
+
+   const opts = autoSimAfterModal;
+
+   autoSimAfterModal = null;
+
+   simulateRestRespectingFollow(opts.stopBeforeFinals);
+
+ }
+
+}
+
+ 
+
+/* =========================================================================
+
+  BRACKET RENDER
+
+  ========================================================================= */
+
+function sideHtml(player, score, isWinner, isTbd){
+
+ if(isTbd){
+
+   return `<div class="m-side tbd"><span class="who">TBD</span></div>`;
+
+ }
+
+ return `<div class="m-side ${isWinner?'winner':''}">
+
+     <span class="who">${player.emoji} ${player.name}<span class="seed">#${player.seed}</span></span>
+
+     <span class="score">${score!==undefined?score:''}</span>
+
+   </div>`;
+
+}
+
+ 
+
+function matchCardHtml(m){
+
+ const A = m.getA(), B = m.getB();
+
+ const cls = m.played ? 'done' : (A && B ? 'live' : '');
+
+ if(m.skipped){
+
+   return `<div class="match"><div class="round-label" style="margin:0 0 4px;">${m.roundLabel}</div>
+
+     <div class="m-side tbd"><span class="who">Not needed</span></div></div>`;
+
+ }
+
+ let aHtml, bHtml, gamesLine='';
+
+ if(!m.played){
+
+   aHtml = A ? sideHtml(A) : sideHtml(null,undefined,false,true);
+
+   bHtml = B ? sideHtml(B) : sideHtml(null,undefined,false,true);
+
+ } else {
+
+   const r = m.result;
+
+   aHtml = sideHtml(r.pA, r.totalA, r.winner.id===r.pA.id);
+
+   bHtml = sideHtml(r.pB, r.totalB, r.winner.id===r.pB.id);
+
+   gamesLine = `<div class="m-games">${r.pA.name}: ${r.gamesA.join('-')} &nbsp;|&nbsp; ${r.pB.name}: ${r.gamesB.join('-')}</div>`;
+
+ }
+
+ return `<div class="match ${cls}">
+
+   <div class="round-label" style="margin:0 0 4px;">${m.roundLabel}</div>
+
+   ${aHtml}<div class="m-mid-rule"></div>${bHtml}
+
+   ${gamesLine}
+
+ </div>`;
+
+}
+
+ 
+
+function renderBracket(){
+
+ document.getElementById('playoffPanel').style.display='block';
+
+ document.getElementById('playoffIntroPanel').style.display='none';
+
+ 
+
+ const winnersOrder = [
+
+   {label:'Play-In', keys:['PI']},
+
+   {label:'Quarterfinals', keys:['QF1','QF2','QF3','QF4']},
+
+   {label:'Semifinals', keys:['SF1','SF2']},
+
+   {label:'Winners Final', keys:['WF']},
+
+ ];
+
+ document.getElementById('winnersRounds').innerHTML = winnersOrder.map(col=>`
+
+   <div class="round-col">
+
+     <div class="round-label">${col.label}</div>
+
+     ${col.keys.map(k=>matchCardHtmlWithRecords(playoffs.M[k])).join('')}
+
+   </div>`).join('');
+
+ 
+
+ const losersOrder = [
+
+   {label:'Round 1', keys:['LR1a','LR1b']},
+
+   {label:'Round 2', keys:['LR2a','LR2b']},
+
+   {label:'Round 3', keys:['LR3a','LR3b']},
+
+   {label:'Losers Final', keys:['LR4']},
+
+ ];
+
+ document.getElementById('losersRounds').innerHTML = losersOrder.map(col=>`
+
+   <div class="round-col">
+
+     <div class="round-label">${col.label}</div>
+
+     ${col.keys.map(k=>matchCardHtmlWithRecords(playoffs.M[k])).join('')}
+
+   </div>`).join('');
+
+ 
+
+ document.getElementById('grandFinalRound').innerHTML = `
+
+   <div class="round-col" style="min-width:220px;">
+
+     ${['GF1','GF2','GF3'].map(k=>matchCardHtmlWithRecords(playoffs.M[k])).join('')}
+
+   </div>`;
+
+ 
+
+ const played = playoffs.order.filter(k=>playoffs.M[k].played && !playoffs.M[k].skipped).length;
+
+ document.getElementById('playoffSub').textContent = playoffs.champion
+
+   ? 'Champion crowned'
+
+   : `${played} matches complete`;
+
+ 
+
+ const finalsReady = !!(winnerOf('WF') && winnerOf('LR4')) && !playoffs.champion;
+
+ const watchFinalsBtn = document.getElementById('btnWatchFinals');
+
+ if(watchFinalsBtn) watchFinalsBtn.disabled = !finalsReady;
+
+ const simToChampBtn = document.getElementById('btnSimToChamp');
+
+ if(simToChampBtn) simToChampBtn.disabled = finalsReady || !!playoffs.champion;
+
+ 
+
+ if(playoffs.champion){
+
+   setPlayoffButtonsDisabled(true);
+
+   showChampion();
+
+ }
+
+}
+
+ 
+
+function showChampion(){
+
+ const c = playoffs.champion;
+
+ document.getElementById('championPanel').style.display='block';
+
+ document.getElementById('championName').textContent = `${c.emoji} ${c.name}`;
+
+ document.getElementById('championSub').textContent = `Season Champion — Seed #${c.seed}`;
+
+ updateStatus();
+
+ updateResetButtonLabel();
+
+ renderCareerHub();
+
+ autosaveGame();
+
+}
+
+ 
+
+/* =========================================================================
+
+  HALL OF FAME
+
+  ========================================================================= */
+
+function recordHallOfFame(){
+
+ if(!playoffs || !playoffs.champion || playoffs.recorded) return;
+
+ playoffs.recorded = true;
+
+ const c = playoffs.champion;
+
+ c.championships = (c.championships||0) + 1;
+
+ const label = careerModeOn ? careerYear : seasonNumber;
+
+ hallOfFame.push({ season: label, playerId:c.id, name: c.name, emoji: c.emoji, seed: c.seed, seasonTotal: c.seasonTotal, careerMode: careerModeOn });
+
+ renderHallOfFame();
+
+}
+
+ 
+
+function renderHallOfFame(){
+ const wrap = document.getElementById('hallOfFamePanel');
+ if(!wrap) return;
+ if(hallOfFame.length===0){ wrap.style.display='none'; return; }
+ wrap.style.display='block';
+ const counts = {};
+ hallOfFame.forEach(h=>{ counts[h.name] = (counts[h.name]||0)+1; });
+ const topName = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+ const rows = hallOfFame.slice().reverse().map(h=>{
+   const pl = h.playerId ? PLAYERS[h.playerId] : Object.values(PLAYERS).find(p=>p.name===h.name);
+   const extras = pl ? `${pl.championships?`<span class="badge-mini ring">💍 ${pl.championships}</span>`:''}${totalMVPs(pl)?`<span class="badge-mini mvp">★ ${totalMVPs(pl)}</span>`:''}` : '';
+   const click = h.careerMode ? ` class="click-row" onclick="window.__openSeasonArchive(${h.season})" title="Open Year ${h.season} archive"` : '';
+   return `<tr${click}>
+     <td class="odds-seed">${h.careerMode?'Year':'Season'} ${h.season}</td>
+     <td class="odds-name">${h.emoji} ${h.name}${extras}</td>
+     <td class="odds-seed">Seed #${h.seed}</td>
+     <td class="odds-prob" style="text-align:right;">${h.seasonTotal} pins</td>
+   </tr>`;
+ }).join('');
+ document.getElementById('hallOfFameContent').innerHTML = `
+   <p class="hint" style="margin:0 0 14px;">${hallOfFame.length} ${careerModeOn?'year':'season'}${hallOfFame.length>1?'s':''} played this session
+     ${topName && topName[1]>1 ? ` &nbsp;·&nbsp; <span style="color:var(--gold-bright)">${topName[0]}</span> leads with ${topName[1]} titles` : ''}. ${careerModeOn?'Tap a champion season to open the full archive.':''}</p>
+   <table class="odds-table">${rows}</table>`;
+}
+
+/* =========================================================================
+   ARCADE EDITION HELPERS — career archive, forms, rivalries, save system
+   ========================================================================= */
+function progressRowHtml(label,value,target){
+ const pct = Math.max(0,Math.min(100,(value/target)*100));
+ return `<div class="progress-row"><span>${label}</span><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span>${Math.round(value)}/${target}</span></div>`;
+}
+
+function accoladeMiniHtml(pl){
+ let html='';
+ if((pl.championships||0)>0) html += `<span class="badge-mini ring">💍${pl.championships}</span>`;
+ if(totalMVPs(pl)>0) html += `<span class="badge-mini mvp">★${totalMVPs(pl)}</span>`;
+ if(dynastyStatus(pl)) html += `<span class="badge-mini dynasty">DYNASTY</span>`;
+ if(pl.formState==='HOT') html += `<span class="badge-mini hot">HOT</span>`;
+ if(pl.formState==='COLD') html += `<span class="badge-mini cold">COLD</span>`;
+ return html;
+}
+
+function dynastyStatus(pl){
+ const years=(pl.championshipYears||[]).slice();
+ if(!years.length) return false;
+ const lastCompleted = careerModeOn ? (careerYear - ((playoffs&&playoffs.champion)?0:1)) : seasonNumber;
+ for(let end=Math.max(5,lastCompleted);end>=5;end--){
+   const count=years.filter(y=>y>=end-4 && y<=end).length;
+   if(count>=3) return true;
+ }
+ return false;
+}
+
+function prepareWeeklyForms(){
+ const events=[];
+ Object.values(PLAYERS).forEach(pl=>{
+   if((pl.formWeeksLeft||0)<=0){
+     pl.formState='NORMAL'; pl.formModifier=0; pl.formWeeksLeft=0;
+     const r=Math.random();
+     if(r<0.075){
+       pl.formState='HOT'; pl.formModifier=Math.round(7+Math.random()*7); pl.formWeeksLeft=2+Math.floor(Math.random()*2);
+       events.push(`🔥 ${pl.emoji} ${pl.name} catches fire: a ${pl.formWeeksLeft}-week hot streak begins.`);
+     } else if(r<0.125){
+       pl.formState='COLD'; pl.formModifier=-Math.round(7+Math.random()*7); pl.formWeeksLeft=2+Math.floor(Math.random()*2);
+       events.push(`❄️ ${pl.emoji} ${pl.name} hits a cold spell expected to last ${pl.formWeeksLeft} weeks.`);
+     }
+   }
+ });
+ return events;
+}
+
+function decayWeeklyForms(){
+ Object.values(PLAYERS).forEach(pl=>{
+   if((pl.formWeeksLeft||0)>0){
+     pl.formWeeksLeft--;
+     if(pl.formWeeksLeft<=0){ pl.formState='NORMAL'; pl.formModifier=0; }
+   }
+ });
+}
+
+function generateWeeklyStorylines(weekData, ordered, formEvents){
+ const stories=[];
+ const byWeek=Object.values(PLAYERS).slice().sort((a,b)=>weekData[b.id].weekTotal-weekData[a.id].weekTotal);
+ if(byWeek[0]) stories.push(`🏅 Player of the Week: ${byWeek[0].emoji} ${byWeek[0].name} led the league with ${weekData[byWeek[0].id].weekTotal} pins.`);
+ const careerRank=Object.values(PLAYERS).slice().sort((a,b)=>b.careerAvg-a.careerAvg);
+ const lowerHalf=new Set(careerRank.slice(Math.floor(careerRank.length/2)).map(p=>p.id));
+ const upset=byWeek.find((p,i)=>i<3 && lowerHalf.has(p.id));
+ if(upset) stories.push(`🚨 Upset Alert: ${upset.emoji} ${upset.name} crashed the weekly top three despite entering as a lower-half career-average bowler.`);
+ let meltdown=null, meltDelta=Infinity;
+ Object.values(PLAYERS).forEach(pl=>{
+   const expected=(pl.careerAvg+(pl.formModifier||0))*9;
+   const d=weekData[pl.id].weekTotal-expected;
+   if(d<meltDelta){meltDelta=d;meltdown=pl;}
+ });
+ if(meltdown && meltDelta<-70) stories.push(`📉 Meltdown Watch: ${meltdown.emoji} ${meltdown.name} finished ${Math.abs(Math.round(meltDelta))} pins below expectation.`);
+ stories.push(...(formEvents||[]).slice(0,2));
+ if(currentWeek>=8 && ordered.length>=9){
+   const seventh=ordered[6], eighth=ordered[7], ninth=ordered[8];
+   stories.push(`🔎 Play-In Watch: #7 ${seventh.name} holds a ${seventh.seasonTotal-eighth.seasonTotal}-pin cushion over #8 ${eighth.name}; ${ninth.name} sits ${eighth.seasonTotal-ninth.seasonTotal} behind the first play-in spot.`);
+ }
+ return stories.slice(0,5);
+}
+
+function renderRacePanel(){
+ const wrap=document.getElementById('racePanel');
+ if(!wrap) return;
+ if(currentWeek<7 || !Object.keys(PLAYERS).length){wrap.style.display='none';return;}
+ wrap.style.display='block';
+ const ordered=Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+ const projected=ordered.map(pl=>({pl,proj:currentWeek?Math.round(pl.seasonTotal/currentWeek*TOTAL_WEEKS):0})).sort((a,b)=>b.proj-a.proj);
+ const eighthNow=ordered[7];
+ const chips=projected.map((o,i)=>{
+   const final=currentWeek>=TOTAL_WEEKS;
+   const status=final ? (i<7?`Clinched #${i+1}`:`Play-In #${i+1}`) : (i<6?'Projected Safe':i<8?'Bubble':'Projected Play-In');
+   const cls=i<6?'race-safe':i<8?'race-bubble':'race-danger';
+   const gap=eighthNow ? o.pl.seasonTotal-eighthNow.seasonTotal : 0;
+   return `<div class="race-chip ${cls}"><div class="r-seed">PROJECTED #${i+1}</div><div class="r-name">${o.pl.emoji} ${o.pl.name}</div><div class="r-meta">${o.proj} projected pins · ${status}${i<7&&eighthNow?` · ${gap>=0?'+':''}${gap} vs #8`:''}</div></div>`;
+ }).join('');
+ document.getElementById('racePanelSub').textContent=currentWeek===10?'Final seeding locked':'Projected final order · seeds 8–9 face the play-in';
+ document.getElementById('racePanelContent').innerHTML=`<div class="race-grid">${chips}</div><p class="hint">Projection = current scoring pace over 10 weeks. “Safe/Bubble” is a projection, while clinched labels only appear once the regular season is complete.</p>`;
+}
+
+function recordRivalryMatch(res,isChampionship){
+ if(!res||!res.pA||!res.pB||!res.winner) return;
+ const ids=[res.pA.id,res.pB.id].sort(); const key=ids.join('|');
+ if(!rivalryBook[key]) rivalryBook[key]={ids,meetings:0,wins:{},championshipMeetings:0,lastYear:null};
+ const r=rivalryBook[key]; r.meetings++; r.wins[res.winner.id]=(r.wins[res.winner.id]||0)+1;
+ if(isChampionship) r.championshipMeetings++;
+ r.lastYear=careerModeOn?careerYear:seasonNumber;
+}
+
+function finalizeCareerSeasonMetrics(year){
+ const hist=careerHistoryLog.find(y=>y.year===year);
+ Object.values(PLAYERS).forEach(pl=>{
+   if((pl.careerSeasons||[]).some(s=>s.year===year)) return;
+   const regGames=(pl.seasonGames||[]).slice(0,TOTAL_WEEKS*9);
+   const snap={year,rank:pl.finishHistory[year-1]||pl.rank||null,seasonTotal:pl.seasonTotal,seasonAvg:regGames.length?mean(regGames):0,highGame:pl.seasonGames.length?Math.max(...pl.seasonGames):0,playoffWins:(playoffs&&playoffs.recordsWL&&playoffs.recordsWL[pl.id])||0,champion:!!(hist&&hist.champion&&hist.champion.name===pl.name),mvp:!!(hist&&hist.mvp&&hist.mvp.name===pl.name),playoffMvp:!!(hist&&hist.playoffMVP&&hist.playoffMVP.name===pl.name),seed:pl.seed||null};
+   pl.careerSeasons=pl.careerSeasons||[]; pl.careerSeasons.push(snap);
+   pl.bestSeasonAvg=Math.max(pl.bestSeasonAvg||0,snap.seasonAvg||0);
+   pl.bestSeasonTotal=Math.max(pl.bestSeasonTotal||0,snap.seasonTotal||0);
+   pl.bestPlayoffWins=Math.max(pl.bestPlayoffWins||0,snap.playoffWins||0);
+   if(snap.champion && !(pl.championshipYears||[]).includes(year)){pl.championshipYears=pl.championshipYears||[];pl.championshipYears.push(year);}
+ });
+ renderCareerHub();
+}
+
+function currentTitleDrought(pl){
+ const completed=careerHistoryLog.length;
+ const years=(pl.championshipYears||[]).slice().sort((a,b)=>a-b);
+ if(!completed) return 0;
+ let longest=years.length?Math.max(0,years[0]-1):completed;
+ for(let i=1;i<years.length;i++) longest=Math.max(longest,years[i]-years[i-1]-1);
+ if(years.length) longest=Math.max(longest,completed-years[years.length-1]);
+ return longest;
+}
+
+function renderCareerHub(){
+ const wrap=document.getElementById('careerHubPanel'); if(!wrap) return;
+ if(!careerModeOn){wrap.style.display='none';return;} wrap.style.display='block';
+ const players=Object.values(PLAYERS);
+ const rows=players.slice().sort((a,b)=>computePrestigeScore(b)-computePrestigeScore(a)).map(pl=>{
+   const top3=(pl.finishHistory||[]).filter(x=>x<=3).length;
+   const avgFinish=pl.finishHistory?.length?mean(pl.finishHistory).toFixed(1):'—';
+   return `<tr class="click-row" onclick="window.__showPlayerCard('${pl.id}')"><td class="odds-name">${pl.emoji} ${pl.name}${dynastyStatus(pl)?'<span class="badge-mini dynasty">DYNASTY</span>':''}</td><td>${pl.tier}</td><td class="num">${pl.championships||0}</td><td class="num">${pl.regularSeasonMvps||0}</td><td class="num">${pl.playoffMvps||0}</td><td class="num">${top3}</td><td class="num">${avgFinish}</td><td class="num">${pl.bestSeasonAvg?pl.bestSeasonAvg.toFixed(1):'—'}</td><td class="num">${pl.bestPlayoffWins||0}</td></tr>`;
+ }).join('');
+ const highGame=players.slice().sort((a,b)=>b.allTimeHigh-a.allTimeHigh)[0];
+ const highSeason=players.slice().sort((a,b)=>(b.bestSeasonTotal||0)-(a.bestSeasonTotal||0))[0];
+ const ringKing=players.slice().sort((a,b)=>(b.championships||0)-(a.championships||0))[0];
+ const mvpKing=players.slice().sort((a,b)=>totalMVPs(b)-totalMVPs(a))[0];
+ const drought=players.slice().sort((a,b)=>currentTitleDrought(b)-currentTitleDrought(a))[0];
+ const playoffKing=players.slice().sort((a,b)=>(b.bestPlayoffWins||0)-(a.bestPlayoffWins||0))[0];
+ const rivalries=Object.values(rivalryBook).sort((a,b)=>b.meetings-a.meetings).slice(0,5);
+ const rivalryHtml=rivalries.length?rivalries.map(r=>{const a=PLAYERS[r.ids[0]],b=PLAYERS[r.ids[1]];if(!a||!b)return'';return `<div class="metric-card"><div class="metric-kicker">${r.meetings} playoff meetings${r.championshipMeetings?` · ${r.championshipMeetings} finals`:''}</div><div class="metric-main">${a.emoji} ${a.name} vs ${b.emoji} ${b.name}</div><div class="metric-sub">Series: ${r.wins[a.id]||0}–${r.wins[b.id]||0} · last met Year ${r.lastYear}</div></div>`;}).join(''):'<p class="hint">Rivalries appear after players meet in the playoffs.</p>';
+ document.getElementById('careerHubContent').innerHTML=`
+   <div class="career-grid">
+     <div class="metric-card"><div class="metric-kicker">All-Time High Game</div><div class="metric-main">${highGame?highGame.emoji+' '+highGame.name+' · '+highGame.allTimeHigh:'—'}</div><div class="metric-sub">Includes the historical score database and simulated career.</div></div>
+     <div class="metric-card"><div class="metric-kicker">Best Season Total</div><div class="metric-main">${highSeason&&highSeason.bestSeasonTotal?highSeason.emoji+' '+highSeason.name+' · '+highSeason.bestSeasonTotal:'—'}</div><div class="metric-sub">Highest completed regular-season pinfall.</div></div>
+     <div class="metric-card"><div class="metric-kicker">Ring Leader</div><div class="metric-main">${ringKing?ringKing.emoji+' '+ringKing.name+' · '+(ringKing.championships||0):'—'}</div><div class="metric-sub">${dynastyStatus(ringKing||{})?'Active dynasty: 3+ titles in a five-year window.':'Most career championships.'}</div></div>
+     <div class="metric-card"><div class="metric-kicker">MVP Leader</div><div class="metric-main">${mvpKing?mvpKing.emoji+' '+mvpKing.name+' · '+totalMVPs(mvpKing):'—'}</div><div class="metric-sub">Regular season + playoff MVP awards.</div></div>
+     <div class="metric-card"><div class="metric-kicker">Longest Title Drought</div><div class="metric-main">${drought?drought.emoji+' '+drought.name+' · '+currentTitleDrought(drought)+' yrs':'—'}</div><div class="metric-sub">Longest completed championship drought to date.</div></div>
+     <div class="metric-card"><div class="metric-kicker">Best Playoff Run</div><div class="metric-main">${playoffKing?playoffKing.emoji+' '+playoffKing.name+' · '+(playoffKing.bestPlayoffWins||0)+'W':'—'}</div><div class="metric-sub">Most match wins in a completed postseason.</div></div>
+   </div>
+   <details class="past-weeks" open style="margin-top:16px;"><summary>▸ Career résumé table</summary><div class="career-table-wrap"><table class="odds-table career-table"><thead><tr><th>Bowler</th><th>Tier</th><th>Rings</th><th>RS MVP</th><th>PO MVP</th><th>Top 3</th><th>Avg Finish</th><th>Best Avg</th><th>Best PO</th></tr></thead><tbody>${rows}</tbody></table></div></details>
+   <details class="past-weeks" style="margin-top:12px;"><summary>▸ Rivalry board</summary><div class="career-grid" style="margin-top:10px;">${rivalryHtml}</div></details>`;
+}
+
+function renderAllCareerPanels(){
+ renderStandings(true); updateStatus(); renderHallOfFame(); renderCareerMilestones(); renderHistoryChannel(); renderCareerHub(); renderRacePanel(); updateResetButtonLabel();
+ if(weeklyRecaps.length) renderRecap();
+ if(playoffs){ if(!bulkSimMode){ buildOddsTable(); populateFollowPlayerSelect(playoffs.seeds); renderBracket(); if(playoffs.champion){showChampion();buildPlayoffRecap();} } }
+}
+
+function openSeasonArchive(year){
+ const hist=careerHistoryLog.find(y=>y.year===year);
+ const snaps=Object.values(PLAYERS).map(pl=>({pl,s:(pl.careerSeasons||[]).find(x=>x.year===year)})).filter(x=>x.s).sort((a,b)=>a.s.rank-b.s.rank);
+ if(!hist && year===careerYear && currentWeek>=TOTAL_WEEKS){
+   // Current completed-but-not-yet-archived year can still be inspected.
+   const live=Object.values(PLAYERS).slice().sort((a,b)=>b.seasonTotal-a.seasonTotal);
+   const mvp=live[0]; let pomvp=null,pow=-1;Object.entries(playoffs?.recordsWL||{}).forEach(([id,w])=>{if(w>pow){pow=w;pomvp=PLAYERS[id];}});
+   let high=null,highVal=-1;live.forEach(pl=>(pl.seasonGames||[]).forEach(g=>{if(g>highVal){highVal=g;high=pl;}}));
+   document.getElementById('seasonArchiveTitle').textContent=`Year ${year} · Current Season`;
+   document.getElementById('seasonArchiveContent').innerHTML=`<p class="hint">This championship is complete but the year has not yet been advanced into permanent career history.</p><div class="career-grid"><div class="metric-card"><div class="metric-kicker">Champion</div><div class="metric-main">${playoffs?.champion?playoffs.champion.emoji+' '+playoffs.champion.name:'—'}</div></div><div class="metric-card"><div class="metric-kicker">Regular Season MVP</div><div class="metric-main">${mvp?mvp.emoji+' '+mvp.name:'—'}</div><div class="metric-sub">${mvp?mvp.seasonTotal+' pins':''}</div></div><div class="metric-card"><div class="metric-kicker">Playoff MVP Pace</div><div class="metric-main">${pomvp?pomvp.emoji+' '+pomvp.name:'—'}</div><div class="metric-sub">${pow>=0?pow+' match wins':''}</div></div><div class="metric-card"><div class="metric-kicker">High Game</div><div class="metric-main">${high?high.emoji+' '+high.name+' · '+highVal:'—'}</div></div></div><table class="odds-table archive-standings"><thead><tr><th>#</th><th>Bowler</th><th>Season Avg</th><th>Total</th><th>PO Wins</th></tr></thead><tbody>${live.map((pl,i)=>`<tr><td class="odds-seed">#${i+1}</td><td class="odds-name">${pl.emoji} ${pl.name}${playoffs?.champion?.id===pl.id?'<span class="badge-mini ring">CHAMP</span>':''}</td><td class="num">${mean((pl.seasonGames||[]).slice(0,TOTAL_WEEKS*9)).toFixed(1)}</td><td class="num">${pl.seasonTotal}</td><td class="num">${(playoffs?.recordsWL&&playoffs.recordsWL[pl.id])||0}</td></tr>`).join('')}</tbody></table>`;
+ } else if(hist){
+   document.getElementById('seasonArchiveTitle').textContent=`Year ${year} · Season Archive`;
+   const awards=`<div class="career-grid"><div class="metric-card"><div class="metric-kicker">Champion</div><div class="metric-main">${hist.champion?hist.champion.emoji+' '+hist.champion.name:'—'}</div></div><div class="metric-card"><div class="metric-kicker">Regular Season MVP</div><div class="metric-main">${hist.mvp?hist.mvp.emoji+' '+hist.mvp.name:'—'}</div><div class="metric-sub">${hist.mvp?hist.mvp.total+' pins':''}</div></div><div class="metric-card"><div class="metric-kicker">Playoff MVP</div><div class="metric-main">${hist.playoffMVP?hist.playoffMVP.emoji+' '+hist.playoffMVP.name:'—'}</div><div class="metric-sub">${hist.playoffMVP?hist.playoffMVP.wins+' match wins':''}</div></div><div class="metric-card"><div class="metric-kicker">High Game</div><div class="metric-main">${hist.highRound?hist.highRound.emoji+' '+hist.highRound.name+' · '+hist.highRound.score:'—'}</div></div></div>`;
+   const standings=snaps.length?`<table class="odds-table archive-standings"><thead><tr><th>#</th><th>Bowler</th><th>Season Avg</th><th>Total</th><th>PO Wins</th></tr></thead><tbody>${snaps.map(({pl,s})=>`<tr><td class="odds-seed">#${s.rank}</td><td class="odds-name">${pl.emoji} ${pl.name}${s.champion?'<span class="badge-mini ring">CHAMP</span>':''}</td><td class="num">${s.seasonAvg.toFixed(1)}</td><td class="num">${s.seasonTotal}</td><td class="num">${s.playoffWins}</td></tr>`).join('')}</tbody></table>`:'<p class="hint">Detailed standings snapshot unavailable for this early archive entry.</p>';
+   document.getElementById('seasonArchiveContent').innerHTML=awards+standings;
+ } else return;
+ document.getElementById('seasonArchiveModal').classList.remove('hidden');
+}
+
+function serializeMatchResult(r){
+ if(!r) return null;
+ return {pA:r.pA.id,pB:r.pB.id,gamesA:r.gamesA,gamesB:r.gamesB,totalA:r.totalA,totalB:r.totalB,winner:r.winner.id,loser:r.loser.id,winScore:r.winScore,loseScore:r.loseScore,tiebreak:!!r.tiebreak};
+}
+function serializePlayoffs(){
+ if(!playoffs) return null;
+ const matches={};
+ if(playoffs.M && playoffs.order) playoffs.order.forEach(k=>{const m=playoffs.M[k];matches[k]={played:!!m.played,skipped:!!m.skipped,result:serializeMatchResult(m.result)};});
+ return {seedIds:(playoffs.seeds||[]).map(p=>p.id),recordsWL:playoffs.recordsWL||{},gfWins:playoffs.gfWins||{},championId:playoffs.champion?.id||null,recorded:!!playoffs.recorded,matches};
+}
+function snapshotGame(){
+ return {version:4,savedAt:new Date().toISOString(),careerModeOn,careerYear,careerMilestones,careerHistoryLog,rivalryBook,seasonNumber,firstInit,currentWeek,weeklyRecaps,seasonLocked,hallOfFame,players:PLAYERS,playoffs:serializePlayoffs()};
+}
+function encodeSave(obj){return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));}
+function decodeSave(code){return JSON.parse(decodeURIComponent(escape(atob(code.trim()))));}
+function autosaveGame(){
+ try{localStorage.setItem(SAVE_KEY,JSON.stringify(snapshotGame()));const el=document.getElementById('saveStatus');if(el){el.textContent=`Autosaved locally · ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`;el.classList.add('good');}}catch(e){const el=document.getElementById('saveStatus');if(el)el.textContent='Autosave unavailable in this browser';}
+}
+function restorePlayoffs(ps){
+ if(!ps){playoffs=null;return;}
+ const seeds=(ps.seedIds||[]).map(id=>PLAYERS[id]).filter(Boolean);
+ playoffs={seeds,matches:[],idx:0,champion:null,buildOnly:true,recordsWL:{...(ps.recordsWL||{})}};
+ buildBracketStructure();
+ playoffs.recordsWL={...(ps.recordsWL||{})}; playoffs.gfWins={...(ps.gfWins||{})}; playoffs.recorded=!!ps.recorded; playoffs.pending=null;
+ Object.entries(ps.matches||{}).forEach(([k,ms])=>{const m=playoffs.M[k];if(!m)return;m.played=!!ms.played;m.skipped=!!ms.skipped;if(ms.result){const rr=ms.result;m.result={pA:PLAYERS[rr.pA],pB:PLAYERS[rr.pB],gamesA:rr.gamesA||[],gamesB:rr.gamesB||[],totalA:rr.totalA,totalB:rr.totalB,winner:PLAYERS[rr.winner],loser:PLAYERS[rr.loser],winScore:rr.winScore,loseScore:rr.loseScore,tiebreak:!!rr.tiebreak};}});
+ playoffs.champion=ps.championId?PLAYERS[ps.championId]:null;
+}
+function loadSnapshot(data){
+ if(!data||!data.players) throw new Error('Invalid save');
+ careerModeOn=!!data.careerModeOn;careerYear=data.careerYear||1;careerMilestones=data.careerMilestones||[];careerHistoryLog=data.careerHistoryLog||[];rivalryBook=data.rivalryBook||{};seasonNumber=data.seasonNumber||1;firstInit=false;currentWeek=data.currentWeek||0;weeklyRecaps=data.weeklyRecaps||[];seasonLocked=!!data.seasonLocked;hallOfFame=data.hallOfFame||[];
+ PLAYERS={}; RAW_PLAYERS.forEach(raw=>{const saved=data.players[raw.id];PLAYERS[raw.id]=Object.assign(freshPlayerState(raw),saved||{});});
+ restorePlayoffs(data.playoffs);
+ const toggle=document.getElementById('careerModeToggle');toggle.checked=careerModeOn;document.getElementById('btnSim5Years').style.display=careerModeOn?'':'none';document.getElementById('btnSim10Years').style.display=careerModeOn?'':'none';document.getElementById('btnSimWeek').disabled=seasonLocked;document.getElementById('btnSimAll').disabled=seasonLocked;
+ document.getElementById('recapPanel').style.display=weeklyRecaps.length?'block':'none';document.getElementById('championPanel').style.display='none';document.getElementById('playoffPanel').style.display='none';document.getElementById('playoffIntroPanel').style.display='none';
+ renderAllCareerPanels(); autosaveGame();
+}
+function tryLoadAutosave(){
+ try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return false;loadSnapshot(JSON.parse(raw));return true;}catch(e){console.warn('Autosave could not be restored',e);return false;}
+}
+function openSaveCode(mode){
+ const modal=document.getElementById('saveCodeModal'),txt=document.getElementById('saveCodeText'),apply=document.getElementById('btnApplySaveCode'),copy=document.getElementById('btnCopySaveCode');
+ if(mode==='import'){document.getElementById('saveCodeTitle').textContent='Import Save Code';document.getElementById('saveCodeHint').textContent='Paste a BCM Bowling League save code below. This replaces the current in-browser state.';txt.value='';apply.style.display='';copy.style.display='none';}
+ else{document.getElementById('saveCodeTitle').textContent='Share Save Code';document.getElementById('saveCodeHint').textContent='Copy this code to another device or send it to a friend. Importing it recreates this career.';txt.value=encodeSave(snapshotGame());apply.style.display='none';copy.style.display='';}
+ modal.classList.remove('hidden');txt.focus();
+}
+
+/* =========================================================================
+   CHAMPIONSHIP ARCADE — real 10-frame bowling scoreboard & playable controls
+   ========================================================================= */
+let arcade={active:false,key:null,pA:null,pB:null,controlId:null,gameIndex:0,gamesA:[],gamesB:[],gA:null,gB:null,turn:'A',frameRound:0,targetAim:0,powerStart:0,powerRaf:null,timers:[],commentary:[],sound:true,rolling:false};
+function arcadeClearTimers(){arcade.timers.forEach(clearTimeout);arcade.timers=[];if(arcade.powerRaf)cancelAnimationFrame(arcade.powerRaf);arcade.powerRaf=null;}
+function arcadeSeriesLabel(){const a=arcade.pA,b=arcade.pB;return `${a.name} ${playoffs.gfWins[a.id]||0} · ${playoffs.gfWins[b.id]||0} ${b.name}`;}
+function finalCompetitors(){return {A:winnerOf('WF'),B:winnerOf('LR4')};}
+function seasonAvgFor(pl){const g=(pl.seasonGames||[]).slice(0,TOTAL_WEEKS*9);return g.length?mean(g):pl.careerAvg;}
+function launchChampionshipArcade(){
+ const f=finalCompetitors();if(!f.A||!f.B||playoffs.champion)return;
+ arcadeClearTimers(); arcade={...arcade,active:false,key:null,pA:f.A,pB:f.B,controlId:null,gameIndex:0,gamesA:[],gamesB:[],gA:null,gB:null,turn:'A',frameRound:0,targetAim:0,powerStart:0,powerRaf:null,timers:[],commentary:[],rolling:false};
+ document.getElementById('arcadeModal').classList.remove('hidden'); document.body.style.overflow='hidden'; renderArcadeIntro();
+}
+function finalistCardHtml(pl){
+ const rivalry=getRivalry(pl.id,pl.id===arcade.pA.id?arcade.pB.id:arcade.pA.id); const form=pl.formState==='HOT'?'HOT':pl.formState==='COLD'?'COLD':'STEADY'; const v=playerVisual(pl);
+ return `<div class="finalist-card"><div class="finalist-seed">SEED #${pl.seed} · ${form}</div><div class="finalist-preview-wrap">${bowlerPreviewHtml(pl,'mini preview','ready')}</div><div class="finalist-emoji">${pl.emoji}</div><div class="finalist-name">${pl.name}</div><div class="bowler-style-chip">${v.style}</div><div class="finalist-stats"><div class="finalist-stat"><b>${seasonAvgFor(pl).toFixed(1)}</b><span>Season Avg</span></div><div class="finalist-stat"><b>${pl.championships||0}</b><span>Rings</span></div><div class="finalist-stat"><b>${totalMVPs(pl)}</b><span>MVPs</span></div><div class="finalist-stat"><b>${(playoffs.recordsWL&&playoffs.recordsWL[pl.id])||0}W</b><span>Playoff Run</span></div></div><div class="bowler-bio">${v.bio}</div>${rivalry?`<div class="hint" style="position:relative;margin-top:10px;">Rivalry series ${rivalry.wins[pl.id]||0}–${rivalry.wins[pl.id===arcade.pA.id?arcade.pB.id:arcade.pA.id]||0}</div>`:''}</div>`;
+}
+function getRivalry(a,b){return rivalryBook[[a,b].sort().join('|')]||null;}
+function renderArcadeIntro(){
+ document.getElementById('arcadeTopTitle').textContent='BCM Championship · Live';
+ document.getElementById('arcadeStage').innerHTML=`<div class="broadcast-intro"><div class="broadcast-kicker">BCM Sports Network Presents</div><h2>Championship Bowling</h2><p>Best of three matches. Each match is three full ten-frame games by aggregate pinfall.</p></div><div class="finalist-grid">${finalistCardHtml(arcade.pA)}<div class="vs-medallion">VS</div>${finalistCardHtml(arcade.pB)}</div><div class="arcade-choice"><button class="primary" onclick="window.__arcadeStart('${arcade.pA.id}')">Play as ${arcade.pA.name}</button><button class="ghost" onclick="window.__arcadeStart('')">Watch CPU vs CPU</button><button class="primary" onclick="window.__arcadeStart('${arcade.pB.id}')">Play as ${arcade.pB.name}</button><button class="ghost" onclick="window.__arcadeQuickSim()">Quick Sim Finals</button></div><p class="hint" style="text-align:center;">Playable mode: set aim and spin, then time the power meter and hit ROLL. Your bowler's underlying skill still matters, so inputs help without turning a 100-average player into a guaranteed 300 machine.</p>`;
+}
+function arcadeStart(controlId){arcade.controlId=controlId||null;arcade.active=true;startArcadeNextMatch();}
+function startArcadeNextMatch(){
+ const key=getNextPlayableMatchKey(); if(!key||!['GF1','GF2','GF3'].includes(key)){if(playoffs.champion)renderTrophyCeremony();return;}
+ const m=playoffs.M[key]; arcade.key=key;arcade.pA=m.getA();arcade.pB=m.getB();arcade.gameIndex=0;arcade.gamesA=[];arcade.gamesB=[];arcade.commentary=[`🎙️ ${m.roundLabel}: ${arcade.pA.name} and ${arcade.pB.name} walk onto the championship pair.`];
+ renderArcadeWalkout();
+}
+function renderArcadeWalkout(){
+ const m=playoffs.M[arcade.key];document.getElementById('arcadeTopTitle').textContent=`Championship · ${m.roundLabel}`;
+ document.getElementById('arcadeStage').innerHTML=`<div class="walkout"><div class="series-score">Series · ${arcadeSeriesLabel()}</div><div class="walkout-main">${arcade.pA.emoji} ${arcade.pA.name} vs ${arcade.pB.emoji} ${arcade.pB.name}</div><div class="hint">${m.roundLabel} · three-game aggregate</div></div><div class="finalist-grid" style="margin-top:10px;">${finalistCardHtml(arcade.pA)}<div class="vs-medallion">${m.roundLabel}</div>${finalistCardHtml(arcade.pB)}</div><div class="arcade-choice"><button class="primary" id="btnArcadeBeginMatch">Bowl Game 1</button><button class="ghost" onclick="window.__arcadeSimMatch()">Sim This Match</button></div>`;
+ document.getElementById('btnArcadeBeginMatch').addEventListener('click',startArcadeGame);
+}
+function newBowlingGame(pl){return {pl,frames:Array.from({length:10},()=>[]),frameIndex:0,pinsStanding:10,complete:false};}
+function startArcadeGame(){
+ arcade.gA=newBowlingGame(arcade.pA);arcade.gB=newBowlingGame(arcade.pB);arcade.turn='A';arcade.frameRound=0;arcade.targetAim=Math.round((Math.random()-.5)*34);arcade.rolling=false;
+ const stage=document.getElementById('arcadeStage');stage.innerHTML=`<div class="walkout"><div class="series-score">${playoffs.M[arcade.key].roundLabel} · Game ${arcade.gameIndex+1} of 3 · ${arcadeSeriesLabel()}</div><div class="walkout-main">Championship Pair</div></div><div class="tv-scoreboard" id="arcadeScoreboard"></div><div class="arcade-arena"><div class="lane-scene"><div class="crowd"></div><div class="lane-light"></div><div class="gutter left"></div><div class="gutter right"></div><div class="arcade-lane"></div><div class="foul-line"></div><div class="pocket-marker" id="pocketMarker"></div><div class="pin-deck" id="arcadePinDeck"></div><div class="arcade-ball" id="arcadeBall"></div><div class="release-path" id="releasePath"></div><div class="human-stage" id="arcadeHumanStage"></div><div class="lane-hud"><div class="bowler" id="arcadeBowler"></div><div class="turnmeta" id="arcadeTurnMeta"></div></div></div><div class="arcade-sidepanel"><div class="commentary-box"><div class="commentary-title">Live Commentary</div><div id="arcadeCommentary"></div></div><div><div class="control-title">Bowling Controls</div><div id="arcadeControls"></div></div><div class="controls"><button class="ghost" id="btnArcadeAutoRest">Auto Bowl Rest</button><button class="ghost" id="btnArcadeSimGame">Sim Rest of Game</button></div></div></div>`;
+ document.getElementById('btnArcadeAutoRest').addEventListener('click',()=>{arcade.controlId=null;advanceArcadeTurn();});
+ document.getElementById('btnArcadeSimGame').addEventListener('click',simRestOfArcadeGame);
+ renderArcadeLive(); advanceArcadeTurn();
+}
+function currentGameState(){return arcade.turn==='A'?arcade.gA:arcade.gB;}
+function otherGameState(){return arcade.turn==='A'?arcade.gB:arcade.gA;}
+function frameIsComplete(gs,idx){
+ const f=gs.frames[idx];if(idx<9)return f[0]===10||f.length>=2;
+ if(f.length<2)return false;if(f[0]===10||f[0]+f[1]===10)return f.length>=3;return true;
+}
+function applyBowlingRoll(gs,pins){
+ const i=gs.frameIndex,f=gs.frames[i];f.push(pins);
+ if(i<9){if(f[0]===10||f.length===2){gs.frameIndex++;gs.pinsStanding=10;}else gs.pinsStanding=10-f[0];if(gs.frameIndex>=10)gs.complete=true;return;}
+ if(f.length===1){gs.pinsStanding=f[0]===10?10:10-f[0];}
+ else if(f.length===2){if(f[0]===10){gs.pinsStanding=f[1]===10?10:10-f[1];}else if(f[0]+f[1]===10){gs.pinsStanding=10;}else gs.complete=true;}
+ else gs.complete=true;
+}
+function flattenRolls(frames){const out=[];frames.forEach(f=>f.forEach(x=>out.push(x)));return out;}
+function cumulativeScores(gs){
+ const rolls=flattenRolls(gs.frames), scores=Array(10).fill(null);let idx=0,total=0;
+ for(let f=0;f<10;f++){
+   if(f===9){const fr=gs.frames[9];const need=(fr[0]===10||(fr.length>=2&&fr[0]+fr[1]===10))?3:2;if(fr.length>=need){total+=fr.reduce((a,b)=>a+b,0);scores[f]=total;}break;}
+   const fr=gs.frames[f];if(!fr.length)break;
+   if(fr[0]===10){if(rolls[idx+1]===undefined||rolls[idx+2]===undefined)break;total+=10+rolls[idx+1]+rolls[idx+2];idx+=1;scores[f]=total;}
+   else{if(fr.length<2)break;const sum=fr[0]+fr[1];if(sum===10){if(rolls[idx+2]===undefined)break;total+=10+rolls[idx+2];}else total+=sum;idx+=2;scores[f]=total;}
+ }
+ return scores;
+}
+function finalBowlingScore(gs){const c=cumulativeScores(gs);return c[9]??0;}
+function pinMark(n){return n===0?'–':String(n);}
+function frameMarks(gs,i){
+ const f=gs.frames[i];if(!f.length)return'';
+ if(i<9){if(f[0]===10)return'X';if(f.length===1)return pinMark(f[0]);return `${pinMark(f[0])} ${f[0]+f[1]===10?'/':pinMark(f[1])}`;}
+ const out=[];for(let r=0;r<f.length;r++){if(f[r]===10)out.push('X');else if(r===1&&f[0]!==10&&f[0]+f[1]===10)out.push('/');else if(r===2&&f[1]!==10&&f[1]+f[2]===10&&(f[0]===10))out.push('/');else out.push(pinMark(f[r]));}return out.join(' ');
+}
+function scoreRowHtml(gs){
+ const cs=cumulativeScores(gs);return `<div class="score-row"><div class="score-cell score-name">${gs.pl.emoji} ${gs.pl.name}</div>${Array.from({length:10},(_,i)=>`<div class="score-cell"><span class="frame-num">${i+1}</span><div class="frame-marks">${frameMarks(gs,i)}</div><div class="frame-cume">${cs[i]??''}</div></div>`).join('')}<div class="score-cell score-total">${gs.complete?finalBowlingScore(gs):(cs.filter(x=>x!==null).pop()??0)}</div></div>`;
+}
+function renderArcadeLive(){
+ if(!arcade.gA||!arcade.gB)return;
+ const gs=currentGameState(),v=playerVisual(gs.pl);
+ document.getElementById('arcadeScoreboard').innerHTML=scoreRowHtml(arcade.gA)+scoreRowHtml(arcade.gB);
+ const bow=document.getElementById('arcadeBowler');
+ if(bow)bow.innerHTML=`<div class="lane-bowler-copy"><div class="lane-bowler-name">${gs.pl.emoji} ${gs.pl.name}</div><div class="lane-bowler-meta">${v.style} · ${v.shirtLabel}${v.personality?' · '+v.personality:''}</div></div>`;
+ const human=document.getElementById('arcadeHumanStage');
+ if(human)human.innerHTML=bowlerPreviewHtml(gs.pl,'lane',arcade.rolling?'throwing':'ready');
+ const laneBall=document.getElementById('arcadeBall');
+ if(laneBall){
+   laneBall.style.background=`radial-gradient(circle at 30% 28%, rgba(255,255,255,.95), color-mix(in srgb, ${v.ball} 82%, #fff 18%) 20%, ${v.ball} 55%, #000 135%)`;
+   if(!arcade.rolling) laneBall.style.opacity='0';
+ }
+ const meta=document.getElementById('arcadeTurnMeta');if(meta)meta.textContent=`Frame ${Math.min(10,gs.frameIndex+1)} · ${gs.pinsStanding} pins standing`;
+ const marker=document.getElementById('pocketMarker');if(marker)marker.style.left=`calc(50% + ${arcade.targetAim*0.55}px)`;
+ renderArcadePins(gs.pinsStanding);
+ const comm=document.getElementById('arcadeCommentary');if(comm)comm.innerHTML=arcade.commentary.slice(-4).map((x,i,a)=>`<div class="commentary-line ${i===a.length-1?'latest':''}">${x}</div>`).join('');
+ renderArcadeControls();
+}
+function pinPositions(){return [[50,12],[43,31],[57,31],[36,50],[50,50],[64,50],[29,70],[43,70],[57,70],[71,70]];}
+function renderArcadePins(standing,knockCount=0){const deck=document.getElementById('arcadePinDeck');if(!deck)return;const pos=pinPositions();deck.innerHTML=pos.map((p,i)=>`<div class="arcade-pin ${i>=standing?'down':''}" style="left:${p[0]}%;top:${p[1]}%;"></div>`).join('');}
+function renderArcadeControls(){
+ const box=document.getElementById('arcadeControls');if(!box)return;const gs=currentGameState();
+ if(arcade.rolling){box.innerHTML='<div class="cpu-thinking">Ball on the lane…</div>';return;}
+ if(!arcade.controlId||gs.pl.id!==arcade.controlId){box.innerHTML=`<div class="cpu-thinking">${gs.pl.name} is lining up the shot…</div>`;return;}
+ box.innerHTML=`<div class="arcade-controls"><div class="arcade-control-row"><label><span>Aim</span><span id="aimVal">0</span></label><input id="arcadeAim" type="range" min="-100" max="100" value="0"></div><div class="arcade-control-row"><label><span>Spin</span><span id="spinVal">0</span></label><input id="arcadeSpin" type="range" min="-100" max="100" value="0"></div><div><label style="display:flex;justify-content:space-between;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--polo);margin-bottom:4px;"><span>Power / timing</span><span>sweet spot 76–85</span></label><div class="power-meter"><div class="power-sweet"></div><div class="power-needle" id="powerNeedle"></div></div></div><button class="primary roll-btn" id="btnArcadeRoll">ROLL</button></div>`;
+ const aim=document.getElementById('arcadeAim'),spin=document.getElementById('arcadeSpin');aim.addEventListener('input',()=>document.getElementById('aimVal').textContent=aim.value);spin.addEventListener('input',()=>document.getElementById('spinVal').textContent=spin.value);document.getElementById('btnArcadeRoll').addEventListener('click',()=>performArcadeRoll({aim:+aim.value,spin:+spin.value,power:currentArcadePower()}));startPowerMeter();
+}
+function startPowerMeter(){if(arcade.powerRaf)cancelAnimationFrame(arcade.powerRaf);arcade.powerStart=performance.now();const tick=()=>{const needle=document.getElementById('powerNeedle');if(!needle)return;needle.style.left=`${currentArcadePower()}%`;arcade.powerRaf=requestAnimationFrame(tick);};arcade.powerRaf=requestAnimationFrame(tick);}
+function currentArcadePower(){const t=(performance.now()-arcade.powerStart)/850;return Math.round(50+49*Math.sin(t*Math.PI*2-Math.PI/2));}
+function inputQuality(input){if(!input)return .58;const line=input.aim+input.spin*.34;const lineQ=Math.max(0,1-Math.abs(line-arcade.targetAim)/72);const powerQ=Math.max(0,1-Math.abs(input.power-81)/58);return Math.max(0,Math.min(1,.57*lineQ+.43*powerQ));}
+function chooseRollPins(pl,standing,input){
+ const avg=calcBlendedAvg(pl)+(pl.formModifier||0),skill=Math.max(0,Math.min(1,(avg-70)/170)),q=inputQuality(input);
+ if(standing===10){const strikeP=Math.max(.035,Math.min(.62,.045+skill*.47+(q-.5)*.18));if(Math.random()<strikeP)return 10;const mu=5.1+skill*3.15+(q-.5)*1.4;return Math.max(0,Math.min(9,Math.round(mu+gaussian()*1.45)));}
+ const spareP=Math.max(.07,Math.min(.9,.2+skill*.53+(q-.5)*.24-standing*.012));if(Math.random()<spareP)return standing;const mu=standing*(.38+skill*.38+q*.13);return Math.max(0,Math.min(standing-1,Math.round(mu+gaussian()*Math.max(.7,standing*.14))));
+}
+function advanceArcadeTurn(){
+ if(!arcade.active||arcade.rolling)return;if(arcade.gA.complete&&arcade.gB.complete){finishArcadeGame();return;}
+ const gs=currentGameState();if(gs.complete){if(arcade.turn==='A'){arcade.turn='B';}else{arcade.turn='A';arcade.frameRound++;}arcade.targetAim=Math.round((Math.random()-.5)*34);renderArcadeLive();return advanceArcadeTurn();}
+ renderArcadeLive();if(!arcade.controlId||gs.pl.id!==arcade.controlId){arcade.timers.push(setTimeout(()=>performArcadeRoll(null),820));}
+}
+function performArcadeRoll(input){
+ if(arcade.rolling)return;
+ arcade.rolling=true;
+ if(arcade.powerRaf)cancelAnimationFrame(arcade.powerRaf);
+ arcade.powerRaf=null;
+ const gs=currentGameState(),before=gs.pinsStanding,frame=gs.frameIndex,pins=chooseRollPins(gs.pl,before,input),q=inputQuality(input);
+ let frameDone=false;
+ const line=input?(input.aim+input.spin*.34):arcade.targetAim+(Math.random()-.5)*22;
+ playArcadeSound('roll');
+ renderArcadeLive();
+ requestAnimationFrame(()=>animateHumanThrow(line));
+ // Impact happens after the visible release + ball travel, so the pins now fall when the ball reaches them.
+ arcade.timers.push(setTimeout(()=>{
+   const beforeFrame=gs.frameIndex;
+   applyBowlingRoll(gs,pins);
+   frameDone=gs.complete||gs.frameIndex!==beforeFrame;
+   playArcadeSound(pins===before?'strike':'pins');
+   arcadeComment(gs.pl,pins,before,frame,q);
+   renderArcadePins(Math.max(0,before-pins));
+   showBowlingReaction(pins,before);
+   const board=document.getElementById('arcadeScoreboard');if(board)board.innerHTML=scoreRowHtml(arcade.gA)+scoreRowHtml(arcade.gB);
+   const comm=document.getElementById('arcadeCommentary');if(comm)comm.innerHTML=arcade.commentary.slice(-4).map((x,i,a)=>`<div class="commentary-line ${i===a.length-1?'latest':''}">${x}</div>`).join('');
+ },1160));
+ arcade.timers.push(setTimeout(()=>{
+   const b=document.getElementById('arcadeBall');if(b){b.getAnimations().forEach(a=>a.cancel());b.classList.remove('rolling');b.style.opacity='0';}
+   if(frameDone){if(arcade.turn==='A')arcade.turn='B';else{arcade.turn='A';arcade.frameRound++;}arcade.targetAim=Math.round((Math.random()-.5)*34);}
+   arcade.rolling=false;
+   advanceArcadeTurn();
+ },1780));
+}
+function arcadeComment(pl,pins,before,frame,q){
+ let text;
+ if(before===10&&pins===10){text=`💥 STRIKE! ${pl.emoji} ${pl.name} flushes the pocket in frame ${frame+1}.`;if(pl.id==='bau')text+=` “Who do you think you are? I am!”`;}
+ else if(pins===before){text=`✅ ${pl.name} cleans up the spare in frame ${frame+1}.`;if(pl.id==='farb')text+=` “Bang.”`;}
+ else if(pins===0){text=`😬 Gutter ball for ${pl.name}. Nothing down.`;if(pl.id==='opus')text+=` Opus kicks the ball return in frustration.`;}
+ else if(before===10&&pins===9)text=`🎯 ${pl.name} leaves a lonely pin after a nine-count.`;
+ else if(before===10&&pins<=5)text=`⚠️ Trouble for ${pl.name}: only ${pins} on the first ball.`;
+ else{text=`${pl.emoji} ${pl.name} knocks down ${pins}${before<10?` of the ${before} remaining`:''}.`;if(pl.id==='woo')text+=` “How is that not a strike?”`;}
+ if(q>.9&&pins<before)text+=` The release was nearly perfect, but the pins didn't cooperate.`;
+ arcade.commentary.push(text);
+}
+function finishArcadeGame(){
+ const a=finalBowlingScore(arcade.gA),b=finalBowlingScore(arcade.gB);recordArcadeGameScore(arcade.pA,a);recordArcadeGameScore(arcade.pB,b);arcade.gamesA.push(a);arcade.gamesB.push(b);arcade.commentary.push(`📺 Game ${arcade.gameIndex+1} final: ${arcade.pA.name} ${a}, ${arcade.pB.name} ${b}.`);arcade.gameIndex++;
+ if(arcade.gameIndex<3){document.getElementById('arcadeStage').innerHTML=`<div class="game-intermission"><div class="broadcast-kicker">${playoffs.M[arcade.key].roundLabel}</div><h3>Game ${arcade.gameIndex} Complete</h3><div class="game-score">${arcade.pA.emoji} ${arcade.pA.name} ${a} · ${b} ${arcade.pB.name} ${arcade.pB.emoji}</div><p>Match aggregate: ${arcade.gamesA.reduce((x,y)=>x+y,0)}–${arcade.gamesB.reduce((x,y)=>x+y,0)}</p><div class="arcade-choice"><button class="primary" id="btnNextArcadeGame">Bowl Game ${arcade.gameIndex+1}</button><button class="ghost" onclick="window.__arcadeSimMatch()">Sim Rest of Match</button></div></div>`;document.getElementById('btnNextArcadeGame').addEventListener('click',startArcadeGame);}else finishArcadeMatch();
+}
+function recordArcadeGameScore(pl,score){pl.seasonGames.push(score);if(score>pl.allTimeHigh){const prev=pl.allTimeHigh;pl.allTimeHigh=score;logMilestone(`🎳 NEW CAREER HIGH — ${pl.emoji} ${pl.name} rolls ${score}, breaking the previous record of ${prev}!`);}}
+function makeMatchResultFromArcade(){
+ const totalA=arcade.gamesA.reduce((a,b)=>a+b,0),totalB=arcade.gamesB.reduce((a,b)=>a+b,0);let winner,loser,tiebreak=false;if(totalA===totalB){tiebreak=true;const pa=calcBlendedAvg(arcade.pA),pb=calcBlendedAvg(arcade.pB),prob=softmaxProb(pa,pb);winner=Math.random()<prob?arcade.pA:arcade.pB;loser=winner.id===arcade.pA.id?arcade.pB:arcade.pA;}else{winner=totalA>totalB?arcade.pA:arcade.pB;loser=winner.id===arcade.pA.id?arcade.pB:arcade.pA;}return {pA:arcade.pA,pB:arcade.pB,gamesA:arcade.gamesA.slice(),gamesB:arcade.gamesB.slice(),totalA,totalB,winner,loser,winScore:winner.id===arcade.pA.id?totalA:totalB,loseScore:winner.id===arcade.pA.id?totalB:totalA,tiebreak};
+}
+function finishArcadeMatch(){
+ const res=makeMatchResultFromArcade();playoffs.recordsWL[res.winner.id]=(playoffs.recordsWL[res.winner.id]||0)+1;playoffs.recordsWL[res.loser.id]=(playoffs.recordsWL[res.loser.id]||0);commitMatch(arcade.key,res);renderBracket();const tie=res.tiebreak?'<p class="hint">Aggregate tie was decided by a skill-weighted one-ball roll-off.</p>':'';
+ document.getElementById('arcadeStage').innerHTML=`<div class="game-intermission"><div class="broadcast-kicker">Match Final</div><h3>${res.winner.emoji} ${res.winner.name} wins ${playoffs.M[arcade.key].roundLabel}</h3><div class="game-score">${res.gamesA.join(' · ')} (${res.totalA}) &nbsp; vs &nbsp; ${res.gamesB.join(' · ')} (${res.totalB})</div>${tie}<p>Championship series: ${arcadeSeriesLabel()}</p><div class="arcade-choice">${playoffs.champion?'<button class="primary" id="btnShowTrophy">Trophy Ceremony</button>':'<button class="primary" id="btnNextFinalMatch">Continue Championship</button>'}<button class="ghost" onclick="window.__arcadeQuickSim()">Sim Rest</button></div></div>`;
+ const trophy=document.getElementById('btnShowTrophy');if(trophy)trophy.addEventListener('click',renderTrophyCeremony);const next=document.getElementById('btnNextFinalMatch');if(next)next.addEventListener('click',startArcadeNextMatch);
+}
+function simRestOfArcadeGame(){
+ arcadeClearTimers();const gsA=arcade.gA,gsB=arcade.gB;if(!gsA.complete){const score=simulateArcadeGameInstant(arcade.pA);gsA.frames=score.frames;gsA.complete=true;}if(!gsB.complete){const score=simulateArcadeGameInstant(arcade.pB);gsB.frames=score.frames;gsB.complete=true;}finishArcadeGame();
+}
+function simulateArcadeGameInstant(pl){const gs=newBowlingGame(pl);while(!gs.complete){const pins=chooseRollPins(pl,gs.pinsStanding,null);applyBowlingRoll(gs,pins);}return gs;}
+function simArcadeMatch(){
+ arcadeClearTimers();while(arcade.gamesA.length<3){const a=simulateArcadeGameInstant(arcade.pA),b=simulateArcadeGameInstant(arcade.pB),sa=finalBowlingScore(a),sb=finalBowlingScore(b);recordArcadeGameScore(arcade.pA,sa);recordArcadeGameScore(arcade.pB,sb);arcade.gamesA.push(sa);arcade.gamesB.push(sb);}finishArcadeMatch();
+}
+function quickSimArcadeFinals(){
+ arcadeClearTimers();if(!arcade.active){arcade.active=true;const f=finalCompetitors();arcade.pA=f.A;arcade.pB=f.B;}
+ if(arcade.key&&arcade.gamesA.length<3)simArcadeMatch();
+ let guard=0;while(playoffs&&!playoffs.champion&&guard<6){const key=getNextPlayableMatchKey();if(!key)break;if(['GF1','GF2','GF3'].includes(key)){const res=resolveMatch(key);commitMatch(key,res);}else playNextMatch();guard++;}renderBracket();if(playoffs.champion)renderTrophyCeremony();
+}
+function renderTrophyCeremony(){
+ if(!playoffs.champion)return;arcade.active=false;arcadeClearTimers();const c=playoffs.champion;const gf=['GF1','GF2','GF3'].map(k=>playoffs.M[k]).filter(m=>m&&m.result);const games=[];gf.forEach(m=>{const r=m.result;const arr=r.pA.id===c.id?r.gamesA:r.gamesB;games.push(...arr);});const best=games.length?Math.max(...games):'—';const avg=games.length?(games.reduce((a,b)=>a+b,0)/games.length).toFixed(1):'—';const conf=Array.from({length:55},(_,i)=>`<span class="confetti" style="left:${Math.random()*100}%;animation-duration:${2.7+Math.random()*3}s;animation-delay:${Math.random()*1.4}s;transform:rotate(${Math.random()*180}deg)"></span>`).join('');
+ document.getElementById('arcadeTopTitle').textContent='Champion Crowned';document.getElementById('arcadeStage').innerHTML=`<div class="trophy-stage">${conf}<div class="champ-sub">BCM Bowling League Champion</div><div class="trophy-icon">🏆</div><div class="finalist-preview-wrap" style="margin:0 auto 8px;">${bowlerPreviewHtml(c,'mini preview','ready')}</div><h2>${c.emoji} ${c.name}</h2><div class="champ-sub">Seed #${c.seed} · Career Ring #${c.championships||1}</div><div class="trophy-stats"><div class="trophy-stat"><b>${playoffs.gfWins[c.id]||2}</b><span>Finals Match Wins</span></div><div class="trophy-stat"><b>${avg}</b><span>Finals Game Avg</span></div><div class="trophy-stat"><b>${best}</b><span>Best Finals Game</span></div></div><div class="arcade-choice"><button class="primary" id="btnCloseTrophy">Return to League</button><button class="ghost" onclick="window.__openSeasonArchive(${careerModeOn?careerYear:seasonNumber})">Open Season Archive</button></div></div>`;playArcadeSound('cheer');document.getElementById('btnCloseTrophy').addEventListener('click',closeArcadeModal);
+}
+function closeArcadeModal(){
+ if(arcade.active&&!playoffs.champion){if(!confirm('Exit the championship broadcast? The remaining finals will be simulated so the season stays valid.'))return;quickSimArcadeFinals();if(!playoffs.champion)return;}
+ arcade.active=false;arcadeClearTimers();document.getElementById('arcadeModal').classList.add('hidden');document.body.style.overflow='';renderBracket();if(playoffs.champion)showChampion();
+}
+function playArcadeSound(type){
+ if(!arcade.sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;window.__bcmAudio=window.__bcmAudio||new AC();const ctx=window.__bcmAudio;if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);const now=ctx.currentTime;if(type==='roll'){o.type='sine';o.frequency.setValueAtTime(130,now);o.frequency.exponentialRampToValueAtTime(65,now+.25);g.gain.setValueAtTime(.045,now);g.gain.exponentialRampToValueAtTime(.001,now+.28);o.start(now);o.stop(now+.3);}else if(type==='cheer'){o.type='triangle';o.frequency.setValueAtTime(260,now);o.frequency.exponentialRampToValueAtTime(520,now+.45);g.gain.setValueAtTime(.055,now);g.gain.exponentialRampToValueAtTime(.001,now+.8);o.start(now);o.stop(now+.82);}else{o.type='square';o.frequency.setValueAtTime(type==='strike'?95:120,now);g.gain.setValueAtTime(.025,now);g.gain.exponentialRampToValueAtTime(.001,now+.18);o.start(now);o.stop(now+.2);}}catch(e){}
+}
+
+/* =========================================================================
+
+  EVENTS
+
+  ========================================================================= */
+
+document.getElementById('btnSimWeek').addEventListener('click', ()=>{ simulateWeek(); });
+
+document.getElementById('btnSimAll').addEventListener('click', ()=>{
+
+ while(currentWeek < TOTAL_WEEKS){ simulateWeek(); }
+
+});
+
+document.getElementById('btnReset').addEventListener('click', ()=>{ careerModeOn ? advanceCareerYear(true) : initSeason(); });
+
+document.getElementById('careerModeToggle').addEventListener('change', (e)=>{
+
+ careerModeOn = e.target.checked;
+
+ updateResetButtonLabel();
+
+ updateStatus();
+
+ document.getElementById('btnSim5Years').style.display = careerModeOn ? '' : 'none';
+
+ document.getElementById('btnSim10Years').style.display = careerModeOn ? '' : 'none';
+
+ renderCareerHub(); autosaveGame();
+
+});
+
+document.getElementById('btnSim5Years').addEventListener('click', ()=>{ simulateCareerYears(5); });
+
+document.getElementById('btnSim10Years').addEventListener('click', ()=>{ simulateCareerYears(10); });
+
+document.getElementById('followPlayerSelect').addEventListener('change', (e)=>{
+
+ followedPlayerId = e.target.value || null;
+
+});
+
+document.getElementById('btnStartPlayoffs').addEventListener('click', ()=>{
+
+ document.getElementById('playoffIntroPanel').style.display='none';
+
+ renderBracket();
+
+});
+
+document.querySelectorAll('[data-role="nextMatch"]').forEach(btn=>{
+
+ btn.addEventListener('click', ()=>{
+
+   const key = getNextPlayableMatchKey();
+
+   if(!key){ setPlayoffButtonsDisabled(true); return; }
+
+   if(['GF1','GF2','GF3'].includes(key)){ launchChampionshipArcade(); return; }
+
+   openMatchForKey(key, false);
+
+ });
+
+});
+
+document.querySelectorAll('[data-role="simAllPlayoffs"]').forEach(btn=>{
+
+ btn.addEventListener('click', ()=>{ simulateAllPlayoffs(); });
+
+});
+
+document.getElementById('btnWatchFinals').addEventListener('click', launchChampionshipArcade);
+
+document.getElementById('btnSimToChamp').addEventListener('click', ()=>{ simToChampionship(); });
+
+document.getElementById('matchModalCloseBtn').addEventListener('click', closeMatchModal);
+
+ 
+
+
+document.getElementById('btnExportSave').addEventListener('click',()=>openSaveCode('export'));
+document.getElementById('btnImportSave').addEventListener('click',()=>openSaveCode('import'));
+document.getElementById('btnClearSave').addEventListener('click',()=>{if(confirm('Clear the locally saved BCM Bowling League career?')){try{localStorage.removeItem(SAVE_KEY);}catch(e){}initSeason();autosaveGame();}});
+document.getElementById('btnCopySaveCode').addEventListener('click',async()=>{const txt=document.getElementById('saveCodeText');txt.select();try{await navigator.clipboard.writeText(txt.value);document.getElementById('saveCodeHint').textContent='Copied. Send this code to another device or friend.';}catch(e){document.execCommand('copy');}});
+document.getElementById('btnApplySaveCode').addEventListener('click',()=>{try{loadSnapshot(decodeSave(document.getElementById('saveCodeText').value));document.getElementById('saveCodeModal').classList.add('hidden');}catch(e){alert('That save code could not be read. Make sure the entire code was pasted.');}});
+document.getElementById('btnArcadeExit').addEventListener('click',closeArcadeModal);
+document.getElementById('btnArcadeSound').addEventListener('click',()=>{arcade.sound=!arcade.sound;document.getElementById('btnArcadeSound').textContent=arcade.sound?'Sound On':'Sound Off';});
+
+window.__openSeasonArchive = openSeasonArchive;
+window.__arcadeStart = arcadeStart;
+window.__arcadeQuickSim = quickSimArcadeFinals;
+window.__arcadeSimMatch = simArcadeMatch;
+
+window.__showPlayerCard = showPlayerCard;
+
+ 
+
+/* init */
+
+if(!tryLoadAutosave()){ initSeason(); autosaveGame(); }
+
+ 
+
+})();
+
+</script>
+
 </body>
+
 </html>
+
+ 
