@@ -3,486 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BCM Bowling League — Arcade Career Edition</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Frank+Ruhl+Libre:wght@400;500;700&family=Roboto+Mono:wght@400;500;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-1.css">
-<link rel="stylesheet" href="style-2.css">
-<link rel="stylesheet" href="style-3.css">
+<title>BCM Bowling League</title>
+<style>
+html,body{margin:0;min-height:100%;background:#0B1F36;color:#D0DFEC;font-family:system-ui,-apple-system,sans-serif}
+#boot{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}
+#boot b{display:block;color:#E4C888;font-size:22px;margin-bottom:8px}
+#boot span{opacity:.75}
+</style>
 </head>
 <body>
-<div class="wrap">
-
- 
-
- <div class="masthead">
-
-   <div class="brand-row">
-
-     <div class="wallaby-mark">🦘</div>
-
-     <div class="brand-text">
-
-       <p class="eyebrow">Benny Capital Management</p>
-
-       <h1>BCM Bowling League</h1>
-
-       <div class="tagline">Career Simulator · Championship Arcade · League History</div>
-
-     </div>
-
-   </div>
-
-   <div class="season-status" id="seasonStatus">
-
-     Regular Season
-
-     <span class="big" id="weekIndicator">Week 0 of 10</span><span id="careerYearBadge" style="font-size:12px; color:var(--gold);"></span>
-
-   </div>
-
- </div>
-
- 
-
- <!-- HALL OF FAME -->
-
- <div class="panel" id="hallOfFamePanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Hall of Fame</h2>
-
-     <span class="sub">Champions this session</span>
-
-   </div>
-
-   <div id="hallOfFameContent"></div>
-
- </div>
-
- 
-
- <!-- CAREER MILESTONES -->
-
- <div class="panel" id="careerMilestonesPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Career Milestones</h2>
-
-     <span class="sub">Records, promotions &amp; tour entries</span>
-
-   </div>
-
-   <details class="past-weeks" id="careerMilestonesDetails">
-
-     <summary id="careerMilestonesSummary">▸ View career milestones</summary>
-
-     <div id="careerMilestonesContent"></div>
-
-   </details>
-
- </div>
-
- 
-
- <!-- HISTORY CHANNEL -->
-
- <div class="panel" id="historyChannelPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>History Channel</h2>
-
-     <span class="sub">Every year's champion &amp; award winners</span>
-
-   </div>
-
-   <details class="past-weeks" id="historyChannelDetails">
-
-     <summary id="historyChannelSummary">▸ View history channel</summary>
-
-     <div id="historyChannelContent"></div>
-
-   </details>
-
- </div>
-
- 
-
-
-
- <!-- CAREER COMMAND CENTER -->
- <div class="panel" id="careerHubPanel" style="display:none;">
-   <div class="panel-head">
-     <h2>Career Command Center</h2>
-     <span class="sub">Résumés, dynasties, records &amp; rivalries</span>
-   </div>
-   <div id="careerHubContent"></div>
- </div>
-
- <!-- CONTROLS -->
-
- <div class="panel">
-
-   <div class="panel-head">
-
-     <h2>Season Controls</h2>
-
-     <span class="sub">3 games / night · 3 nights / week · aggregate pins</span>
-
-   </div>
-
-   <label class="career-toggle">
-
-     <input type="checkbox" id="careerModeToggle">
-
-     <span>Career Mode — carry player progression across years instead of resetting</span>
-
-   </label>
-
-   <div class="controls">
-
-     <button class="primary" id="btnSimWeek">Simulate Next Week</button>
-
-     <button class="ghost" id="btnSimAll">Fast-Forward Regular Season</button>
-
-     <button class="ghost" id="btnReset">New Season</button>
-
-     <button class="ghost" id="btnSim5Years" style="display:none;">Sim 5 Years</button>
-
-     <button class="ghost" id="btnSim10Years" style="display:none;">Sim 10 Years</button>
-
-   </div>
-
-   <p class="hint" id="controlHint">Each week, every bowler rolls three nights of three games apiece. Standings are cumulative pinfall — no head-to-head, pure aggregate. Results are freshly simulated every run, so no two seasons play out the same.</p>
-   <div class="save-strip">
-     <span class="save-status" id="saveStatus">Local autosave ready</span>
-     <button class="ghost" id="btnExportSave">Share Save Code</button>
-     <button class="ghost" id="btnImportSave">Import Save</button>
-     <button class="ghost" id="btnClearSave">Clear Saved Progress</button>
-   </div>
-
- </div>
-
- 
-
- <div id="milestoneToastHost"></div>
-
- 
-
- <!-- LIVE LEADERBOARD -->
-
- <div class="panel">
-
-   <div class="panel-head">
-
-     <h2>Live Leaderboard</h2>
-
-     <span class="sub" id="leaderboardSub">Season not yet started</span>
-
-   </div>
-
-   <table class="standings">
-
-     <thead>
-
-       <tr>
-
-         <th>#</th><th>Bowler</th><th id="standingsWeekHead" style="text-align:right">This Week</th>
-
-         <th id="standingsAvgHead" style="text-align:right">Weekly Avg</th><th id="standingsTotalHead" style="text-align:right">Season Total</th><th>Move</th>
-
-       </tr>
-
-     </thead>
-
-     <tbody id="standingsBody"></tbody>
-
-   </table>
-
- </div>
-
- 
-
- <!-- WEEKLY RECAP -->
-
- <div class="panel" id="recapPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Weekly Recap</h2>
-
-     <span class="sub">Filed after every week's close</span>
-
-   </div>
-
-   <div id="latestRecap"></div>
-
-   <details class="past-weeks" id="pastWeeksWrap" style="display:none;">
-
-     <summary>▸ View prior weekly recaps</summary>
-
-     <div id="pastRecaps"></div>
-
-   </details>
-
- </div>
-
- 
-
-
-
- <!-- PLAYOFF RACE DESK -->
- <div class="panel" id="racePanel" style="display:none;">
-   <div class="panel-head">
-     <h2>Playoff Race Desk</h2>
-     <span class="sub" id="racePanelSub">Projection desk</span>
-   </div>
-   <div id="racePanelContent"></div>
- </div>
-
- <!-- PLAYOFF ODDS / FAVORITES -->
-
- <div class="panel odds-panel" id="oddsPanelWrap" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Championship Favorites</h2>
-
-     <span class="sub">Based on final standings</span>
-
-   </div>
-
-   <p class="hint" style="margin:0 0 14px;">Win probabilities use a 65% last-10 average / 35% career average blend, with softmax-weighted odds.</p>
-
-   <table class="odds-table" id="oddsTable"></table>
-
- </div>
-
- 
-
- <!-- PLAYOFF RECAP -->
-
- <div class="panel" id="playoffRecapPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Season Recap</h2>
-
-     <span class="sub">Playoff results</span>
-
-   </div>
-
-   <div id="playoffRecapContent"></div>
-
- </div>
-
- 
-
- <!-- PLAYER CARD MODAL -->
-
- <div class="modal-overlay hidden" id="playerCardModal">
-
-   <div class="modal-sheet">
-
-     <button class="modal-close" onclick="document.getElementById('playerCardModal').classList.add('hidden');">✕</button>
-
-     <h3 id="playerCardName"></h3>
-
-     <div id="playerCardContent"></div>
-
-   </div>
-
- </div>
-
- 
-
- <!-- MATCH ANIMATION MODAL -->
-
- <div class="modal-overlay hidden" id="matchAnimModal">
-
-   <div class="modal-sheet match-modal-sheet">
-
-     <button class="modal-close" id="matchModalCloseBtn">✕</button>
-
-     <div class="match-modal-head">
-
-       <div class="vs-title" id="matchModalTitle">— vs —</div>
-
-       <div class="vs-sub" id="matchModalSub">Round</div>
-
-     </div>
-
-     <div id="matchModalBody"></div>
-
-   </div>
-
- </div>
-
- 
-
-
-
- <!-- SEASON ARCHIVE MODAL -->
- <div class="modal-overlay hidden" id="seasonArchiveModal">
-   <div class="modal-sheet wide">
-     <button class="modal-close" onclick="document.getElementById('seasonArchiveModal').classList.add('hidden');">✕</button>
-     <h3 id="seasonArchiveTitle">Season Archive</h3>
-     <div id="seasonArchiveContent"></div>
-   </div>
- </div>
-
- <!-- SAVE CODE MODAL -->
- <div class="modal-overlay hidden" id="saveCodeModal">
-   <div class="modal-sheet wide">
-     <button class="modal-close" onclick="document.getElementById('saveCodeModal').classList.add('hidden');">✕</button>
-     <h3 id="saveCodeTitle">Share Save Code</h3>
-     <p class="hint" id="saveCodeHint">Copy this code to another device or send it to a friend. Importing it recreates the career.</p>
-     <textarea class="save-code" id="saveCodeText" spellcheck="false"></textarea>
-     <div class="controls" style="margin-top:12px;">
-       <button class="primary" id="btnCopySaveCode">Copy Code</button>
-       <button class="primary" id="btnApplySaveCode" style="display:none;">Load This Save</button>
-     </div>
-   </div>
- </div>
-
- <!-- CHAMPIONSHIP ARCADE -->
- <div class="modal-overlay hidden" id="arcadeModal">
-   <div class="arcade-shell">
-     <div class="arcade-topbar">
-       <div class="arcade-brand">BCM Sports Network</div>
-       <div class="arcade-title" id="arcadeTopTitle">Championship Bowling</div>
-       <div class="arcade-top-actions">
-         <button class="arcade-icon-btn ghost" id="btnArcadeSound">Sound On</button>
-         <button class="arcade-icon-btn ghost" id="btnArcadeExit">Exit</button>
-       </div>
-     </div>
-     <div class="arcade-stage" id="arcadeStage"></div>
-   </div>
- </div>
-
- <!-- PLAYOFFS -->
-
- <div class="panel" id="playoffIntroPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Playoff Bracket</h2>
-
-     <span class="sub">Regular season complete · double elimination</span>
-
-   </div>
-
-   <p class="hint">All nine bowlers make the playoffs. Seeds 8 and 9 open with a play-in; from there it's a standard winners bracket against a running losers bracket, and the two survivors meet in a best-of-three championship. Every match is three games, aggregate pins, decided fresh.</p>
-
-   <div class="controls" style="margin-top:14px;">
-
-     <button class="primary" id="btnStartPlayoffs">Start Playoffs</button>
-
-   </div>
-
- </div>
-
- 
-
- <div class="panel" id="playoffPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Playoff Bracket</h2>
-
-     <span class="sub" id="playoffSub">In progress</span>
-
-   </div>
-
-   <label class="career-toggle" style="margin-bottom:12px;">
-
-     <span style="font-family:'Roboto Mono', monospace; font-size:12px; color:var(--polo);">Follow a player — their matches always play out live, everything else sims instantly:</span>
-
-     <select id="followPlayerSelect" class="follow-select"><option value="">— Watch All Games —</option></select>
-
-   </label>
-
-   <div class="controls" style="margin-bottom:18px;">
-
-     <button class="primary" data-role="nextMatch">Play Next Match</button>
-
-     <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
-
-   </div>
-
- 
-
-   <div class="bracket-lane">
-
-     <div class="lane-title">Winners Bracket</div>
-
-     <div class="rounds" id="winnersRounds"></div>
-
-   </div>
-
-   <div class="bracket-lane">
-
-     <div class="lane-title">Losers Bracket</div>
-
-     <div class="controls" style="margin-bottom:14px;">
-
-       <button class="primary" data-role="nextMatch">Play Next Match</button>
-
-       <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
-
-     </div>
-
-     <div class="rounds" id="losersRounds"></div>
-
-   </div>
-
-   <div class="bracket-lane">
-
-     <div class="lane-title">Championship — Best of Three Matches</div>
-
-     <div class="controls" style="margin-bottom:14px;">
-
-       <button class="primary" id="btnWatchFinals" disabled>Play / Watch Championship</button>
-
-       <button class="ghost" id="btnSimToChamp">Sim to Championship</button>
-
-       <button class="primary" data-role="nextMatch">Play Next Match</button>
-
-       <button class="ghost" data-role="simAllPlayoffs">Simulate Rest of Playoffs</button>
-
-     </div>
-
-     <div class="rounds" id="grandFinalRound"></div>
-
-   </div>
-
- </div>
-
- 
-
- <div class="panel" id="championPanel" style="display:none;">
-
-   <div class="champion-banner">
-
-     <div class="ceremonial">BCM Bowling League</div>
-
-     <h2 id="championName">—</h2>
-
-     <div class="sub" id="championSub">Season Champion</div>
-
-   </div>
-
- </div>
-
- 
-
- <footer>Benny Capital Management &nbsp;·&nbsp; Est. 2026 &nbsp;·&nbsp; League Operations &nbsp;·&nbsp; <span id="appVersion">Beta v0.1.0</span></footer>
-
-</div>
-
-<script src="game-loader.js"></script>
+<div id="boot"><div><b>BCM Bowling League</b><span>Loading Beta v0.2.3…</span></div></div>
+<script>
+(async()=>{
+  try{
+    const names=[
+      'build/v023/build-01.part',
+      'build/v023/build-02.part',
+      'build/v023/build-03.part',
+      'build/v023/build-04.part',
+      'build/v023/build-05.part',
+      'build/v023/build-06.part',
+      'build/v023/build-07.part',
+      'build/v023/build-08.part',
+      'build/v023/build-09.part'
+    ];
+    const pieces=await Promise.all(names.map(n=>
+      fetch(n+'?v=023').then(r=>{
+        if(!r.ok) throw new Error('Failed to load '+n);
+        return r.text();
+      })
+    ));
+    const b64=pieces.join('').trim();
+    const binary=atob(b64);
+    const bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    if(typeof DecompressionStream==='undefined'){
+      throw new Error('This browser does not support the required decompression feature.');
+    }
+    const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const html=await new Response(stream).text();
+    document.open();
+    document.write(html);
+    document.close();
+  }catch(err){
+    console.error(err);
+    document.getElementById('boot').innerHTML='<div><b>BCM Bowling League failed to load.</b><span>Refresh the page. If this keeps happening, send the error to ChatGPT.</span></div>';
+  }
+})();
+</script>
 </body>
 </html>
