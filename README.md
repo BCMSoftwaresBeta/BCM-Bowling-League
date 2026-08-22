@@ -4,19 +4,18 @@ BCM Bowling League is a browser-based bowling career simulator and championship 
 
 ## Current build
 
-**Beta v0.1.0**
+**Beta v0.2.3 — Human Bowling Animation**
 
 This repository is the master development copy used for testing and future releases.
 
-## Files
+## v0.2.3 highlights
 
-- `index.html` — page structure and game interface
-- `style.css` — BCM styling, responsive layouts, championship presentation, and animations
-- `game.js` — simulation engine, career mode, playoffs, arcade championship, history, records, rivalries, and saves
-
-## Playing locally
-
-Open `index.html` in a modern browser. No Python, build tools, or package installation is required.
+- Stylized human bowlers for all nine players
+- Player-specific builds, handedness, shirts, bowling styles, and ball colors
+- Human approach, backswing, release, follow-through, and shot reactions
+- Ball movement synchronized to the bowler release and pin impact
+- Championship finalist previews, player-card previews, and trophy presentation
+- Long-running career simulation, history, records, rivalries, and browser saves remain intact
 
 ## Saving
 
@@ -26,9 +25,9 @@ The current beta automatically saves career progress in the browser using `local
 
 1. Test the latest build on the GitHub Pages site.
 2. Report bugs, screenshots, balance concerns, or feature ideas in ChatGPT.
-3. ChatGPT updates the repository and bumps the beta version when appropriate.
+3. ChatGPT updates the repository and build version.
 4. Refresh the Pages site and test again.
 
-## Release plan
+## Upcoming work
 
-The project will remain in beta while gameplay, career progression, mobile controls, playoff logic, and save reliability are refined. A future production phase can add a backend for accounts, cloud saves, persistent leagues, and friend sharing.
+The next passes will focus on human-bowler customization and presentation polish, improved per-match playoff controls, generational eras and lineages, and continued career-history improvements. Specific requested changes are tracked in GitHub Issues so they are not lost between builds.
