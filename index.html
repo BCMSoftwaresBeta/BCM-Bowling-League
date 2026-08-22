@@ -1,409 +1,55 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BCM Bowling League — Arcade Career Edition</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Frank+Ruhl+Libre:wght@400;500;700&family=Roboto+Mono:wght@400;500;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-
-
-
-
-
-<link rel="stylesheet" href="style-1.css?v=0231">
-<link rel="stylesheet" href="style-2.css?v=0231">
-<link rel="stylesheet" href="style-3.css?v=0231">
+<title>BCM Bowling League</title>
+<style>
+html,body{margin:0;min-height:100%;background:#0B1F36;color:#D0DFEC;font-family:system-ui,-apple-system,sans-serif}
+#boot{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}
+#boot b{display:block;color:#E4C888;font-size:22px;margin-bottom:8px}
+#boot span{opacity:.75;line-height:1.5}
+</style>
 </head>
 <body>
-
-<div class="wrap">
-
- 
-
- <div class="masthead">
-
-   <div class="brand-row">
-
-     <div class="wallaby-mark">🦘</div>
-
-     <div class="brand-text">
-
-       <p class="eyebrow">Benny Capital Management</p>
-
-       <h1>BCM Bowling League</h1>
-
-       <div class="tagline">Career Simulator · Championship Arcade · League History</div><div class="build-badge">Beta v0.2.3 · Human Throw + Reactions</div>
-
-     </div>
-
-   </div>
-
-   <div class="season-status" id="seasonStatus">
-
-     Regular Season
-
-     <span class="big" id="weekIndicator">Week 0 of 10</span><span id="careerYearBadge" style="font-size:12px; color:var(--gold);"></span>
-
-   </div>
-
- </div>
-
- 
-
- <!-- HALL OF FAME -->
-
- <div class="panel" id="hallOfFamePanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Hall of Fame</h2>
-
-     <span class="sub">Champions this session</span>
-
-   </div>
-
-   <div id="hallOfFameContent"></div>
-
- </div>
-
- 
-
- <!-- CAREER MILESTONES -->
-
- <div class="panel" id="careerMilestonesPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Career Milestones</h2>
-
-     <span class="sub">Records, promotions &amp; tour entries</span>
-
-   </div>
-
-   <details class="past-weeks" id="careerMilestonesDetails">
-
-     <summary id="careerMilestonesSummary">▸ View career milestones</summary>
-
-     <div id="careerMilestonesContent"></div>
-
-   </details>
-
- </div>
-
- 
-
- <!-- HISTORY CHANNEL -->
-
- <div class="panel" id="historyChannelPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>History Channel</h2>
-
-     <span class="sub">Season champions, MVPs &amp; records</span>
-
-   </div>
-
-   <details class="past-weeks" id="historyChannelDetails">
-
-     <summary id="historyChannelSummary">▸ View career history</summary>
-
-     <div id="historyChannelContent"></div>
-
-   </details>
-
- </div>
-
- 
-
- <!-- CONTROLS -->
-
- <div class="panel">
-
-   <div class="panel-head">
-
-     <h2>League Control Room</h2>
-
-     <span class="sub">10-week regular season · nine games per bowler per week</span>
-
-   </div>
-
-   <div class="controls">
-
-     <button class="primary" id="btnSimWeek">Simulate Next Week</button>
-
-     <button id="btnSimAll">Simulate Remaining Season</button>
-
-     <button class="ghost" id="btnReset">Reset Season</button>
-
-     <label class="toggle-line"><input type="checkbox" id="careerModeToggle"> Career Mode</label>
-
-     <button class="ghost" id="btnSim5Years" style="display:none;">Sim 5 Years</button>
-
-     <button class="ghost" id="btnSim10Years" style="display:none;">Sim 10 Years</button>
-
-   </div>
-
-   <div class="save-strip">
-
-     <div class="save-status" id="saveStatus">Autosave ready</div>
-
-     <div class="controls">
-
-       <button class="ghost" id="btnExportSave">Share Save Code</button>
-
-       <button class="ghost" id="btnImportSave">Import Save</button>
-
-       <button class="ghost" id="btnClearSave">Clear Saved Progress</button>
-
-     </div>
-
-   </div>
-
-   <p class="hint" id="controlHint">Historical data is the foundation. Career Mode adds form swings, playoff rivalries, trophy history and long-run records.</p>
-
- </div>
-
- 
-
- <!-- LIVE LEADERBOARD -->
-
- <div class="panel">
-
-   <div class="panel-head">
-
-     <h2>Live Leaderboard</h2>
-
-     <span class="sub" id="standingsSub">Preseason · historical seed order</span>
-
-   </div>
-
-   <div style="overflow-x:auto;">
-
-   <table class="standings">
-
-     <thead>
-
-       <tr>
-
-         <th>#</th>
-
-         <th>Bowler</th>
-
-         <th class="num">Avg</th>
-
-         <th class="num">Total</th>
-
-         <th class="num">High</th>
-
-         <th class="num">Change</th>
-
-       </tr>
-
-     </thead>
-
-     <tbody id="standingsBody"></tbody>
-
-   </table>
-
-   </div>
-
- </div>
-
- 
-
- <!-- WEEKLY RECAP -->
-
- <div class="panel">
-
-   <div class="panel-head">
-
-     <h2>Weekly Recap</h2>
-
-     <span class="sub">Headlines from the latest slate</span>
-
-   </div>
-
-   <div id="recapLatest">
-
-     <p class="hint" style="margin-top:0;">Simulate a week to begin league coverage.</p>
-
-   </div>
-
-   <details class="past-weeks" id="pastWeeksDetails" style="display:none;">
-
-     <summary>▸ View earlier weeks</summary>
-
-     <div id="recapPast"></div>
-
-   </details>
-
- </div>
-
- 
-
- <!-- PLAYOFF HUB -->
-
- <div class="panel" id="playoffPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>BCM Championship Playoffs</h2>
-
-     <span class="sub">Double elimination · Grand Finals best of three matches</span>
-
-   </div>
-
-   <div id="playoffIntroPanel">
-
-     <p class="hint" style="margin-top:0;">The regular season is complete. Seeds are locked. #8 and #9 meet in the Play-In before the double-elimination championship bracket begins.</p>
-
-     <button class="primary" id="btnStartPlayoffs">Open Playoff Bracket</button>
-
-   </div>
-
-   <div id="playoffContent" style="display:none;">
-
-     <div class="controls" style="margin-bottom:16px;">
-
-       <button class="primary" data-role="nextMatch">Play Next Match</button>
-
-       <button data-role="simAllPlayoffs">Simulate All Playoffs</button>
-
-       <button class="ghost" id="btnWatchFinals">Play / Watch Championship</button>
-
-       <button class="ghost" id="btnSimToChamp">Sim to Championship</button>
-
-     </div>
-
-     <div id="bracketContainer"></div>
-
-     <div id="championContainer"></div>
-
-   </div>
-
- </div>
-
- 
-
- <!-- CAREER HUB -->
-
- <div class="panel" id="careerHubPanel" style="display:none;">
-
-   <div class="panel-head">
-
-     <h2>Career Command Center</h2>
-
-     <span class="sub">Dynasties, rivalries &amp; all-time player records</span>
-
-   </div>
-
-   <div id="careerHubContent"></div>
-
- </div>
-
- 
-
- <!-- FOLLOW PLAYER -->
-
- <div class="panel" id="followPlayerPanel">
-
-   <div class="panel-head">
-
-     <h2>Follow a Bowler</h2>
-
-     <span class="sub">Auto-open their playoff matches</span>
-
-   </div>
-
-   <select id="followPlayerSelect" class="follow-select"></select>
-
- </div>
-
-</div>
-
-
-<!-- MATCH MODAL -->
-<div class="modal-overlay hidden" id="matchModal">
-  <div class="modal-sheet">
-    <div class="modal-topline">
-      <div>
-        <div class="modal-kicker" id="matchModalKicker">Playoff Match</div>
-        <h3 id="matchModalTitle">Match</h3>
-      </div>
-      <button class="ghost" id="matchModalCloseBtn">Close</button>
-    </div>
-    <div id="matchModalContent"></div>
-  </div>
-</div>
-
-<!-- PLAYER CARD MODAL -->
-<div class="modal-overlay hidden" id="playerCardModal">
-  <div class="modal-sheet">
-    <div class="modal-topline">
-      <div>
-        <div class="modal-kicker">Bowler File</div>
-        <h3 id="playerCardName">Player</h3>
-      </div>
-      <button class="ghost" onclick="document.getElementById('playerCardModal').classList.add('hidden')">Close</button>
-    </div>
-    <div id="playerCardContent"></div>
-  </div>
-</div>
-
-<!-- SAVE CODE MODAL -->
-<div class="modal-overlay hidden" id="saveCodeModal">
-  <div class="modal-sheet">
-    <div class="modal-topline">
-      <div><div class="modal-kicker">BCM Career Save</div><h3 id="saveCodeTitle">Share Save Code</h3></div>
-      <button class="ghost" onclick="document.getElementById('saveCodeModal').classList.add('hidden')">Close</button>
-    </div>
-    <p class="hint" id="saveCodeHint" style="margin-top:0;">Copy this code to move your league to another browser or send it to a friend.</p>
-    <textarea id="saveCodeText" class="save-code-box" spellcheck="false"></textarea>
-    <div class="controls" style="margin-top:10px;">
-      <button class="primary" id="btnCopySaveCode">Copy Code</button>
-      <button class="primary" id="btnApplySaveCode" style="display:none;">Load Save</button>
-    </div>
-  </div>
-</div>
-
-<!-- SEASON ARCHIVE MODAL -->
-<div class="modal-overlay hidden" id="seasonArchiveModal">
-  <div class="modal-sheet archive-sheet">
-    <div class="modal-topline">
-      <div><div class="modal-kicker">BCM History Channel</div><h3 id="seasonArchiveTitle">Season Archive</h3></div>
-      <button class="ghost" onclick="document.getElementById('seasonArchiveModal').classList.add('hidden')">Close</button>
-    </div>
-    <div id="seasonArchiveContent"></div>
-  </div>
-</div>
-
-<!-- CHAMPIONSHIP ARCADE MODAL -->
-<div class="arcade-overlay hidden" id="arcadeModal">
-  <div class="arcade-shell">
-    <div class="arcade-topbar">
-      <div class="arcade-brand"><span>🦘</span><div><b>BCM SPORTS NETWORK</b><small>Championship Presentation</small></div></div>
-      <div class="arcade-title" id="arcadeTopTitle">BCM Championship</div>
-      <div class="arcade-top-actions"><button class="ghost" id="btnArcadeSound">Sound On</button><button class="ghost" id="btnArcadeExit">Exit</button></div>
-    </div>
-    <div class="arcade-stage" id="arcadeStage"></div>
-  </div>
-</div>
-
-<script src="game-loader.js"></script>
-
+<div id="boot"><div><b>BCM Bowling League</b><span>Loading Beta v0.2.3…</span></div></div>
+<script>
+(async()=>{
+  try{
+    const names=[
+      'build/v023/build-01.part','build/v023/build-02.part','build/v023/build-03.part',
+      'build/v023/build-04.part','build/v023/build-05.part','build/v023/build-06.part',
+      'build/v023/build-07.part','build/v023/build-08.part','build/v023/build-09.part'
+    ];
+    const pieces=[];
+    for(const n of names){
+      const r=await fetch(n+'?v=0232');
+      if(!r.ok) throw new Error('Failed to load '+n+' ('+r.status+')');
+      pieces.push((await r.text()).trim());
+    }
+    const binary=atob(pieces.join(''));
+    const bytes=new Uint8Array(binary.length);
+    for(let i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+    let html='';
+    if(typeof DecompressionStream!=='undefined'){
+      const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+      html=await new Response(stream).text();
+    }else{
+      await new Promise((resolve,reject)=>{
+        const s=document.createElement('script');
+        s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
+        s.onload=resolve;s.onerror=()=>reject(new Error('Could not load decompression fallback'));
+        document.head.appendChild(s);
+      });
+      html=window.pako.ungzip(bytes,{to:'string'});
+    }
+    if(!html.includes('BCM Bowling League')) throw new Error('Build package decoded incorrectly');
+    document.open();document.write(html);document.close();
+  }catch(err){
+    console.error(err);
+    document.getElementById('boot').innerHTML='<div><b>BCM Bowling League failed to load.</b><span>'+String(err.message||err)+'<br><br>Send this exact message to ChatGPT.</span></div>';
+  }
+})();
+</script>
 </body>
-
 </html>
-
- 
-
