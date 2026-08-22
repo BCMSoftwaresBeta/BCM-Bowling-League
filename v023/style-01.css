@@ -1,0 +1,693 @@
+
+
+ :root{
+
+   --navy:#1D3F72;
+
+   --midnight:#0B1F36;
+
+   --kashmir:#4B6B95;
+
+   --polo:#7C9CD0;
+
+   --regent:#A3C7E0;
+
+   --botticelli:#D0DFEC;
+
+   --gold:#C6A15B;
+
+   --gold-bright:#E4C888;
+
+   --white:#FFFFFF;
+
+   --paper:#F6F3EC;
+
+   --ink:#0B1F36;
+
+   --up:#4C8B6B;
+
+   --down:#B5573F;
+
+   --rule: rgba(198,161,91,0.35);
+
+ }
+
+ *{box-sizing:border-box;}
+
+ html,body{margin:0;padding:0;}
+
+ body{
+
+   background:
+
+     radial-gradient(1200px 600px at 10% -10%, rgba(75,107,149,0.35), transparent 60%),
+
+     radial-gradient(1000px 700px at 110% 10%, rgba(198,161,91,0.12), transparent 55%),
+
+     var(--midnight);
+
+   color:var(--botticelli);
+
+   font-family:'Lato', sans-serif;
+
+   min-height:100vh;
+
+   letter-spacing:0.01em;
+
+ }
+
+ ::selection{ background:var(--gold); color:var(--midnight); }
+
+ 
+
+ .wrap{ max-width:1180px; margin:0 auto; padding:28px 20px 80px; }
+
+ 
+
+ /* ---------- Header / Masthead ---------- */
+
+ .masthead{
+
+   border-bottom:1px solid var(--rule);
+
+   padding-bottom:22px;
+
+   margin-bottom:26px;
+
+   display:flex;
+
+   justify-content:space-between;
+
+   align-items:flex-end;
+
+   flex-wrap:wrap;
+
+   gap:16px;
+
+ }
+
+ .brand-row{ display:flex; align-items:center; gap:14px; }
+
+ .wallaby-mark{
+
+   width:52px;height:52px;border-radius:50%;
+
+   border:1px solid var(--gold);
+
+   display:flex;align-items:center;justify-content:center;
+
+   font-size:26px;
+
+   background:radial-gradient(circle at 35% 30%, rgba(198,161,91,0.25), rgba(11,31,54,0.4));
+
+   flex-shrink:0;
+
+ }
+
+ .brand-text .eyebrow{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:10.5px; letter-spacing:0.28em; text-transform:uppercase;
+
+   color:var(--gold); margin:0 0 4px;
+
+ }
+
+ h1{
+
+   font-family:'Playfair Display', serif;
+
+   font-weight:700;
+
+   font-size:clamp(26px, 4vw, 38px);
+
+   margin:0; color:var(--white);
+
+   letter-spacing:0.01em;
+
+ }
+
+ .tagline{
+
+   font-family:'Frank Ruhl Libre', serif;
+
+   font-style:italic;
+
+   color:var(--regent);
+
+   font-size:14px; margin-top:6px;
+
+ }
+
+ .season-status{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; text-align:right; color:var(--polo);
+
+   letter-spacing:0.05em;
+
+ }
+
+ .season-status .big{
+
+   display:block; color:var(--gold-bright); font-size:20px; margin-top:2px; font-weight:600;
+
+ }
+
+ 
+
+ /* ---------- Panels ---------- */
+
+ .panel{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.10), rgba(11,31,54,0.35));
+
+   border:1px solid var(--rule);
+
+   border-radius:4px;
+
+   padding:22px;
+
+   margin-bottom:22px;
+
+ }
+
+ .panel-head{
+
+   display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;
+
+   margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .panel-head h2{
+
+   font-family:'Playfair Display', serif; font-weight:600; font-size:20px; color:var(--white); margin:0;
+
+ }
+
+ .panel-head .sub{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); letter-spacing:0.05em; }
+
+ 
+
+ /* ---------- Controls ---------- */
+
+ .controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+ button{
+
+   font-family:'Roboto Mono', monospace;
+
+   font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+
+   padding:11px 18px;
+
+   border-radius:2px;
+
+   border:1px solid var(--gold);
+
+   background:transparent;
+
+   color:var(--gold-bright);
+
+   cursor:pointer;
+
+   transition:all 0.18s ease;
+
+ }
+
+ button:hover:not(:disabled){ background:var(--gold); color:var(--midnight); }
+
+ button:disabled{ opacity:0.32; cursor:not-allowed; }
+
+ button.primary{ background:var(--gold); color:var(--midnight); }
+
+ button.primary:hover:not(:disabled){ background:var(--gold-bright); }
+
+ button.ghost{ border-color:var(--rule); color:var(--polo); }
+
+ button.ghost:hover:not(:disabled){ background:rgba(198,161,91,0.12); color:var(--gold-bright); }
+
+ 
+
+ .hint{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--polo); font-size:13px; margin-top:12px; }
+
+ 
+
+ /* ---------- Standings Table ---------- */
+
+ table{ width:100%; border-collapse:collapse; }
+
+ .standings th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .standings td{ padding:11px 10px; border-bottom:1px solid rgba(198,161,91,0.14); vertical-align:middle; }
+
+ .standings tr:last-child td{ border-bottom:none; }
+
+ .standings tr.updated td{ animation: rowFlash 1.1s ease; }
+
+ @keyframes rowFlash{
+
+   0%{ background:rgba(198,161,91,0.28); } 100%{ background:transparent; }
+
+ }
+
+ .rank{ font-family:'Roboto Mono', monospace; color:var(--polo); width:34px; }
+
+ .rank.top3{ color:var(--gold-bright); font-weight:700; }
+
+ .pname{ font-family:'Playfair Display', serif; font-size:15.5px; color:var(--white); font-weight:600; }
+
+ .pname .emoji{ margin-right:8px; }
+
+ .num{ font-family:'Roboto Mono', monospace; text-align:right; color:var(--botticelli); }
+
+ .season-total{ font-weight:700; color:var(--gold-bright); font-size:15px; }
+
+ .delta{ font-family:'Roboto Mono', monospace; font-size:11px; margin-left:8px; }
+
+ .delta.up{ color:var(--up); } .delta.down{ color:var(--down); } .delta.flat{ color:var(--polo); }
+
+ .movement{ font-family:'Roboto Mono', monospace; font-size:11px; }
+
+ 
+
+ /* ---------- Recap ---------- */
+
+ .recap-card{
+
+   border:1px solid var(--rule); border-left:3px solid var(--gold); padding:16px 18px; margin-bottom:12px;
+
+   background:rgba(75,107,149,0.06); border-radius:0 3px 3px 0;
+
+ }
+
+ .recap-card .wk{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;}
+
+ .recap-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px 20px; }
+
+ .recap-item .label{ font-family:'Roboto Mono', monospace; font-size:10px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; }
+
+ .recap-item .value{ font-family:'Frank Ruhl Libre', serif; font-size:15px; color:var(--white); margin-top:2px; }
+
+ .recap-item .value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ details.past-weeks{ margin-top:6px; }
+
+ details.past-weeks summary{
+
+   cursor:pointer; font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.08em;
+
+   text-transform:uppercase; color:var(--polo); padding:8px 0;
+
+ }
+
+ 
+
+ /* ---------- Bracket ---------- */
+
+ .bracket-lane{ margin-bottom:26px; }
+
+ .lane-title{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.15em; text-transform:uppercase;
+
+   color:var(--gold); margin-bottom:12px; display:flex; align-items:center; gap:10px;
+
+ }
+
+ .lane-title::after{ content:''; flex:1; height:1px; background:var(--rule); }
+
+ .rounds{ display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; }
+
+ .round-col{ min-width:200px; display:flex; flex-direction:column; justify-content:space-around; gap:14px; }
+
+ .round-label{ font-family:'Roboto Mono', monospace; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:6px; text-align:center; }
+
+ .match{
+
+   border:1px solid var(--rule); border-radius:3px; background:rgba(11,31,54,0.5); padding:10px 12px;
+
+   transition:border-color 0.3s ease, box-shadow 0.3s ease;
+
+ }
+
+ .match.live{ border-color:var(--gold); box-shadow:0 0 0 1px rgba(198,161,91,0.25); }
+
+ .match.done{ border-color:rgba(198,161,91,0.2); }
+
+ .m-side{ display:flex; justify-content:space-between; align-items:center; padding:4px 0; font-family:'Roboto Mono', monospace; font-size:12.5px; }
+
+ .m-side .who{ color:var(--botticelli); display:flex; align-items:center; gap:6px; }
+
+ .m-side .seed{ color:var(--polo); font-size:10px; }
+
+ .m-side .score{ color:var(--regent); font-weight:600; }
+
+ .m-side.winner .who{ color:var(--gold-bright); font-weight:700; }
+
+ .m-side.winner .score{ color:var(--gold-bright); }
+
+ .m-side.tbd{ color:var(--polo); font-style:italic; opacity:0.5; }
+
+ .m-mid-rule{ height:1px; background:var(--rule); margin:2px 0; }
+
+ .m-games{ font-size:10px; color:var(--polo); margin-top:6px; font-family:'Roboto Mono', monospace; }
+
+ 
+
+ .champion-banner{
+
+   text-align:center; padding:44px 20px; border:1px solid var(--gold);
+
+   background:radial-gradient(ellipse at 50% 0%, rgba(198,161,91,0.18), transparent 70%);
+
+   margin-top:8px;
+
+ }
+
+ .champion-banner .ceremonial{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold);
+
+ }
+
+ .champion-banner h2{
+
+   font-family:'Playfair Display', serif; font-size:clamp(28px,5vw,44px); color:var(--white); margin:12px 0 6px;
+
+ }
+
+ .champion-banner .sub{ font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--regent); font-size:15px; }
+
+ 
+
+ .gf-progress{ display:flex; gap:8px; justify-content:center; margin-top:16px; }
+
+ .gf-dot{ width:9px;height:9px;border-radius:50%; border:1px solid var(--gold); }
+
+ .gf-dot.won{ background:var(--gold); }
+
+ 
+
+ /* ---------- Modals ---------- */
+
+ .modal-overlay{
+
+   position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(11,31,54,0.88); z-index:1000;
+
+   display:flex; align-items:flex-end; justify-content:center;
+
+ }
+
+ .modal-overlay.hidden{ display:none; }
+
+ .modal-sheet{
+
+   background:linear-gradient(180deg, rgba(75,107,149,0.15), rgba(11,31,54,0.5));
+
+   border:1px solid var(--rule);
+
+   border-radius:8px 8px 0 0;
+
+   width:100%;
+
+   max-width:600px;
+
+   max-height:80vh;
+
+   overflow-y:auto;
+
+   padding:24px;
+
+   animation:slideUp 0.3s ease;
+
+ }
+
+ @keyframes slideUp{ from{ transform:translateY(100%); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+
+ .modal-close{
+
+   float:right; background:none; border:none; color:var(--polo); font-size:20px; cursor:pointer; padding:0; width:24px; height:24px;
+
+ }
+
+ .modal-close:hover{ color:var(--gold); }
+
+ .modal-sheet h3{ font-family:'Playfair Display', serif; font-size:22px; color:var(--white); margin:0 0 16px; }
+
+ .stat-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--rule); }
+
+ .stat-row:last-child{ border-bottom:none; }
+
+ .stat-label{ font-family:'Roboto Mono', monospace; font-size:11px; text-transform:uppercase; color:var(--polo); letter-spacing:0.08em; }
+
+ .stat-value{ font-family:'Frank Ruhl Libre', serif; font-size:16px; color:var(--white); }
+
+ .stat-value .accent{ color:var(--gold-bright); font-weight:700; }
+
+ .stat-value .delta{ font-family:'Roboto Mono', monospace; font-size:12px; margin-left:8px; }
+
+ .stat-value .delta.up{ color:var(--up); }
+
+ .stat-value .delta.down{ color:var(--down); }
+
+ 
+
+ /* ---------- Playoff Odds / Favorites ---------- */
+
+ .odds-panel{
+
+   margin-bottom:22px;
+
+ }
+
+ .odds-table{
+
+   width:100%; border-collapse:collapse; margin-top:12px;
+
+ }
+
+ .odds-table th{
+
+   text-align:left; font-family:'Roboto Mono', monospace; font-size:10px; letter-spacing:0.12em;
+
+   text-transform:uppercase; color:var(--gold); padding:0 10px 10px; border-bottom:1px solid var(--rule);
+
+ }
+
+ .odds-table td{ padding:9px 10px; border-bottom:1px solid rgba(198,161,91,0.14); font-family:'Roboto Mono', monospace; font-size:13px; }
+
+ .odds-table tr:last-child td{ border-bottom:none; }
+
+ .odds-seed{ color:var(--polo); }
+
+ .odds-name{ color:var(--white); font-weight:600; }
+
+ .odds-prob{ color:var(--regent); text-align:right; }
+
+ .odds-odds{ color:var(--gold-bright); text-align:right; font-weight:700; }
+
+ 
+
+ /* ---------- Match Animation Modal ---------- */
+
+ .match-modal-sheet{ max-width:640px; }
+
+ .match-modal-head{ text-align:center; margin-bottom:18px; }
+
+ .match-modal-head .vs-title{ font-family:'Playfair Display', serif; font-size:20px; color:var(--white); margin-bottom:4px; }
+
+ .match-modal-head .vs-sub{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; }
+
+ .match-tally{ display:flex; justify-content:center; gap:22px; margin-bottom:18px; }
+
+ .match-tally .t-item{ text-align:center; }
+
+ .match-tally .t-name{ font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); }
+
+ .match-tally .t-wins{ font-family:'Playfair Display', serif; font-size:22px; color:var(--gold-bright); }
+
+ 
+
+ .lanes-wrap{ display:flex; gap:16px; margin-bottom:18px; }
+
+ .bowl-lane{ flex:1; border:1px solid var(--rule); border-radius:4px; padding:14px 10px; text-align:center; background:rgba(11,31,54,0.45); }
+
+ .bowl-lane .lane-name{ font-family:'Roboto Mono', monospace; font-size:12px; color:var(--botticelli); margin-bottom:10px; }
+
+ .bowl-lane .lane-name .em{ margin-right:5px; }
+
+ .pin-rack{ display:flex; flex-direction:column; align-items:center; gap:3px; height:60px; justify-content:flex-end; margin-bottom:10px; }
+
+ .pin-row{ display:flex; gap:4px; justify-content:center; }
+
+ .pin{
+
+   width:9px; height:12px; border-radius:40% 40% 50% 50%;
+
+   background:linear-gradient(180deg, #fff, #cfd9e6);
+
+   box-shadow:0 0 0 1px rgba(198,161,91,0.4) inset;
+
+   transition:opacity 0.25s ease, transform 0.25s ease;
+
+ }
+
+ .pin.down{ opacity:0.15; transform:scale(0.5) rotate(25deg); }
+
+ .lane-track{ position:relative; height:26px; margin-bottom:10px; display:flex; align-items:flex-end; justify-content:center; }
+
+ .lane-track::before{ content:''; position:absolute; bottom:0; left:10%; right:10%; height:2px; background:var(--rule); }
+
+ .bowl-ball{
+
+   width:14px; height:14px; border-radius:50%;
+
+   background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #7a6134);
+
+   transform:translateY(0);
+
+   transition:transform 0.5s cubic-bezier(.4,0,.2,1);
+
+ }
+
+ .bowl-ball.rolling{ transform:translateY(-22px); }
+
+ .lane-score{ font-family:'Roboto Mono', monospace; font-size:20px; font-weight:700; color:var(--white); }
+
+ .lane-score .lbl{ display:block; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; font-weight:400; margin-top:2px; }
+
+ 
+
+ .game-progress{ text-align:center; font-family:'Roboto Mono', monospace; font-size:11px; color:var(--polo); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:14px; }
+
+ .game-log{ text-align:center; font-family:'Frank Ruhl Libre', serif; font-style:italic; color:var(--regent); font-size:13px; min-height:20px; margin-bottom:14px; }
+
+ .match-modal-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+ .match-summary{ text-align:center; padding:14px 0; }
+
+ .match-summary .winner-line{ font-family:'Playfair Display', serif; font-size:19px; color:var(--gold-bright); margin-bottom:4px; }
+
+ .match-summary .score-line{ font-family:'Roboto Mono', monospace; font-size:13px; color:var(--botticelli); }
+
+ 
+
+ /* ---------- Career Mode ---------- */
+
+ .career-toggle{
+
+   display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer;
+
+   font-family:'Roboto Mono', monospace; font-size:12px; color:var(--polo);
+
+ }
+
+ .career-toggle input{ width:16px; height:16px; accent-color:var(--gold); cursor:pointer; }
+
+ .follow-select{
+
+   font-family:'Roboto Mono', monospace; font-size:12px; background:var(--midnight); color:var(--gold-bright);
+
+   border:1px solid var(--rule); border-radius:2px; padding:5px 8px; cursor:pointer;
+
+ }
+
+ .tier-pill{
+
+   display:inline-block; font-family:'Roboto Mono', monospace; font-size:9px; letter-spacing:0.05em;
+
+   text-transform:uppercase; padding:2px 7px; border-radius:10px; margin-left:8px; vertical-align:middle;
+
+   border:1px solid var(--rule); color:var(--polo);
+
+ }
+
+ .tier-pill.t0{ color:#9BB0C7; border-color:#9BB0C7; }
+
+ .tier-pill.t1{ color:var(--polo); border-color:var(--polo); }
+
+ .tier-pill.t2{ color:var(--regent); border-color:var(--regent); }
+
+ .tier-pill.t3{ color:var(--gold); border-color:var(--gold); }
+
+ .tier-pill.t4{ color:var(--gold-bright); border-color:var(--gold-bright); background:rgba(198,161,91,0.10); }
+
+ .tier-pill.t5{ color:#F3DFA6; border-color:#F3DFA6; background:rgba(198,161,91,0.20); box-shadow:0 0 0 1px rgba(228,200,136,0.16) inset; }
+
+ 
+
+ #milestoneToastHost{ position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:2000; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; }
+
+ .milestone-toast{
+
+   background:var(--midnight); border:1px solid var(--gold); color:var(--gold-bright);
+
+   font-family:'Frank Ruhl Libre', serif; font-style:italic; font-size:13px;
+
+   padding:10px 18px; border-radius:3px; box-shadow:0 4px 18px rgba(0,0,0,0.5);
+
+   max-width:90vw; text-align:center; animation:toastIn 0.3s ease;
+
+ }
+
+ .milestone-toast.fade-out{ opacity:0; transition:opacity 0.5s ease; }
+
+ @keyframes toastIn{ from{ opacity:0; transform:translateY(-10px); } to{ opacity:1; transform:translateY(0); } }
+
+ 
+
+ .history-year-card{
+
+   border:1px solid var(--rule); border-left:3px solid var(--gold); border-radius:0 3px 3px 0;
+
+   padding:12px 16px; margin-bottom:10px; background:rgba(75,107,149,0.06);
+
+ }
+
+ .history-year-card .hy-year{
+
+   font-family:'Roboto Mono', monospace; font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;
+
+ }
+
+ .hy-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:6px 20px; }
+
+ .hy-label{ display:block; font-family:'Roboto Mono', monospace; font-size:9.5px; color:var(--polo); text-transform:uppercase; letter-spacing:0.08em; }
+
+ .hy-val{ display:block; font-family:'Frank Ruhl Libre', serif; font-size:14px; color:var(--white); margin-top:1px; }
+
+ 
+
+ footer{ text-align:center; margin-top:40px; font-family:'Roboto Mono', monospace; font-size:10.5px; color:var(--kashmir); letter-spacing:0.1em; }
+
+ 
+
+ @media (prefers-reduced-motion: reduce){
+
+   .standings tr.updated td{ animation:none; }
+
+   .match{ transition:none; }
+
+ }
+
+ 
+
+ @media (max-width:640px){
+
+   .season-status{ text-align:left; }
+
+   .masthead{ flex-direction:column; align-items:flex-start; }
+
+ }
+
+
