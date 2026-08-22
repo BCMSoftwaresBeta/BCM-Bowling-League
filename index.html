@@ -16,10 +16,12 @@ html,body{margin:0;min-height:100%;background:#0B1F36;color:#D0DFEC;font-family:
 <script>
 (async()=>{
   try{
-    const names=['build/v023/build-01.part','build/v023/build-02.part','build/v023/build-03.part','build/v023/build-04.part','build/v023/build-05.part','build/v023/build-06.part','build/v023/build-07.part','build/v023/build-08.part','build/v023/build-09.part'];
+    const base='https://raw.githubusercontent.com/BCMSoftwaresBeta/BCM-Bowling-League/main/build/v023/';
+    const names=['build-01.part','build-02.part','build-03.part','build-04.part','build-05.part','build-06.part','build-07.part','build-08.part','build-09.part'];
     const pieces=[];
     for(const n of names){
-      const r=await fetch(n+'?v=0234');
+      const url=base+n+'?v=0235';
+      const r=await fetch(url,{cache:'no-store'});
       if(!r.ok) throw new Error('Failed to load '+n+' ('+r.status+')');
       pieces.push((await r.text()).trim());
     }
