@@ -4,17 +4,18 @@ BCM Bowling League is a browser-based bowling career simulator and championship 
 
 ## Current build
 
-**Beta v0.2.3 — Human Bowling Animation**
+**Beta v0.2.7 — Phase A1 Polish**
 
-This repository is the master development copy used for testing and future releases.
+This repository is the stable development copy used for testing and future releases.
 
-## v0.2.3 highlights
+## v0.2.7 highlights
 
-- Stylized human bowlers for all nine players
-- Player-specific builds, handedness, shirts, bowling styles, and ball colors
-- Human approach, backswing, release, follow-through, and shot reactions
-- Ball movement synchronized to the bowler release and pin impact
-- Championship finalist previews, player-card previews, and trophy presentation
+- Stable championship bowling core preserved from v0.2.6
+- Player-specific strike celebrations and bad-shot reactions
+- Richer player personality and signature commentary
+- Polished championship trophy presentation
+- Cleaner Opus two-handed support-arm animation
+- Tier jerseys, custom bowler visuals, ball colors, and handedness remain intact
 - Long-running career simulation, history, records, rivalries, and browser saves remain intact
 
 ## Saving
@@ -28,6 +29,6 @@ The current beta automatically saves career progress in the browser using `local
 3. ChatGPT updates the repository and build version.
 4. Refresh the Pages site and test again.
 
-## Upcoming work
+## Next phase: A2
 
-The next passes will focus on human-bowler customization and presentation polish, improved per-match playoff controls, generational eras and lineages, and continued career-history improvements. Specific requested changes are tracked in GitHub Issues so they are not lost between builds.
+The next presentation pass will add strike lighting, bigger 10th-frame crowd moments, Turkey / five-bagger broadcast moments, NEEDS X TO WIN overlays, and signature-phrase speech bubbles for Bau, Farb, and Woo.
