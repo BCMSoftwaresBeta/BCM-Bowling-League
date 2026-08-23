@@ -1,0 +1,145 @@
+.bowler-avatar .avatar-torso{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:calc(30px * var(--build));height:50px;background:linear-gradient(180deg,color-mix(in srgb, var(--shirt) 92%, #fff 8%),color-mix(in srgb, var(--shirt) 75%, #0b1f36 25%));border-radius:12px 12px 10px 10px;box-shadow:0 0 0 1px rgba(11,31,54,.28) inset;z-index:2;}
+.bowler-avatar .avatar-logo{position:absolute;left:50%;top:10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:7px;color:#fff;letter-spacing:.04em;text-shadow:0 1px 1px rgba(0,0,0,.35);white-space:nowrap;text-transform:uppercase;max-width:calc(100% - 6px);overflow:hidden;text-overflow:ellipsis;}
+.bowler-avatar .avatar-arm{position:absolute;top:40px;width:11px;height:44px;background:var(--skin);border-radius:9px;transform-origin:top center;z-index:1;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-arm.back{left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-arm.release{right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.back{left:auto;right:12px;transform:rotate(-16deg);}
+.bowler-avatar.lefty .avatar-arm.release{right:auto;left:12px;transform:rotate(16deg);}
+.bowler-avatar .avatar-support{position:absolute;top:48px;right:19px;width:10px;height:28px;background:var(--skin);border-radius:9px;transform:rotate(-5deg);display:none;z-index:2;}
+.bowler-avatar.twohanded .avatar-support{display:block;}
+.bowler-avatar.twohanded.lefty .avatar-support{right:auto;left:19px;transform:rotate(5deg);}
+.bowler-avatar .avatar-hips{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:24px;height:10px;background:color-mix(in srgb,var(--shirt) 45%, #0b1f36 55%);border-radius:5px;z-index:2;}
+.bowler-avatar .avatar-leg{position:absolute;top:84px;width:11px;height:52px;background:#d8dce6;border-radius:8px;transform-origin:top center;box-shadow:0 0 0 1px rgba(11,31,54,.12) inset;}
+.bowler-avatar .avatar-leg.left{left:24px;transform:rotate(6deg);}
+.bowler-avatar .avatar-leg.right{right:24px;transform:rotate(-4deg);}
+.bowler-avatar .avatar-shoe{position:absolute;bottom:-2px;width:18px;height:8px;background:#f8f7f4;border-radius:8px;box-shadow:0 0 0 1px rgba(11,31,54,.2) inset;}
+.bowler-avatar .avatar-shoe.left{left:18px;transform:skewX(8deg);}
+.bowler-avatar .avatar-shoe.right{right:18px;transform:skewX(-8deg);}
+.bowler-avatar .avatar-ball{position:absolute;bottom:28px;right:6px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.95), color-mix(in srgb, var(--ball) 82%, #fff 18%) 20%, var(--ball) 55%, #000 135%);box-shadow:0 3px 8px rgba(0,0,0,.25), inset -2px -2px 4px rgba(0,0,0,.18);z-index:0;}
+.bowler-avatar.lefty .avatar-ball{right:auto;left:6px;}
+.bowler-avatar .avatar-name{position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);font-family:'Roboto Mono',monospace;font-size:9px;color:var(--botticelli);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;opacity:.82;}
+.bowler-avatar.preview .avatar-name,.bowler-avatar.mini .avatar-name{display:none;}
+.bowler-avatar.ready{animation:bobBowler 1.5s ease-in-out infinite;}
+.bowler-avatar.rolling{animation:approachBowler .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.release{animation:releaseArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-arm.back{animation:backswingArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-support{animation:supportArm .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.left{animation:leadLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-leg.right{animation:trailLeg .95s ease forwards;}
+.bowler-avatar.rolling .avatar-ball{animation:carryBall .38s ease forwards, bowlBall .62s ease .33s forwards;}
+.bowler-avatar.lefty.rolling{animation:approachBowlerLeft .95s ease forwards;}
+@keyframes bobBowler{0%,100%{transform:translateX(var(--x)) scale(var(--height)) translateY(0);}50%{transform:translateX(var(--x)) scale(var(--height)) translateY(-2px);}}
+@keyframes approachBowler{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) + 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) + 30px)) scale(var(--height));}}
+@keyframes approachBowlerLeft{0%{transform:translateX(var(--x)) scale(var(--height));}55%{transform:translateX(calc(var(--x) - 16px)) scale(var(--height));}100%{transform:translateX(calc(var(--x) - 30px)) scale(var(--height));}}
+@keyframes releaseArm{0%{transform:rotate(-16deg);}38%{transform:rotate(25deg);}100%{transform:rotate(76deg);}}
+@keyframes backswingArm{0%{transform:rotate(16deg);}38%{transform:rotate(-40deg);}100%{transform:rotate(18deg);}}
+.bowler-avatar.lefty .avatar-arm.release{transform:rotate(16deg);} .bowler-avatar.lefty .avatar-arm.back{transform:rotate(-16deg);} 
+@keyframes supportArm{0%{opacity:.9;transform:rotate(-5deg);}100%{opacity:.55;transform:rotate(40deg);}}
+@keyframes leadLeg{0%{transform:rotate(6deg);}50%{transform:rotate(22deg);}100%{transform:rotate(34deg);}}
+@keyframes trailLeg{0%{transform:rotate(-4deg);}50%{transform:rotate(-18deg);}100%{transform:rotate(-28deg);}}
+@keyframes carryBall{0%{transform:translate(0,0) scale(1);}100%{transform:translate(6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBall{0%{transform:translate(6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(118px,-92px) scale(.42);opacity:0;}}
+.bowler-avatar.lefty .avatar-ball{animation-direction:normal;} .bowler-avatar.lefty.rolling .avatar-ball{animation:carryBallLeft .38s ease forwards, bowlBallLeft .62s ease .33s forwards;}
+@keyframes carryBallLeft{0%{transform:translate(0,0) scale(1);}100%{transform:translate(-6px,-10px) scale(1.02);opacity:.95;}}
+@keyframes bowlBallLeft{0%{transform:translate(-6px,-10px) scale(1.02);opacity:1;}100%{transform:translate(-118px,-92px) scale(.42);opacity:0;}}
+.arcade-arena{align-items:start;}
+.lane-scene{overflow:hidden;min-height:520px;}
+.human-stage{position:absolute;left:50%;bottom:38px;width:220px;height:250px;transform:translateX(-50%);z-index:3;pointer-events:none;}
+.human-stage .bowler-avatar{position:absolute;left:38px;bottom:0;}
+.release-path{position:absolute;left:50%;bottom:122px;width:10px;height:145px;transform:translateX(-50%);background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0));filter:blur(2px);opacity:0;z-index:2;pointer-events:none;transition:opacity .18s ease;}
+.release-path.active{opacity:.85;}
+
+.bowler-avatar.throwing{animation:none!important;}
+.bowler-avatar.throwing .avatar-body{animation:throwBody .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-torso{animation:throwTorso .95s cubic-bezier(.2,.72,.22,1) forwards;transform-origin:50% 80%;}
+.bowler-avatar.throwing .avatar-arm.release{animation:throwReleaseRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.release{animation:throwReleaseLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-arm.back{animation:throwBackRight .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.lefty.throwing .avatar-arm.back{animation:throwBackLeft .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+.bowler-avatar.throwing .avatar-leg.left{animation:throwLead .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-leg.right{animation:throwTrail .95s ease forwards!important;}
+.bowler-avatar.throwing .avatar-head{animation:throwHead .95s ease forwards;}
+.bowler-avatar.throwing .avatar-ball{animation:none!important;}
+@keyframes throwBody{0%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-4px) rotate(-2deg)}50%{transform:translateX(-50%) translateY(2px) rotate(5deg)}72%{transform:translateX(-50%) translateY(8px) rotate(13deg)}100%{transform:translateX(-50%) translateY(2px) rotate(7deg)}}
+@keyframes throwTorso{0%{transform:translateX(-50%) rotate(0)}55%{transform:translateX(-50%) rotate(6deg)}78%{transform:translateX(-50%) rotate(14deg)}100%{transform:translateX(-50%) rotate(8deg)}}
+@keyframes throwReleaseRight{0%{transform:rotate(-12deg)}22%{transform:rotate(-76deg)}48%{transform:rotate(-118deg)}64%{transform:rotate(-8deg)}78%{transform:rotate(72deg)}100%{transform:rotate(96deg)}}
+@keyframes throwReleaseLeft{0%{transform:rotate(12deg)}22%{transform:rotate(76deg)}48%{transform:rotate(118deg)}64%{transform:rotate(8deg)}78%{transform:rotate(-72deg)}100%{transform:rotate(-96deg)}}
+@keyframes throwBackRight{0%{transform:rotate(16deg)}35%{transform:rotate(42deg)}70%{transform:rotate(-22deg)}100%{transform:rotate(-8deg)}}
+@keyframes throwBackLeft{0%{transform:rotate(-16deg)}35%{transform:rotate(-42deg)}70%{transform:rotate(22deg)}100%{transform:rotate(8deg)}}
+@keyframes throwLead{0%{transform:rotate(6deg) translate(0,0)}55%{transform:rotate(18deg) translate(2px,2px)}78%{transform:rotate(34deg) translate(5px,7px)}100%{transform:rotate(24deg) translate(4px,4px)}}
+@keyframes throwTrail{0%{transform:rotate(-4deg) translate(0,0)}55%{transform:rotate(-14deg) translate(-2px,1px)}78%{transform:rotate(-44deg) translate(-8px,-1px)}100%{transform:rotate(-32deg) translate(-6px,1px)}}
+@keyframes throwHead{0%,45%{transform:translateX(-50%) rotate(0)}75%,100%{transform:translateX(-50%) rotate(-7deg)}}
+
+.bowler-avatar.celebrate .avatar-body{animation:celebrateBody .62s cubic-bezier(.2,.85,.25,1) both;}
+.bowler-avatar.celebrate .avatar-arm.release{animation:celebrateArm .62s cubic-bezier(.2,.85,.25,1) both!important;}
+.bowler-avatar.frustrated .avatar-body{animation:frustratedBody .62s ease both;}
+.bowler-avatar.frustrated .avatar-head{animation:frustratedHead .5s ease 2;}
+.bowler-avatar.spare-react .avatar-body{animation:spareBody .55s ease both;}
+.bowler-avatar.twohanded.throwing .avatar-support{display:block;animation:twoHandSupport .95s cubic-bezier(.2,.72,.22,1) forwards!important;}
+@keyframes celebrateBody{0%{transform:translateX(-50%) translateY(0) rotate(7deg)}35%{transform:translateX(-50%) translateY(-14px) rotate(-3deg)}70%{transform:translateX(-50%) translateY(-5px) rotate(5deg)}100%{transform:translateX(-50%) translateY(0) rotate(0)}}
+@keyframes celebrateArm{0%{transform:rotate(96deg)}45%{transform:rotate(165deg)}100%{transform:rotate(125deg)}}
+@keyframes frustratedBody{0%,100%{transform:translateX(-50%) rotate(0)}35%{transform:translateX(-50%) rotate(-7deg)}70%{transform:translateX(-50%) rotate(7deg)}}
+@keyframes frustratedHead{0%,100%{transform:translateX(-50%) rotate(0)}50%{transform:translateX(-50%) rotate(12deg)}}
+@keyframes spareBody{0%{transform:translateX(-50%) rotate(7deg)}45%{transform:translateX(-50%) translateY(-6px) rotate(-2deg)}100%{transform:translateX(-50%) rotate(0)}}
+@keyframes twoHandSupport{0%{transform:rotate(-5deg);opacity:.88}30%{transform:rotate(-24deg);opacity:.9}55%{transform:rotate(2deg);opacity:.86}80%{transform:rotate(28deg);opacity:.65}100%{transform:rotate(18deg);opacity:.45}}
+
+
+
+
+.bowler-avatar .avatar-support{top:50px;right:21px;width:8px;height:26px;opacity:.82;z-index:0;}
+.bowler-avatar.twohanded.lefty .avatar-support{right:auto;left:21px;transform:rotate(5deg);}
+.bowler-avatar.twohanded.throwing .avatar-support{filter:brightness(.98);}
+.bowler-avatar.celebrate-smallfist .avatar-body,.bowler-avatar.celebrate-point .avatar-body{animation:smallLift .55s ease both;}
+.bowler-avatar.celebrate-smallfist .avatar-arm.release{animation:smallPumpArm .55s ease both!important;}
+.bowler-avatar.celebrate-bigfist .avatar-body,.bowler-avatar.celebrate-doublefist .avatar-body,.bowler-avatar.celebrate-yell .avatar-body{animation:bigLift .68s cubic-bezier(.2,.85,.25,1) both;}
+.bowler-avatar.celebrate-bigfist .avatar-arm.release{animation:bigPumpArm .68s ease both!important;}
+.bowler-avatar.celebrate-doublefist .avatar-arm.release{animation:doublePumpRight .68s ease both!important;}
+.bowler-avatar.celebrate-doublefist .avatar-arm.back{animation:doublePumpLeft .68s ease both!important;}
+.bowler-avatar.celebrate-walkoff{animation:walkOff .85s ease both!important;}
+.bowler-avatar.celebrate-walkoff .avatar-arm.release{animation:walkOffArm .85s ease both!important;}
+.bowler-avatar.celebrate-point .avatar-arm.release{animation:pointArm .6s ease both!important;}
+.bowler-avatar.celebrate-flex .avatar-arm.release{animation:flexRight .72s ease both!important;}
+.bowler-avatar.celebrate-flex .avatar-arm.back{animation:flexLeft .72s ease both!important;}
+.bowler-avatar.celebrate-yell .avatar-head{animation:yellHead .65s ease both!important;}
+.bowler-avatar.celebrate-yell .avatar-arm.release{animation:yellArm .65s ease both!important;}
+.bowler-avatar.celebrate-calmnod .avatar-head{animation:heroNod .55s ease both!important;}
+.bowler-avatar.bad-angry .avatar-body{animation:angryShake .62s ease both!important;}
+.bowler-avatar.bad-angry .avatar-arm.release{animation:angryChop .58s ease both!important;}
+.bowler-avatar.bad-shrug .avatar-body{animation:shrugBody .58s ease both!important;}
+.bowler-avatar.bad-shrug .avatar-arm.release,.bowler-avatar.bad-shrug .avatar-arm.back{animation:shrugArms .58s ease both!important;}
+.bowler-avatar.bad-handsonhips .avatar-arm.release{animation:hipsRight .5s ease both!important;}
+.bowler-avatar.bad-handsonhips .avatar-arm.back{animation:hipsLeft .5s ease both!important;}
+.bowler-avatar.bad-staredown .avatar-head{animation:stareHead .85s ease both!important;}
+.bowler-avatar.bad-laugh .avatar-body{animation:laughTilt .72s ease both!important;}
+@keyframes smallLift{0%{transform:translateX(-50%) translateY(0)}45%{transform:translateX(-50%) translateY(-9px)}100%{transform:translateX(-50%) translateY(0)}}
+@keyframes smallPumpArm{0%{transform:rotate(96deg)}45%{transform:rotate(138deg)}100%{transform:rotate(118deg)}}
+@keyframes bigLift{0%{transform:translateX(-50%) translateY(0) rotate(0)}34%{transform:translateX(-50%) translateY(-16px) rotate(-4deg)}68%{transform:translateX(-50%) translateY(-4px) rotate(6deg)}100%{transform:translateX(-50%) translateY(0) rotate(0)}}
+@keyframes bigPumpArm{0%{transform:rotate(96deg)}40%{transform:rotate(170deg)}100%{transform:rotate(132deg)}}
+@keyframes doublePumpRight{0%{transform:rotate(96deg)}40%{transform:rotate(152deg)}100%{transform:rotate(118deg)}}
+@keyframes doublePumpLeft{0%{transform:rotate(-8deg)}40%{transform:rotate(-88deg)}100%{transform:rotate(-34deg)}}
+@keyframes walkOff{0%{transform:translateX(var(--x)) scale(var(--height))}55%{transform:translateX(calc(var(--x) + 24px)) scale(var(--height)) translateY(-5px)}100%{transform:translateX(calc(var(--x) + 38px)) scale(var(--height))}}
+.bowler-avatar.lefty.celebrate-walkoff{animation:walkOffLeft .85s ease both!important;}
+@keyframes walkOffLeft{0%{transform:translateX(var(--x)) scale(var(--height))}55%{transform:translateX(calc(var(--x) - 24px)) scale(var(--height)) translateY(-5px)}100%{transform:translateX(calc(var(--x) - 38px)) scale(var(--height))}}
+@keyframes walkOffArm{0%{transform:rotate(96deg)}45%{transform:rotate(64deg)}100%{transform:rotate(42deg)}}
+@keyframes pointArm{0%{transform:rotate(96deg)}48%{transform:rotate(18deg)}100%{transform:rotate(24deg)}}
+@keyframes flexRight{0%{transform:rotate(96deg)}45%{transform:rotate(18deg)}100%{transform:rotate(34deg)}}
+@keyframes flexLeft{0%{transform:rotate(-8deg)}45%{transform:rotate(-78deg)}100%{transform:rotate(-62deg)}}
+@keyframes yellHead{0%,100%{transform:translateX(-50%) rotate(0)}40%{transform:translateX(-50%) rotate(-8deg)}70%{transform:translateX(-50%) rotate(8deg)}}
+@keyframes yellArm{0%{transform:rotate(96deg)}44%{transform:rotate(164deg)}100%{transform:rotate(136deg)}}
+@keyframes heroNod{0%,100%{transform:translateX(-50%) rotate(0)}40%{transform:translateX(-50%) rotate(12deg)}65%{transform:translateX(-50%) rotate(-3deg)}}
+@keyframes angryShake{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(-8deg)}50%{transform:translateX(-50%) rotate(8deg)}75%{transform:translateX(-50%) rotate(-6deg)}}
+@keyframes angryChop{0%{transform:rotate(96deg)}40%{transform:rotate(52deg)}100%{transform:rotate(78deg)}}
+@keyframes shrugBody{0%,100%{transform:translateX(-50%) rotate(0)}35%{transform:translateX(-50%) translateY(-3px) rotate(-4deg)}70%{transform:translateX(-50%) translateY(-1px) rotate(5deg)}}
+@keyframes shrugArms{0%{transform:rotate(12deg)}50%{transform:rotate(-12deg)}100%{transform:rotate(6deg)}}
+@keyframes hipsRight{0%{transform:rotate(96deg)}100%{transform:rotate(38deg)}}
+@keyframes hipsLeft{0%{transform:rotate(-8deg)}100%{transform:rotate(-42deg)}}
+@keyframes stareHead{0%{transform:translateX(-50%) rotate(0)}100%{transform:translateX(-50%) translateY(2px) rotate(-5deg)}}
+@keyframes laughTilt{0%,100%{transform:translateX(-50%) rotate(0)}20%{transform:translateX(-50%) rotate(-6deg)}55%{transform:translateX(-50%) rotate(8deg)}80%{transform:translateX(-50%) rotate(-2deg)}}
+.trophy-quote{margin:10px 0 6px;font-family:'Frank Ruhl Libre',serif;font-size:16px;color:var(--gold-bright);font-style:italic;max-width:620px;}
+.trophy-stage .champ-kicker{font-family:'Roboto Mono',monospace;color:var(--polo);letter-spacing:.16em;text-transform:uppercase;font-size:10px;margin-top:6px;}
+.trophy-stage .champ-style{font-family:'Frank Ruhl Libre',serif;font-size:15px;color:var(--regent);margin-top:8px;}
+
+.bowler-style-chip{display:inline-block;margin-top:4px;padding:4px 8px;border:1px solid rgba(163,199,224,.26);border-radius:999px;font-family:'Roboto Mono',monospace;font-size:9px;color:var(--regent);text-transform:uppercase;letter-spacing:.07em;}
+.bowler-bio{font-family:'Frank Ruhl Libre',serif;font-size:13px;color:var(--regent);margin-top:8px;line-height:1.4;}
+.player-card-hero{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;padding:12px;border:1px solid var(--rule);background:rgba(75,107,149,.08);border-radius:4px;margin-bottom:12px;}
+.player-card-hero .hero-copy{font-family:'Frank Ruhl Libre',serif;color:var(--botticelli);}
