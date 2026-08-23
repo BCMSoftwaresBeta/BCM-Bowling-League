@@ -1,0 +1,11 @@
+.player-card-hero .hero-copy .hero-title{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.player-card-hero .hero-copy .hero-main{font-family:'Playfair Display',serif;font-size:20px;color:#fff;line-height:1.15;}
+.player-card-hero .hero-copy .hero-sub{font-size:13px;color:var(--regent);margin-top:4px;}
+.finalist-card .finalist-emoji{font-size:20px;}
+.finalist-card .finalist-preview-wrap .bowler-avatar{margin:0 auto;}
+.lane-hud .bowler{display:flex;align-items:center;gap:10px;min-height:40px;}
+.lane-hud .bowler .lane-bowler-copy{display:flex;flex-direction:column;align-items:flex-start;}
+.lane-hud .bowler .lane-bowler-name{font-family:'Playfair Display',serif;color:#fff;font-size:18px;line-height:1.1;}
+.lane-hud .bowler .lane-bowler-meta{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--polo);text-transform:uppercase;letter-spacing:.08em;}
+@media (max-width:900px){.player-card-hero{grid-template-columns:1fr;justify-items:center;text-align:center;}.lane-scene{min-height:500px;}.human-stage{bottom:48px;transform:translateX(-50%) scale(.88);}}
+@media (max-width:640px){.human-stage{bottom:60px;transform:translateX(-50%) scale(.72);} .lane-scene{min-height:470px;} .bowler-avatar.player-card{transform:scale(.85);} }
