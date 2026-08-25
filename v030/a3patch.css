@@ -1,0 +1,43 @@
+/* BCM Bowling League v0.3.0d — A3 presentation + UX styles */
+.arcade-lowerthird{position:absolute;left:18px;bottom:54px;z-index:7;display:flex;align-items:stretch;min-width:min(420px,78%);max-width:72%;border:1px solid rgba(228,200,136,.42);background:linear-gradient(90deg,rgba(7,18,31,.96),rgba(11,31,54,.92));box-shadow:0 12px 28px rgba(0,0,0,.34);overflow:hidden;pointer-events:auto;transition:width .18s ease,max-width .18s ease,transform .18s ease;}
+.arcade-lowerthird .lt-tag{background:linear-gradient(180deg,var(--gold),#b68d45);color:#0d1d30;font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:10px 12px;font-weight:700;display:flex;align-items:center;}
+.arcade-lowerthird .lt-main{padding:8px 12px 9px;display:flex;flex-direction:column;justify-content:center;gap:3px;}
+.arcade-lowerthird .lt-name{font-family:'Playfair Display',serif;font-size:20px;color:#fff;line-height:1;}
+.arcade-lowerthird .lt-meta{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--polo);}
+.arcade-lowerthird .lt-toggle{margin-left:auto;border:0;border-left:1px solid rgba(228,200,136,.28);border-radius:0;padding:0 10px;background:rgba(255,255,255,.035);color:var(--gold-bright);font-size:9px;letter-spacing:.08em;cursor:pointer;}
+.arcade-lowerthird .lt-toggle:hover{background:rgba(228,200,136,.13);color:#fff;}
+.arcade-lowerthird.minimized{min-width:0;width:auto;max-width:none;}
+.arcade-lowerthird.minimized .lt-main{display:none;}
+.arcade-lowerthird.minimized .lt-tag{padding:9px 11px;}
+.arcade-lowerthird.minimized .lt-toggle{padding:9px 11px;border-left:1px solid rgba(228,200,136,.28);}
+.champ-diff-strip{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+.champ-diff-row{display:grid;grid-template-columns:minmax(90px,1.2fr) repeat(4,minmax(62px,.72fr));align-items:stretch;border:1px solid rgba(198,161,91,.28);background:rgba(6,16,27,.74);min-width:0;}
+.champ-diff-name{padding:8px 10px;display:flex;align-items:center;font-family:'Playfair Display',serif;color:#fff;font-size:15px;font-weight:700;border-right:1px solid rgba(198,161,91,.2);min-width:0;}
+.champ-diff-cell{padding:6px 5px;text-align:center;border-right:1px solid rgba(198,161,91,.12);min-width:0;}
+.champ-diff-cell:last-child{border-right:0;}
+.champ-diff-label{display:block;font-family:'Roboto Mono',monospace;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:var(--polo);white-space:nowrap;}
+.champ-diff-val{display:block;margin-top:3px;font-family:'Roboto Mono',monospace;font-size:13px;font-weight:700;color:var(--botticelli);}
+.champ-diff-cell.ahead .champ-diff-val{color:#78bd91;}
+.champ-diff-cell.behind .champ-diff-val{color:#d77a67;}
+.title-beat-overlay{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at center,rgba(7,18,31,.22),rgba(7,18,31,.72) 50%,rgba(7,18,31,.88));z-index:10;opacity:0;pointer-events:none;transition:opacity .18s ease;}
+.title-beat-overlay.show{opacity:1;}
+.title-beat-card{padding:18px 24px;border:1px solid rgba(228,200,136,.5);background:rgba(6,17,29,.93);box-shadow:0 20px 36px rgba(0,0,0,.4);text-align:center;}
+.title-beat-card .beat-kicker{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:8px;}
+.title-beat-card .beat-main{font-family:'Playfair Display',serif;font-size:34px;color:#fff;line-height:1.05;}
+.title-beat-card .beat-sub{font-family:'Frank Ruhl Libre',serif;font-size:16px;color:var(--regent);margin-top:8px;}
+.streak-banner{position:absolute;left:50%;top:22%;transform:translateX(-50%) scale(.9);z-index:9;min-width:260px;max-width:72%;padding:14px 18px;border:1px solid rgba(228,200,136,.55);background:linear-gradient(135deg,rgba(124,31,46,.96),rgba(37,67,118,.96));box-shadow:0 16px 34px rgba(0,0,0,.38),0 0 28px rgba(228,200,136,.22);text-align:center;opacity:0;pointer-events:none;}
+.streak-banner.show{animation:a3Streak 1.3s ease both;}
+.streak-banner .streak-kicker{font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);}
+.streak-banner .streak-main{font-family:'Playfair Display',serif;font-size:34px;color:#fff;line-height:1;margin:3px 0;}
+.streak-banner .streak-sub{font-family:'Frank Ruhl Libre',serif;font-size:15px;color:var(--botticelli);}
+@keyframes a3Streak{0%{opacity:0;transform:translateX(-50%) translateY(12px) scale(.82)}15%{opacity:1;transform:translateX(-50%) translateY(-2px) scale(1.04)}72%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}100%{opacity:0;transform:translateX(-50%) translateY(-6px) scale(.96)}}
+.title-clinch-stage{position:relative;overflow:hidden;min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:34px 16px;}
+.title-clinch-stage .title-clinch-kicker{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-bright);}
+.title-clinch-stage h2{font-family:'Playfair Display',serif;font-size:clamp(40px,8vw,78px);color:#fff;margin:10px 0 8px;line-height:.95;}
+.title-clinch-stage .title-clinch-sub{font-family:'Frank Ruhl Libre',serif;font-size:18px;color:var(--botticelli);max-width:640px;}
+.title-clinch-stage .title-clinch-series{font-family:'Roboto Mono',monospace;font-size:13px;color:var(--gold);margin:14px 0;}
+.title-clinch-stage .title-clinch-ribbon{margin-top:10px;padding:9px 16px;border:1px solid rgba(228,200,136,.45);background:rgba(11,31,54,.5);font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-bright);}
+.title-clinch-stage .title-clinch-preview{margin:12px auto 6px;}
+.title-clinch-stage .title-clinch-preview .bowler-avatar{filter:drop-shadow(0 14px 16px rgba(0,0,0,.28));}
+@media(max-width:800px){.champ-diff-strip{grid-template-columns:1fr}.champ-diff-row{grid-template-columns:minmax(82px,1.15fr) repeat(4,minmax(54px,.72fr));}.arcade-lowerthird{min-width:0;max-width:82%;bottom:48px}.arcade-lowerthird .lt-name{font-size:18px}.title-beat-card .beat-main{font-size:28px}.streak-banner .streak-main{font-size:30px}}
+@media(max-width:520px){.champ-diff-name{font-size:13px;padding:7px}.champ-diff-label{font-size:6px;letter-spacing:.04em}.champ-diff-val{font-size:11px}.champ-diff-cell{padding:5px 3px}.arcade-lowerthird{left:10px;right:10px;bottom:48px;max-width:none}.arcade-lowerthird .lt-tag{padding:8px 9px;font-size:8px}.arcade-lowerthird .lt-name{font-size:16px}.arcade-lowerthird .lt-meta{font-size:8px}.arcade-lowerthird .lt-toggle{font-size:8px;padding:0 8px}.title-beat-card{padding:15px 16px}.title-beat-card .beat-main{font-size:24px}.streak-banner{max-width:88%;min-width:0;padding:12px 13px}.streak-banner .streak-main{font-size:26px}.streak-banner .streak-sub{font-size:13px}}
