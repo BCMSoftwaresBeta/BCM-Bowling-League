@@ -4,20 +4,22 @@ BCM Bowling League is a browser-based bowling career simulator and championship 
 
 ## Current build
 
-**Beta v0.2.9 — A2 Corrective Build**
+**Beta v0.3.0d — A3 UX Fixes**
 
 This repository is the stable development copy used for testing and future releases.
 
-## v0.2.9 highlights
+## v0.3.0d highlights
 
 - Stable championship bowling core preserved
 - New-season Live Leaderboard uses the prior season's final playoff order
-- Champion starts the next season #1 and championship runner-up starts #2
-- BCM Wallaby STRIKE stinger
+- Corrected pin orientation
+- BCM Wallaby STRIKE stinger plus Turkey / five-bagger moments
 - Character-anchored signature speech bubbles for Bau, Farb, and Woo
-- Stronger 10th-frame crowd reaction
-- Late-game NEEDS X TO WIN broadcast overlay
-- Player-specific celebrations, reactions, custom visuals, tier jerseys, history, rivalries, and browser saves remain intact
+- Championship pin-differential HUD for game and total pins ahead/behind
+- Broadcast lower-third with working minimize / expand control
+- Championship-point camera beat and expanded title-clinch presentation
+- Start Fresh control with confirmation that resets the local career to Year 1
+- Existing custom bowlers, tier jerseys, history, rivalries, saves, and championship flow remain intact
 
 ## Saving
 
@@ -30,9 +32,9 @@ The current beta automatically saves career progress in the browser using `local
 3. ChatGPT updates the repository and build version.
 4. Refresh the Pages site and test again.
 
-## Next phase: A3
+## Next phase: A4
 
-Planned A3 work includes Turkey / five-bagger animations, championship-shot camera beats, a bigger title-clinching sequence, custom championship celebration, visible Wii-style crowd characters for the championship, a broadcast lower-third for finalists, and a true **Start Fresh / Reset Career** control that wipes progress and returns the league to Year 1 after confirmation.
+Planned A4 work focuses on championship-arena immersion: visible Wii/Mii-style crowd characters, crowd reactions that scale with the moment, stronger arena atmosphere, and a **1x / 2x championship watch-speed option** so CPU-vs-CPU finals can be watched faster without changing results.
 
 ## Later career-generation phase
 
