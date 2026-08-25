@@ -12,7 +12,19 @@ window.__arcadeSimMatch = simArcadeMatch;
 
 window.__showPlayerCard = showPlayerCard;
 
- 
+/* Load approved v0.3.0d A3 patch after the A2 patch has finished loading. */
+(function(){
+  const css=document.createElement('link');
+  css.rel='stylesheet';
+  css.href='v030/a3patch.css?v=030d';
+  document.head.appendChild(css);
+  window.addEventListener('load',()=>{
+    const s=document.createElement('script');
+    s.src='v030/a3patch.js?v=030d';
+    s.defer=true;
+    document.body.appendChild(s);
+  },{once:true});
+})();
 
 /* init */
 
