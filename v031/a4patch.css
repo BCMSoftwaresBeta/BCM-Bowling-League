@@ -1,0 +1,28 @@
+/* BCM Bowling League v0.3.1d — A4 crowd, speed and bowling-physics patch */
+.crowd{z-index:1;}
+.crowd-inner{position:absolute;inset:0;overflow:hidden;z-index:2;}
+.crowd-character,.crowd-sign{position:absolute;bottom:2px;transform-origin:50% 100%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.32));z-index:3;}
+.crowd-character{width:20px;height:34px;animation:crowdBob 2.9s ease-in-out infinite;}
+.crowd-character .spec-head{position:absolute;left:50%;top:0;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:var(--skin,#e8c19f);box-shadow:inset 0 -1px 0 rgba(0,0,0,.1);}
+.crowd-character .spec-hair{position:absolute;left:50%;top:-1px;transform:translateX(-50%);width:14px;height:6px;border-radius:8px 8px 3px 3px;background:var(--hair,#4a3829);}
+.crowd-character .spec-body{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:17px;height:21px;border-radius:5px 5px 2px 2px;background:var(--shirt,#6f1f32);border:1px solid rgba(255,255,255,.08);}
+.crowd-character .spec-arm{position:absolute;top:13px;width:5px;height:14px;border-radius:5px;background:var(--shirt,#6f1f32);}
+.crowd-character .spec-arm.left{left:0;transform-origin:50% 0;}
+.crowd-character .spec-arm.right{right:0;transform-origin:50% 0;}
+.crowd-sign{padding:3px 6px;border:1px solid rgba(228,200,136,.5);border-radius:3px;background:rgba(11,31,54,.9);font-family:'Roboto Mono',monospace;font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-bright);animation:crowdBob 3.2s ease-in-out infinite;white-space:nowrap;}
+.lane-scene[data-crowd='normal'] .crowd-character{animation-duration:3.4s;}
+.lane-scene[data-crowd='spare'] .crowd-character,.lane-scene[data-crowd='strike'] .crowd-character,.lane-scene[data-crowd='pop'] .crowd-character{animation-duration:1.4s;}
+.lane-scene[data-crowd='tense'] .crowd-character{animation-duration:2s;}
+.lane-scene[data-crowd='explode'] .crowd-character{animation-duration:.7s;}
+.lane-scene[data-crowd='strike'] .crowd-character .spec-arm.right,.lane-scene[data-crowd='pop'] .crowd-character .spec-arm.right,.lane-scene[data-crowd='explode'] .crowd-character .spec-arm.right{animation:specArmUp .7s ease-in-out infinite alternate;}
+.lane-scene[data-crowd='explode'] .crowd-character .spec-arm.left{animation:specArmUp .7s ease-in-out infinite alternate;}
+@keyframes crowdBob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.03)}}
+@keyframes specArmUp{0%{transform:rotate(0deg)}100%{transform:rotate(-58deg)}}
+.arcade-pin:after{content:'';position:absolute;left:1px;right:1px;top:8px;height:3px;background:#b3483e;}
+.arcade-pin{position:absolute;width:12px;height:30px;background:linear-gradient(90deg,#dfe8ef,#fff 45%,#c7d2dc);border-radius:48% 48% 42% 42%;transform-origin:50% 100%;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14),0 2px 3px rgba(0,0,0,.18);transition:transform .35s ease,opacity .35s ease;}
+.arcade-pin.standing{opacity:1;transform:translate(0,0) rotate(0deg);}
+.arcade-pin.down{opacity:.2;transform:translate(var(--dx,5px),var(--dy,8px)) rotate(var(--rot,78deg)) scale(.9);}
+.arcade-pin.light-hit.down{opacity:.38;}
+.arcade-speed{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:10px;}
+.arcade-speed .speed-label{font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--regent);margin-right:3px;}
+.arcade-speed button.active{background:var(--gold);color:#0d1d30;border-color:var(--gold);}
