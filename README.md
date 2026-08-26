@@ -4,22 +4,22 @@ BCM Bowling League is a browser-based bowling career simulator and championship 
 
 ## Current build
 
-**Beta v0.3.0d — A3 UX Fixes**
+**Beta v0.3.1d — A4 Frame 10 Fix**
 
 This repository is the stable development copy used for testing and future releases.
 
-## v0.3.0d highlights
+## v0.3.1d highlights
 
-- Stable championship bowling core preserved
-- New-season Live Leaderboard uses the prior season's final playoff order
-- Corrected pin orientation
-- BCM Wallaby STRIKE stinger plus Turkey / five-bagger moments
-- Character-anchored signature speech bubbles for Bau, Farb, and Woo
+- Stable championship scoring and bracket logic preserved
+- 1x / 2x championship watch-speed controls
+- Visible championship crowd characters with scaled reactions
+- Centered BCM crowd sign plus BENNY sign
+- More varied visual ball paths for pocket hits, Brooklyn hits, spares, misses, and real gutter balls
+- Visible pin leaves now stay synchronized with the scored pin count
+- Correct fresh-rack visual logic for 10th-frame strike and spare bonus balls
 - Championship pin-differential HUD for game and total pins ahead/behind
-- Broadcast lower-third with working minimize / expand control
-- Championship-point camera beat and expanded title-clinch presentation
-- Start Fresh control with confirmation that resets the local career to Year 1
-- Existing custom bowlers, tier jerseys, history, rivalries, saves, and championship flow remain intact
+- Broadcast lower-third with minimize / expand control
+- Existing A3 title-clinch presentation, Start Fresh control, signature speech, streak graphics, custom bowlers, tier jerseys, history, rivalries, and saves remain intact
 
 ## Saving
 
@@ -32,9 +32,9 @@ The current beta automatically saves career progress in the browser using `local
 3. ChatGPT updates the repository and build version.
 4. Refresh the Pages site and test again.
 
-## Next phase: A4
+## Next phase: A5
 
-Planned A4 work focuses on championship-arena immersion: visible Wii/Mii-style crowd characters, crowd reactions that scale with the moment, stronger arena atmosphere, and a **1x / 2x championship watch-speed option** so CPU-vs-CPU finals can be watched faster without changing results.
+Planned A5 work is the broadcast and arena-cinematics pass: stronger arena lighting, current-bowler spotlighting, championship-point lighting changes, larger title-clinch lighting effects, selective camera/crowd cutaways for major moments, more polished championship framing, and tighter visual integration of the lower-third and pin-differential HUD.
 
 ## Later career-generation phase
 
