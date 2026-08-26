@@ -12,17 +12,29 @@ window.__arcadeSimMatch = simArcadeMatch;
 
 window.__showPlayerCard = showPlayerCard;
 
-/* Load approved v0.3.0d A3 patch after the A2 patch has finished loading. */
+/* Load approved presentation patches in order: A3 first, then A4. */
 (function(){
-  const css=document.createElement('link');
-  css.rel='stylesheet';
-  css.href='v030/a3patch.css?v=030d';
-  document.head.appendChild(css);
+  const a3css=document.createElement('link');
+  a3css.rel='stylesheet';
+  a3css.href='v030/a3patch.css?v=030d';
+  document.head.appendChild(a3css);
+
+  const a4css=document.createElement('link');
+  a4css.rel='stylesheet';
+  a4css.href='v031/a4patch.css?v=031d';
+  document.head.appendChild(a4css);
+
   window.addEventListener('load',()=>{
-    const s=document.createElement('script');
-    s.src='v030/a3patch.js?v=030d';
-    s.defer=true;
-    document.body.appendChild(s);
+    const a3=document.createElement('script');
+    a3.src='v030/a3patch.js?v=030d';
+    a3.async=false;
+    a3.onload=()=>{
+      const a4=document.createElement('script');
+      a4.src='v031/a4patch.js?v=031d';
+      a4.async=false;
+      document.body.appendChild(a4);
+    };
+    document.body.appendChild(a3);
   },{once:true});
 })();
 
